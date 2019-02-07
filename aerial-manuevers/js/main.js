@@ -89,7 +89,7 @@ window.onload = function() {
 
         plane.body.maxVelocity.setTo(MAX_SPEED_PLANE,MAX_SPEED_PLANE);
 
-        plane.body.drag.setTo(DRAG,0);
+        plane.body.drag.setTo(DRAG,DRAG);
 
         plane.reset(400, 300);
         plane.body.acceleration.setTo(0,0);
