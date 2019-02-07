@@ -27,7 +27,11 @@ window.onload = function() {
 
         game.load.image('smoke', 'assets/smoke.png');
 
-        game.load.audio('sfx', 'assets/explosion13.wav');    
+        game.load.image('smallSmoke', 'assets/smallSmoke.png');
+
+        game.load.audio('explosion', 'assets/explosion13.wav');    
+        game.load.audio('gameOver', 'assets/gameOver.wav');
+
     }
     var cursors;
 
@@ -36,10 +40,16 @@ window.onload = function() {
     var MAX_SPEED_PLANE = 200;
     var DRAG = 10;
     var GRAVITY = 50;
+    
     var fx;
+
+    var endedfx;
+
     var timer;
 
-    var elapsedTime = -2.0;
+    var elapsedTime = -3.0;
+
+    var elapsedMax = 5;
 
     var highScore = 16.0; //my current highscore
 
@@ -55,7 +65,7 @@ window.onload = function() {
 
     var MAX_MISSILES = 10;
 
-    var gameOver;
+    
 
     var planeSmoke;
 
@@ -64,14 +74,18 @@ window.onload = function() {
     function create() {
         game.physics.startSystem(Phaser.Physics.ARCADE);
         
-        fx = game.add.audio('sfx');
+       
+        fx = game.add.audio('explosion');
+        endedfx = game.add.audio('gameOver');
 
         game.stage.backgroundColor = 0x333333;
+
+        //creates the plane and sets up the values
 
         plane = game.add.sprite(400, 300, 'plane');
         plane.anchor.setTo(0.5,0.5);
         
-        game.physics.enable(plane, Phaser.Physics.ARCADE);
+        game.physics.arcade.enable(plane);
 
         plane.body.maxVelocity.setTo(MAX_SPEED_PLANE,MAX_SPEED_PLANE);
 
@@ -82,15 +96,15 @@ window.onload = function() {
         plane.angle = 0;
         plane.body.velocity.setTo(0,0);
         
-
+        //sets up the smoke trail for the plane
         planeSmoke = game.add.emitter(0,0,100);
         planeSmoke.gravity = 0;
         planeSmoke.setXSpeed(0,0);
-        planeSmoke.setYSpeed(-80, -50);
+        planeSmoke.setYSpeed(-70, -40);
 
         planeSmoke.setAlpha(1,0, planeSmokeLifetime, Phaser.Easing.Linear.InOut);
 
-        planeSmoke.makeParticles('smoke');
+        planeSmoke.makeParticles('smallSmoke');
 
         planeSmoke.start(false,planeSmokeLifetime, 50);
 
@@ -119,6 +133,7 @@ window.onload = function() {
 
     }
     
+    //used for the timer
     function updateCounter()
     {
         elapsedTime += .1;
@@ -128,7 +143,7 @@ window.onload = function() {
         
 
     
-
+    //gets an explosion for the plane and missiles and plays the sound effect
     function getExplosion(x,y)
     {
         var explosion = explosionGroup.getFirstDead();
@@ -152,16 +167,18 @@ window.onload = function() {
         explosion.animations.play('boom');
     }
 
+    //resets the location of plane and timer in addition to other things
     function resetPlane()
     {
+        endedfx.play();
         timer.pause();
         if (elapsedTime > highScore )
         {
             highScore = elapsedTime;
         }
-        elapsedTime = -2.0;
-        
-
+        elapsedTime = -3.0;
+        elapsedMax = 5;
+        MAX_MISSILES = 10;
         
         plane.reset(400, 300);
         plane.body.acceleration.setTo(0,0);
@@ -177,16 +194,22 @@ window.onload = function() {
 
 
     function update() {
-        
+        //extremely basic score system
         game.debug.text('HIGHSCORE: ' + highScore + ' seconds', 32, 32 );
         game.debug.text('Time Survived: ' + elapsedTime + ' seconds', 32, 64);
         
         game.physics.arcade.collide(plane, ground);
         
-
-
-
+        //every 5 seconds add a missile
+        if(elapsedTime > elapsedMax)
+        {
+            MAX_MISSILES += 1;
+            elapsedMax +=5;
+        }
         
+
+
+        //if there are a max number of missiles spawn some in from the sides of the game
          if (missileGroup.countLiving() < MAX_MISSILES && elapsedTime >= 0)
          {
              var randomNum = game.rnd.integerInRange(0,2);
@@ -204,24 +227,25 @@ window.onload = function() {
          }
         
 
-
+         //things that all alive missiles check for
          missileGroup.forEachAlive(function(m)
          {
+           //if the distance between a missile and the plane is less than 5 game over
             var distance = this.game.math.distance(m.x, m.y, plane.x, plane.y);
             if(distance < 5 )
             {
                 m.kill();
                 getExplosion(m.x, m.y);
-                gameOver = true;
+                
                 resetPlane();
             }
-
+            // if a missile hits the ground, destroy it
             if (game.physics.arcade.collide(m, ground))
             {
                 m.kill();
                 getExplosion(m.x, m.y);
             }
-
+            // if the player died destroy all remaining missiles
             if(elapsedTime < 0)
             {
                 m.kill();
@@ -230,12 +254,14 @@ window.onload = function() {
 
 
          }, this);
+         //put the plane on top of the smoke trail
+         plane.bringToTop();
+         // put the smoke trail behind the plane
+         planeSmoke.x = (Math.cos((plane.rotation + Math.PI) % (2 *Math.PI)) * 6) + plane.x;
+         planeSmoke.y = (Math.sin((plane.rotation + Math.PI) % (2 *Math.PI)) * 6) + plane.y;
 
-         //planeSmoke.x = plane.x;
-         //planeSmoke.y = plane.y;
-
-         //planeSmoke.rotate(plane.x, plane.y, plane.angle * -1, 10);
-        
+         
+        // wrap the plane around the map
          if(plane.x > game.world.width)
         {
             plane.x = 0;
@@ -246,11 +272,13 @@ window.onload = function() {
             plane.x = game.world.width;
         }
 
+        // if the plane goes into the screen above set its angle back down
         if(plane.y < 0)
         {
             plane.angle = game.rnd.integerInRange(80,100);
         }
 
+        // turning
         if(cursors.left.isDown)
         {
             plane.body.angularVelocity = -ROTATION_SPEED_PLANE;
@@ -262,15 +290,17 @@ window.onload = function() {
             plane.body.angularVelocity = 0;
         }
 
+        // if the plane hits the ground explode
         var planeOnTheGround = plane.body.touching.down;
         
         if(planeOnTheGround)
         {
-            gameOver = true;
+           
             getExplosion(plane.x, plane.y);
             resetPlane();
         }
 
+        // acceleration
         if(cursors.up.isDown)
         {
             plane.body.acceleration.x = Math.cos(plane.rotation) * ACCELERATION_PLANE;
@@ -283,6 +313,7 @@ window.onload = function() {
         }
     }
 
+    //launches a missile
     function launchMissile(x,y)
     {
         var missile = missileGroup.getFirstDead();
