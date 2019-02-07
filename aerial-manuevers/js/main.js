@@ -39,7 +39,7 @@ window.onload = function() {
     var ACCELERATION_PLANE = 600;
     var MAX_SPEED_PLANE = 200;
     var DRAG = 10;
-    var GRAVITY = 50;
+    var GRAVITY = 100;
     
     var fx;
 
