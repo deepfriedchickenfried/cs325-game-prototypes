@@ -51,7 +51,7 @@ window.onload = function() {
 
     var elapsedMax = 5;
 
-    var highScore = 16.0; //my current highscore
+    var highScore = 33.0; //my current highscore
 
     var plane;
 
@@ -203,10 +203,13 @@ window.onload = function() {
         //every 5 seconds add a missile
         if(elapsedTime > elapsedMax)
         {
-            MAX_MISSILES += 1;
+            MAX_MISSILES += 2;
             elapsedMax +=5;
         }
-        
+        if(elapsedTime > highScore)
+        {
+            highScore = elapsedTime;
+        }
 
 
         //if there are a max number of missiles spawn some in from the sides of the game
