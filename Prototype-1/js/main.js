@@ -30,8 +30,12 @@ window.onload = function() {
    var crossHair;
     var cursors;
     
-   
+    var ROTATION_SPEED_TANK = 300;
+    var ACCELERATION_TANK = 600;
+    var MAX_SPEED_TANK = 200;
+    var DRAG_TANK = 10;
     function create() {
+       
         game.stage.backgroundColor = 0x333333;
 
         
@@ -42,6 +46,8 @@ window.onload = function() {
         tank.anchor.setTo(0.5,0.5);
 
         game.physics.arcade.enable(tank);
+        tank.body.maxVelocity.setTo(MAX_SPEED_TANK, MAX_SPEED_TANK);
+
 
         tankGun = game.add.sprite(400,300, 'tankTop');
         tankGun.anchor.setTo(0.5,0.5);
@@ -54,17 +60,45 @@ window.onload = function() {
     
     }
     
-    
-   
 
     function update() {
         
-     
+        tankGun.rotation = game.physics.arcade.angleToPointer(tankGun);
+        tankGun.x = tank.x;
+        tankGun.y = tank.y;
 
+        crossHair.x = game.input.x;
+        crossHair.y = game.input.y;
 
+        if(cursors.up.isDown)
+        {
+            tank.body.acceleration.x = Math.cos(tank.rotation) * ACCELERATION_TANK;
+            tank.body.acceleration.y = Math.sin(tank.rotation) * ACCELERATION_TANK;
+        } else if(cursors.down.isDown)
+        {
+            tank.body.acceleration.x = Math.cos(tank.rotation) * ACCELERATION_TANK;
+            tank.body.acceleration.y = Math.sin(tank.rotation) * ACCELERATION_TANK;
+        } else
+        {
+            tank.body.acceleration.setTo(0,0);
 
-
-
-
+            if(cursors.left.isDown)
+            {
+                tank.body.angularVelocity = -ROTATION_SPEED_TANK;
+            } else if(cursors.right.isDown)
+            {
+                tank.body.angularVelocity = ROTATION_SPEED_TANK;
+            } else
+            {
+                tank.body.angularVelocity = 0;
+            }
+        }
     }
+
+
+
+
+
+
+    
 };
