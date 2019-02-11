@@ -16,18 +16,17 @@ window.onload = function() {
         // Load an image and call it 'logo'.
         
         
-        game.load.image( 'block', 'assets/block.png');
-        game.load.spritesheet( 'tankBody', 'assets/tankBody.png', 32, 32, 2);
+       
         game.load.spritesheet('crossHair', 'assets/crossHair.png', 32, 32);
-        game.load.image('tankTop', 'assets/tankTop1.png');
-        game.load.image('smallSmoke', 'assets/smallSmoke.png');
+        
          //game.load.image('dude', 'assets/testperson');
          
     }
     
    var tank;
    var tankGun;
-   var crossHair;
+   var crossHair1;
+   var crossHair2
     var cursors;
     
    
@@ -37,18 +36,14 @@ window.onload = function() {
         
         game.physics.startSystem(Phaser.Physics.ARCADE);
         
-        tank = game.add.sprite(400,300, 'tankBody');
-        
-        tank.anchor.setTo(0.5,0.5);
-
-        game.physics.arcade.enable(tank);
-
-        tankGun = game.add.sprite(400,300, 'tankTop');
-        tankGun.anchor.setTo(0.5,0.5);
+       
 
 
-        crossHair = game.add.sprite(400,300, 'crossHair');
-        
+        crossHair1 = game.add.sprite(400,300, 'crossHair');
+        crossHair1.anchor.setTo(0.5,0.5);
+
+        crossHair2 = game.add.sprite(500,300, 'crossHair');
+        crossHair2.anchor.setTo(0.5,0.5);
         
         cursors = game.input.keyboard.createCursorKeys();
     
