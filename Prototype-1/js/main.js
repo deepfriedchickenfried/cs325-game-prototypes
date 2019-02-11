@@ -76,8 +76,8 @@ window.onload = function() {
             tank.body.acceleration.y = Math.sin(tank.rotation) * ACCELERATION_TANK;
         } else if(cursors.down.isDown)
         {
-            tank.body.acceleration.x = Math.cos(tank.rotation) * ACCELERATION_TANK;
-            tank.body.acceleration.y = Math.sin(tank.rotation) * ACCELERATION_TANK;
+            tank.body.acceleration.x = -Math.cos(tank.rotation) * ACCELERATION_TANK;
+            tank.body.acceleration.y = -Math.sin(tank.rotation) * ACCELERATION_TANK;
         } else
         {
             tank.body.acceleration.setTo(0,0);
