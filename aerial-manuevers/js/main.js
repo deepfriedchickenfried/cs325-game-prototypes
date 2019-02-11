@@ -39,7 +39,7 @@ window.onload = function() {
     var ACCELERATION_PLANE = 600;
     var MAX_SPEED_PLANE = 200;
     var DRAG = 10;
-    var GRAVITY = 50;
+    var GRAVITY = 100;
     
     var fx;
 
@@ -51,7 +51,7 @@ window.onload = function() {
 
     var elapsedMax = 5;
 
-    var highScore = 16.0; //my current highscore
+    var highScore = 33.0; //my current highscore
 
     var plane;
 
@@ -89,7 +89,7 @@ window.onload = function() {
 
         plane.body.maxVelocity.setTo(MAX_SPEED_PLANE,MAX_SPEED_PLANE);
 
-        plane.body.drag.setTo(DRAG,0);
+        plane.body.drag.setTo(DRAG,DRAG);
 
         plane.reset(400, 300);
         plane.body.acceleration.setTo(0,0);
@@ -203,10 +203,13 @@ window.onload = function() {
         //every 5 seconds add a missile
         if(elapsedTime > elapsedMax)
         {
-            MAX_MISSILES += 1;
+            MAX_MISSILES += 2;
             elapsedMax +=5;
         }
-        
+        if(elapsedTime > highScore)
+        {
+            highScore = elapsedTime;
+        }
 
 
         //if there are a max number of missiles spawn some in from the sides of the game
