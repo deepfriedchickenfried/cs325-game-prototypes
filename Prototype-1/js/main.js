@@ -70,6 +70,27 @@ window.onload = function() {
         crossHair.x = game.input.x;
         crossHair.y = game.input.y;
 
+        if(tank.x > game.world.width)
+        {
+            tank.x = 0;
+        }
+
+        if(tank.x < 0 )
+        {
+            tank.x = game.world.width;
+        }
+
+        if(tank.y > game.world.height)
+        {
+            tank.y = 0;
+        }
+
+        if(tank.y < 0)
+        {
+            tank.y = game.world.height;
+        }
+
+
         if(cursors.up.isDown)
         {
             tank.body.angularVelocity = 0;
