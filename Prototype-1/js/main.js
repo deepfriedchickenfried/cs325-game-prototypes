@@ -72,10 +72,12 @@ window.onload = function() {
 
         if(cursors.up.isDown)
         {
+            tank.body.angularVelocity = 0;
             tank.body.acceleration.x = Math.cos(tank.rotation) * ACCELERATION_TANK;
             tank.body.acceleration.y = Math.sin(tank.rotation) * ACCELERATION_TANK;
         } else if(cursors.down.isDown)
         {
+            tank.body.angularVelocity = 0;
             tank.body.acceleration.x = -Math.cos(tank.rotation) * ACCELERATION_TANK;
             tank.body.acceleration.y = -Math.sin(tank.rotation) * ACCELERATION_TANK;
         } else
