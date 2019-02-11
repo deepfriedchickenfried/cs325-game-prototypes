@@ -31,9 +31,9 @@ window.onload = function() {
     var cursors;
     
     var ROTATION_SPEED_TANK = 300;
-    var ACCELERATION_TANK = 600;
+    var ACCELERATION_TANK = 400;
     var MAX_SPEED_TANK = 200;
-    var DRAG_TANK = 10;
+    var DRAG_TANK = 100;
     function create() {
        
         game.stage.backgroundColor = 0x333333;
@@ -47,7 +47,7 @@ window.onload = function() {
 
         game.physics.arcade.enable(tank);
         tank.body.maxVelocity.setTo(MAX_SPEED_TANK, MAX_SPEED_TANK);
-
+        tank.body.drag.setTo(DRAG_TANK, DRAG_TANK);
 
         tankGun = game.add.sprite(400,300, 'tankTop');
         tankGun.anchor.setTo(0.5,0.5);
