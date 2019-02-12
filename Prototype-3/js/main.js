@@ -18,13 +18,14 @@ window.onload = function() {
         
        
         game.load.spritesheet('crossHair', 'assets/crossHair.png', 32, 32);
-        
+        game.load.spritesheet('player', 'assets/playerG.png', 32, 32);
          //game.load.image('dude', 'assets/testperson');
          
     }
     
-   var tank;
-   var tankGun;
+   var player1;
+   var player2;
+
    var crossHair1;
    var crossHair2
     var cursors;
@@ -36,7 +37,11 @@ window.onload = function() {
         
         game.physics.startSystem(Phaser.Physics.ARCADE);
         
-       
+        player1 = game.add.sprite(200, 400, 'player');
+        player1.grappling = false;
+
+        player2 = game.add.sprite(600, 400, 'player');
+        player2.grappling = true;
 
 
         crossHair1 = game.add.sprite(400,300, 'crossHair');
@@ -46,7 +51,7 @@ window.onload = function() {
         crossHair2.anchor.setTo(0.5,0.5);
         
         cursors = game.input.keyboard.createCursorKeys();
-    
+        
     }
     
     
@@ -54,7 +59,7 @@ window.onload = function() {
 
     function update() {
         
-     
+        
 
 
 
