@@ -54,7 +54,7 @@ window.onload = function() {
 
 
         crossHair = game.add.sprite(400,300, 'crossHair');
-        
+        crossHair.anchor.setTo(0.5,0.5);
         
         cursors = game.input.keyboard.createCursorKeys();
     
