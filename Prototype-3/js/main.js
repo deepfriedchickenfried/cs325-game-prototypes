@@ -95,6 +95,7 @@ window.onload = function() {
 
         }
 
+        //14 anchor blocks
         anchors.game.add.group();
         anchors.enableBody = true;
 
