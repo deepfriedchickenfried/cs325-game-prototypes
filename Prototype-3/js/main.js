@@ -58,7 +58,7 @@ window.onload = function() {
         player1.anchor.setTo(0.5,0.5);
         player1.grappling = false;
         player1.frame = 2;
-        player1.gravity.y = GRAVITY;
+        player1.body.gravity.y = GRAVITY;
         player1.nearestAnchor;
 
         player2 = game.add.sprite(600, 400, 'player');
@@ -67,7 +67,7 @@ window.onload = function() {
         player2.anchor.setTo(0.5,0.5);
         player2.grappling = false;
         player2.frame = 5;
-        player2.gravity.y = GRAVITY;
+        player2.body.gravity.y = GRAVITY;
         player2.nearestAnchor;
 
         crossHair1 = game.add.sprite(400,300, 'crossHair');
