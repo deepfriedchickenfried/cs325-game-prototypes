@@ -18,7 +18,7 @@ window.onload = function() {
         
         game.load.spritesheet( 'wallBlocks', 'assets/mapTiles.png', 32,32);
         game.load.spritesheet( 'Body', 'assets/Body.png', 32, 32);
-        game.load.spritesheet('Swords', 'assets/Swords.png', 48, 10);
+        game.load.spritesheet('Swords', 'assets/Swords.png', 10, 48,4);
         
          //game.load.image('dude', 'assets/testperson');
          
@@ -43,11 +43,13 @@ window.onload = function() {
     function create() {
        
         game.stage.backgroundColor = 0xc2c3c7;
-        game.physics.startSystem(Phaser.Physics.ARCADE);
-        
+        game.physics.startSystem(Phaser.Physics.P2JS);
+        game.physics.p2.restitution = .8
+
+
         walls = game.add.group();
         walls.enableBody = true;
-
+        
         for(var x = 0; x < game.world.width; x+= 32)
         {
             if(x === 0 || x === (game.world.width - 32))
@@ -55,35 +57,41 @@ window.onload = function() {
                 for(var y = 0; y < game.world.height; y+= 32)
                 {
                     var wallBlocks = walls.create(x,y, 'wallBlocks' );
-                    wallBlocks.body.immovable = true;
+                    game.physics.p2.enable(wallBlocks);
+                    wallBlocks.body.static = true;
                 }
             }else
             {
                 var wallBlocks = walls.create(x, 0, 'wallBlocks');
-                wallBlocks.body.immovable = true;
+                game.physics.p2.enable(wallBlocks);
+                wallBlocks.body.static = true;
 
                 wallBlocks = walls.create(x, game.world.height - 32, 'wallBlocks');
-                wallBlocks.body.immovable = true;
+                game.physics.p2.enable(wallBlocks);
+                wallBlocks.body.static = true;
 
                 if(x === 4 * 32 || x === game.world.width - 5 * 32)
                 {
                     for(var y = 32 *11; y < 32* 16; y+= 32)
                     {
                         wallBlocks = walls.create(x, y, 'wallBlocks');
-                        wallBlocks.body.immovable = true;
+                        game.physics.p2.enable(wallBlocks);
+                        wallBlocks.body.static = true;
                     }
                 }
             }
 
         }
 
+        game.physics.p2.enable(walls);
+
         player1 = game.add.sprite(64, 32 * 13, 'Swords');
-        game.physics.arcade.enable(player1);
+        game.physics.p2.enable(player1);
         player1.anchor.setTo(0.2, 0.5);
         player1.frame= 0;
-        player1.body.drag.setTo(DRAG,DRAG);
-        player1.body.maxVelocity.setTo(MAX_SPEED,MAX_SPEED);
-        player1.body.bounce.set(1);
+        player1.body.damping=.8;
+        
+        console.log(player1.body.debug);
 
         p1Key = game.input.keyboard.addKey(Phaser.Keyboard.Q);
         p2Key = game.input.keyboard.addKey(Phaser.Keyboard.F);
@@ -93,17 +101,15 @@ window.onload = function() {
     
 
     function update() {
-        game.physics.arcade.collide(player1, walls);
+        
 
         if(p1Key.isDown)
         {
-            player1.body.angularVelocity = 0;
-            player1.body.acceleration.x = Math.cos(player1.rotation) * ACCELERATION;
-            player1.body.acceleration.y = Math.sin(player1.rotation) * ACCELERATION;
+            player1.body.setZeroRotation();
+            player1.body.thrust(ACCELERATION);
 
         }else{
-            player1.body.acceleration.setTo(0,0);
-            player1.body.angularVelocity = ROTATION_SPEED;
+            player1.body.rotateLeft(ROTATION_SPEED);
         }
 
         game.debug.bodyInfo(player1, 32,32);
