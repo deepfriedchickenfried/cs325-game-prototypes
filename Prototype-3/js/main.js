@@ -19,7 +19,7 @@ window.onload = function() {
         game.load.image('anchor', 'assets/anchor.png');
        
         game.load.spritesheet('crossHair', 'assets/crossHair.png', 32, 32);
-        game.load.spritesheet('player', 'assets/playerG.png', 32, 32);
+        game.load.spritesheet('player', 'assets/playerG.png', 48, 48);
          //game.load.image('dude', 'assets/testperson');
          
     }
