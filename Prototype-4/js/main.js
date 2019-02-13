@@ -15,10 +15,10 @@ window.onload = function() {
     function preload() {
         // Load an image and call it 'logo'.
         
-        this.game.load.tilemap('tilemap', 'assets/swordArena.json', null, Phaser.Tilemap.TILED_JSON);
+        this.game.load.tilemap('tilemap', 'assets/swordArena..json', null, Phaser.Tilemap.TILED_JSON);
         game.load.image( 'mapTiles32', 'assets/mapTiles.png');
         game.load.spritesheet( 'Body', 'assets/Body.png', 32, 32);
-        game.load.spritesheet('Swords', 'assets/crossHair.png', 48, 10);
+        game.load.spritesheet('Swords', 'assets/Swords.png', 48, 10);
         
          //game.load.image('dude', 'assets/testperson');
          
