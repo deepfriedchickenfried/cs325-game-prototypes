@@ -99,7 +99,7 @@ window.onload = function() {
         {
             player1.body.angularVelocity = 0;
             player1.body.acceleration.x = Math.cos(player1.rotation) * ACCELERATION;
-            player1.body.acceleration.y = Math.cos(player1.rotation) * ACCELERATION;
+            player1.body.acceleration.y = Math.sin(player1.rotation) * ACCELERATION;
 
         }else{
             player1.body.acceleration.setTo(0,0);
