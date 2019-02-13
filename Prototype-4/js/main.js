@@ -65,7 +65,7 @@ window.onload = function() {
                 wallBlocks = walls.create(x, game.world.height - 32, 'wallBlocks');
                 wallBlocks.body.immovable = true;
 
-                if(x === 3 * 32 || x === game.world.width - 4 * 32)
+                if(x === 4 * 32 || x === game.world.width - 5 * 32)
                 {
                     for(var y = 32 *11; y < 32* 16; y+= 32)
                     {
@@ -77,9 +77,9 @@ window.onload = function() {
 
         }
 
-        player1 = game.add.sprite(32, 32 * 13, 'Swords');
+        player1 = game.add.sprite(64, 32 * 13, 'Swords');
         game.physics.arcade.enable(player1);
-        player1.anchor.setTo(0, 0.5);
+        player1.anchor.setTo(0.2, 0.5);
         player1.frame= 0;
         player1.body.drag.setTo(DRAG,DRAG);
         player1.body.maxVelocity.setTo(MAX_SPEED,MAX_SPEED);
@@ -106,7 +106,9 @@ window.onload = function() {
             player1.body.angularVelocity = ROTATION_SPEED;
         }
 
+        game.debug.bodyInfo(player1, 32,32);
 
+        game.debug.body(player1);
 
     }
 
