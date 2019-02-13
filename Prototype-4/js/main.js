@@ -15,8 +15,8 @@ window.onload = function() {
     function preload() {
         // Load an image and call it 'logo'.
         
-        this.game.load.tilemap('tilemap', 'assets/swordArena..json', null, Phaser.Tilemap.TILED_JSON);
-        game.load.image( 'mapTiles32', 'assets/mapTiles.png');
+        
+        game.load.spritesheet( 'wallBlocks', 'assets/mapTiles.png', 32,32);
         game.load.spritesheet( 'Body', 'assets/Body.png', 32, 32);
         game.load.spritesheet('Swords', 'assets/Swords.png', 48, 10);
         
@@ -24,37 +24,86 @@ window.onload = function() {
          
     }
     
-   var player1;
+    var walls;
+
+   var player1; 
    var player2;
    var player3;
    var player4;
+
+   var p1Key;
+   var p2Key;
+   var p3Key;
+   var p4Key;
     
     var ROTATION_SPEED = 300;
     var ACCELERATION = 400;
-    var MAX_SPEED = 200;
-    var DRAG = 100;
+    var MAX_SPEED = 400;
+    var DRAG = 200;
     function create() {
        
-        this.game.stage.backgroundColor = 0x333333;
-
+        game.stage.backgroundColor = 0xc2c3c7;
+        game.physics.startSystem(Phaser.Physics.ARCADE);
         
-        this.game.physics.startSystem(Phaser.Physics.ARCADE);
-        
-        this.map = this.game.add.tilemap('tilemap');
-        this.map.addTilesetImage('mapTiles', 'mapTiles');
-    
-        this.backgroundLayer = this.map.createLayer('BackgroundLayer');
-        this.wallLayer = this.map.createLayer('WallLayer');
-    
-        this.map.setCollisionBetween(1, 100, true, 'WallLayer');
+        walls = game.add.group();
+        walls.enableBody = true;
 
-        this.wallLayer.resizeWorld();
+        for(var x = 0; x < game.world.width; x+= 32)
+        {
+            if(x === 0 || x === (game.world.width - 32))
+            {
+                for(var y = 0; y < game.world.height; y+= 32)
+                {
+                    var wallBlocks = walls.create(x,y, 'wallBlocks' );
+                    wallBlocks.body.immovable = true;
+                }
+            }else
+            {
+                var wallBlocks = walls.create(x, 0, 'wallBlocks');
+                wallBlocks.body.immovable = true;
+
+                wallBlocks = walls.create(x, game.world.height - 32, 'wallBlocks');
+                wallBlocks.body.immovable = true;
+
+                if(x === 3 * 32 || x === game.world.width - 4 * 32)
+                {
+                    for(var y = 32 *11; y < 32* 16; y+= 32)
+                    {
+                        wallBlocks = walls.create(x, y, 'wallBlocks');
+                        wallBlocks.body.immovable = true;
+                    }
+                }
+            }
+
+        }
+
+        player1 = game.add.sprite(32, 32 * 13, 'Swords');
+        game.physics.arcade.enable(player1);
+        player1.anchor.setTo(0, 0.5);
+        player1.frame= 0;
+        player1.body.drag.setTo(DRAG,DRAG);
+        player1.body.maxVelocity.setTo(MAX_SPEED,MAX_SPEED);
+        
+
+        p1Key = game.input.keyboard.addKey(Phaser.Keyboard.Q);
 
     }
     
 
     function update() {
-        
+        game.physics.arcade.collide(player1, walls);
+
+        if(p1Key.isDown)
+        {
+            player1.body.angularVelocity = 0;
+            player1.body.acceleration.x = Math.cos(player1.rotation) * ACCELERATION;
+            player2.body.acceleration.y = Math.cos(player1.rotation) * ACCELERATION;
+
+        }else{
+            player1.body.acceleration.setTo(0,0);
+            player1.body.angularVelocity = ROTATION_SPEED;
+        }
+
     }
 
 

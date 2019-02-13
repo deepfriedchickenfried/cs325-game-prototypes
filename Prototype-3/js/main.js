@@ -172,7 +172,7 @@ window.onload = function() {
         var spikeCollisionP2 = game.physics.arcade.collide(player2, spikes);
         player1.body.angularVelocity = 0;
         
-        anchor.forEachAlive(function(m)
+        anchors.forEachAlive(function(m)
         {
             
 
