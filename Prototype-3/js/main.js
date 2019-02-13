@@ -171,6 +171,14 @@ window.onload = function() {
         var spikeCollisionP1 = game.physics.arcade.collide(player1, spikes);
         var spikeCollisionP2 = game.physics.arcade.collide(player2, spikes);
         player1.body.angularVelocity = 0;
+        
+        anchor.forEachAlive(function(m)
+        {
+            
+
+        }
+        )
+
         if(player1.grappling === true)
         {
             player1.body.gravity.y = 0;
@@ -191,7 +199,7 @@ window.onload = function() {
         }
 
         player2.body.angularVelocity = 0;
-        if(player2.grappling === false)
+        if(player2.grappling === true)
         {
             player2.body.gravity.y = 0;
         }else
