@@ -83,10 +83,12 @@ window.onload = function() {
         player1.frame= 0;
         player1.body.drag.setTo(DRAG,DRAG);
         player1.body.maxVelocity.setTo(MAX_SPEED,MAX_SPEED);
-        
+        player1.body.bounce.set(1);
 
         p1Key = game.input.keyboard.addKey(Phaser.Keyboard.Q);
-
+        p2Key = game.input.keyboard.addKey(Phaser.Keyboard.F);
+        p3Key = game.input.keyboard.addKey(Phaser.Keyboard.J);
+        p4Key = game.input.keyboard.addKey(Phaser.Keyboard.P);
     }
     
 
@@ -103,6 +105,8 @@ window.onload = function() {
             player1.body.acceleration.setTo(0,0);
             player1.body.angularVelocity = ROTATION_SPEED;
         }
+
+
 
     }
 
