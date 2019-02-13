@@ -41,7 +41,7 @@ window.onload = function() {
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
         
         this.map = this.game.add.tilemap('tilemap');
-        this.map.addTilesetImage('mapTiles', 'mapTiles32');
+        this.map.addTilesetImage('mapTiles', 'mapTiles');
     
         this.backgroundLayer = this.map.createLayer('BackgroundLayer');
         this.wallLayer = this.map.createLayer('WallLayer');
