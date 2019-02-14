@@ -81,9 +81,9 @@ window.onload = function() {
         game.physics.p2.setImpactEvents(true);
         game.physics.p2.restitution = .8
 
-        music = new Phaser.Sound(game, 'OutOfTime', 1, true);
-        music.play();
+        music = game.add.audio('OutOfTime');
         music.loop = true;
+        music.play();
 
         style = {font: "98px Arial", fill: "#ffffff", align: "center"};
 
