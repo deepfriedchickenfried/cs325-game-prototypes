@@ -481,6 +481,21 @@ window.onload = function() {
         
         if(liveCount <= 1)
         {
+            if(player1Lives >0)
+            {
+                game.camera.flash(0xff004d, 500);
+            } else if(player2Lives > 0)
+            {
+                game.camera.flash(0x29adff, 500);
+            } else if(player3Lives > 0)
+            {
+                game.camera.flash(0x00e436, 500);
+            } else if(player4Lives > 0)
+            {
+                game.camera.flash(0xffa300, 500);
+            }
+
+
             resetGame();
         }
         
