@@ -3,6 +3,17 @@
 GameStates.makeGame = function( game, shared ) {
     // Create your own variables.
     var bouncy = null;
+
+    var player;
+    var Letters;
+    var Enemies;
+    
+
+    function spawnEnemy(x, y)
+    {
+
+    }
+
     
     function quitGame() {
 
@@ -18,6 +29,7 @@ GameStates.makeGame = function( game, shared ) {
     
         create: function () {
     
+            player = game.add.sprite(game.world.centerX, game.world.centerY, 'player');
             //  Honestly, just about anything could go here. It's YOUR game after all. Eat your heart out!
             
             // Create a sprite at the center of the screen using the 'logo' image.
@@ -43,7 +55,7 @@ GameStates.makeGame = function( game, shared ) {
         },
     
         update: function () {
-    
+            
             //  Honestly, just about anything could go here. It's YOUR game after all. Eat your heart out!
             
             // Accelerate the 'logo' sprite towards the cursor,
@@ -51,7 +63,7 @@ GameStates.makeGame = function( game, shared ) {
             // in X or Y.
             // This function returns the rotation angle that makes it visually match its
             // new trajectory.
-            bouncy.rotation = game.physics.arcade.accelerateToPointer( bouncy, game.input.activePointer, 500, 500, 500 );
+            
         }
     };
 };
