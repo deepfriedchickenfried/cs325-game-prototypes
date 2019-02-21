@@ -378,7 +378,7 @@ GameStates.makeGame = function( game, shared ) {
             } 
             if(shift.isDown)
             {
-                player.rotation = game.rnd.realInRange(0, Math.PI * 2);
+                
                 letterShotDelay = 10;
             } else
             {
@@ -408,32 +408,32 @@ GameStates.makeGame = function( game, shared ) {
             if(enemies.countLiving() < maxEnemies)
             {
                 
-             var randomNum = game.rnd.integerInRange(0,3);
+                var randomNum = game.rnd.integerInRange(0,3);
 
-             if(randomNum === 0)
-             {
-                 spawnEnemy(game.rnd.integerInRange(0,game.world.width), -50);
-             } else if (randomNum === 1)
-             {
-                 spawnEnemy(-50, game.rnd.integerInRange(0, game.world.height));
-             } else if( randomNum === 2)
-             {
-                spawnEnemy(game.world.width + 50, game.rnd.integerInRange(0, game.world.height));
-             }else
-             {
-                spawnEnemy(game.rnd.integerInRange(0,game.world.width), game.world.height + 50);
-             }
+                if(randomNum === 0)
+                {
+                    spawnEnemy(game.rnd.integerInRange(0,game.world.width), -50);
+                } else if (randomNum === 1)
+                {
+                    spawnEnemy(-50, game.rnd.integerInRange(0, game.world.height));
+                } else if( randomNum === 2)
+                {
+                    spawnEnemy(game.world.width + 50, game.rnd.integerInRange(0, game.world.height));
+                }else
+                {
+                    spawnEnemy(game.rnd.integerInRange(0,game.world.width), game.world.height + 50);
+                }
             }
-            /*
+            
             lettersBullets.forEachAlive(function(m)
             {
-                var hit = game.physics.arcade.collide(m, enemies);
-                if(hit)
+                
+                if(m.body.velocity.x === 0 && m.body.velocity.y === 0)
                 {
                     m.kill();
                 }
             },this);
-            */
+            
             enemies.forEachAlive(function(m)
             {
                 game.physics.arcade.collide(m,enemies);
@@ -443,6 +443,7 @@ GameStates.makeGame = function( game, shared ) {
                     m.x +=  (Math.cos((m.rotation + Math.PI) % (2 *Math.PI)) * 20);
                     m.y +=  (Math.sin((m.rotation + Math.PI) % (2 *Math.PI)) * 20);
                     //m.damage();
+                    game.camera.shake(0.01, 200);
                     m.kill();
 
                 }
