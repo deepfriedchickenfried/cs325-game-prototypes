@@ -4,7 +4,7 @@ GameStates.makeGame = function( game, shared ) {
     // Create your own variables.
     
     
-    var bouncy = null;
+   var music;
     var lives = 3;
     var ammo;
     var player;
@@ -37,6 +37,9 @@ GameStates.makeGame = function( game, shared ) {
     var style;
     var bulletText;
     var healthText;
+    
+    var timer;
+   
 
 
     function spawnEnemy(x, y)
@@ -116,76 +119,7 @@ GameStates.makeGame = function( game, shared ) {
 
     }
 
-    function spawnPhrase(x,y, z)
-    {
-
-        if(lastLetterShotAt === undefined) lastLetterShotAt = 0;
-        if(game.time.now - lastLetterShotAt < letterShotDelay) return;
-
-        lastLetterShotAt = game.time.now;
-
-        var word = [];
-        switch(z)
-        {
-            case 1:
-                //pew
-                word.unshift(15);
-                word.unshift(4);
-                word.unshift(22);
-                break;
-            case 2:
-                //bang
-                word.unshift(1);
-                word.unshift(0);
-                word.unshift(13);
-                word.unshift(6);
-                break;
-            case 3:
-                //There he is
-                word.unshift(19);
-                word.unshift(7);
-                word.unshift(4);
-                word.unshift(17);
-                word.unshift(4);
-                word.unshift(-1);
-                word.unshift(7);
-                word.unshift(4);
-                word.unshift(-1);
-                word.unshift(8);
-                word.unshift(18);
-                
-                
-                break;
-            case 4:
-                //ow
-                word.unshift(14);
-                word.unshift(22);
-            case 5:
-            case 6:
-            case 7:
-
-        }
-
-        var startingX = x- word.length * 7 /2;
-        var startingY = y - 30;
-        for(var i = 0; i < word.length; i++)
-        {
-            var fr = word.pop();
-            if(fr !== -1)
-            {
-            var letterS = lettersGroup.getFirstDead();
-            letterS.revive();
-            letterS.bringToTop();
-            letterS.frame = fr;
-            letterS.checkWorldBounds = true;
-            letterS.outOfBoundsKill = true;
-            letterS.reset(startingX + 7 * i, startingY);
-             
-            letterS.body.velocity.y = -50;
-            } 
-        }
-
-    }
+   
 
     var Enemy = function(game, x,y)
     {
@@ -210,11 +144,19 @@ GameStates.makeGame = function( game, shared ) {
 
     Enemy.prototype = Object.create(Phaser.Sprite.prototype);
     Enemy.prototype.constructor = Enemy;
-    
+
+    Enemy.prototype.damage = function()
+    {
+        this.health -= 1;
+        if(this.health <= 0)
+        {
+            this.alive = false;
+            this.kill();
+        }
+    }
     Enemy.prototype.update = function()
     {
-       if(this.alive)
-       {
+      
         this.rotation = game.physics.arcade.angleToXY(this, player.x, player.y);
 
 
@@ -226,12 +168,17 @@ GameStates.makeGame = function( game, shared ) {
         this.body.velocity.y = Math.sin(this.rotation) * this.SPEED;
         
 
-            if(lives <= 0)
+            if(this.health <= 0)
             {
 
                 this.kill();
             }
-        }
+        
+    }
+
+    function updateCounter()
+    {
+        maxEnemies += 1;
     }
 
     function quitGame() {
@@ -240,7 +187,8 @@ GameStates.makeGame = function( game, shared ) {
         //  Stop music, delete sprites, purge caches, free resources, all that good stuff.
 
         //  Then let's go back to the main menu.
-        game.state.start('GameOver');
+        lives = 3;
+        game.state.start('GameOver', true);
 
     }
     
@@ -248,7 +196,8 @@ GameStates.makeGame = function( game, shared ) {
     
         create: function () {
            
-           
+            music = game.add.audio('gameMusic');
+            music.play();
             
             style = {font: "14px Arial", fill: "#ffffff"};
 
@@ -308,6 +257,10 @@ GameStates.makeGame = function( game, shared ) {
                 bullet.kill();
             }
             
+
+            timer = game.time.create(false);
+           timer.loop(5000, updateCounter, this);
+           timer.start();
         },
     
         update: function () {
@@ -416,7 +369,7 @@ GameStates.makeGame = function( game, shared ) {
                 spawnEnemy(game.rnd.integerInRange(0,game.world.width), game.world.height + 50);
              }
             }
-
+            /*
             lettersBullets.forEachAlive(function(m)
             {
                 var hit = game.physics.arcade.collide(m, enemies);
@@ -425,19 +378,30 @@ GameStates.makeGame = function( game, shared ) {
                     m.kill();
                 }
             },this);
-
+            */
             enemies.forEachAlive(function(m)
             {
+                game.physics.arcade.collide(m,enemies);
                 var hit = game.physics.arcade.collide(m, lettersBullets);
                 if(hit)
                 {
-                    m.x +=  (Math.cos((m.rotation + Math.PI) % (2 *Math.PI)) * 4);
-                    m.y +=  (Math.sin((m.rotation + Math.PI) % (2 *Math.PI)) * 4);
-                    m.health--;
+                    m.x +=  (Math.cos((m.rotation + Math.PI) % (2 *Math.PI)) * 20);
+                    m.y +=  (Math.sin((m.rotation + Math.PI) % (2 *Math.PI)) * 20);
+                    m.damage();
+                    //m.kill();
 
                 }
             },this);
-
+            /*
+            lettersBullets.forEachAlive(function(m)
+            {
+                var hit = game.physics.arcade.collide(m, enemies);
+                if(hit)
+                {
+                    m.kill();
+                }
+            },this);
+            */
             
         }
     };
