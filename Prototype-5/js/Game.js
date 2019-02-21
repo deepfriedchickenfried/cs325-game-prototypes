@@ -165,7 +165,7 @@ GameStates.makeGame = function( game, shared ) {
 
         this.health = 5;
         this.turnDirection = 1;
-        this.SPEED = 75;
+        this.SPEED = 100;
         this.LETTERDELAY = 5000;
         this.LASTLETTERFIRED;
         this.distanceToPlayer = 0;
@@ -278,7 +278,7 @@ GameStates.makeGame = function( game, shared ) {
             shift = game.input.keyboard.addKey(Phaser.Keyboard.SHIFT);
 
             lettersGroup =game.add.group();
-            for(var i = 0; i < 400; i++)
+            for(var i = 0; i < 200; i++)
             {
                 var letterS = game.add.sprite(0,0, 'letters');
                 lettersGroup.add(letterS);
