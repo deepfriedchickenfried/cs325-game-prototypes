@@ -277,7 +277,7 @@ GameStates.makeGame = function( game, shared ) {
             shift = game.input.keyboard.addKey(Phaser.Keyboard.SHIFT);
 
             lettersGroup =game.add.group();
-            for(var i = 0; i < 100; i++)
+            for(var i = 0; i < 400; i++)
             {
                 var letterS = game.add.sprite(0,0, 'letters');
                 lettersGroup.add(letterS);
@@ -290,7 +290,7 @@ GameStates.makeGame = function( game, shared ) {
 
 
             lettersBullets = game.add.group();
-            for(var i = 0; i < 100; i++)
+            for(var i = 0; i < 400; i++)
             {
                 var letterBullet = game.add.sprite(0,0, 'letters');
                 lettersBullets.add(letterBullet);
@@ -320,7 +320,7 @@ GameStates.makeGame = function( game, shared ) {
             }
 
             
-            if(lettersGroup.countLiving() < 100)
+            if(lettersGroup.countLiving() < maxLetters)
             {
                 spawnLetter(game.rnd.integerInRange(0, game.world.width), game.rnd.integerInRange(0, game.world.width), 0, 0);
             }
