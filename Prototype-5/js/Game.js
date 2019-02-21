@@ -18,11 +18,11 @@ GameStates.makeGame = function( game, shared ) {
     
 
     var vomitSpeed = 200;    
-    var vomitDrag = 175;
+    var vomitDrag = 100;
     var vacuumRadius;
     var vacuum = true;
 
-    var Speed = 150;
+    var Speed = 200;
 
 
     var left;
