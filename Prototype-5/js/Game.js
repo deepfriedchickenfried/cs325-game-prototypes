@@ -200,7 +200,7 @@ GameStates.makeGame = function( game, shared ) {
 
             if(this.health <= 0)
             {
-
+                game.camera.shake(0.01, 200);
                 this.kill();
             }
         
@@ -253,7 +253,7 @@ GameStates.makeGame = function( game, shared ) {
             space = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
             lettersGroup =game.add.group();
-            for(var i = 0; i < 100; i++)
+            for(var i = 0; i < 500; i++)
             {
                 var letterS = game.add.sprite(0,0, 'letters');
                 lettersGroup.add(letterS);
@@ -303,11 +303,12 @@ GameStates.makeGame = function( game, shared ) {
                 quitGame();
             }
 
+            /*
             if(lettersGroup.countLiving() < 100)
             {
                 spawnLetter(game.rnd.integerInRange(0, game.world.width), game.rnd.integerInRange(0, game.world.width), 0, 0);
             }
-
+            */
             var playerhit= game.physics.arcade.collide(player,enemies);
             
             if(playerhit)
@@ -363,8 +364,8 @@ GameStates.makeGame = function( game, shared ) {
             lettersGroup.forEachAlive(function(m)
             {
                 var distance = this.game.math.distance(m.x,m.y, player.x, player.y)
-
-              
+                game.physics.arcade.collide(m,lettersGroup);
+                
 
                 if(m.vacuum === true)
                 {
