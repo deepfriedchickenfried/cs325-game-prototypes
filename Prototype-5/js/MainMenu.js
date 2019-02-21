@@ -1,6 +1,6 @@
 "use strict";
 
-GameStates.makeMainMenu = function( game) {
+GameStates.makeMainMenu = function( game,shared) {
 
 	var music = null;
 	
