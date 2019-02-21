@@ -3,7 +3,7 @@
 GameStates.makeMainMenu = function( game) {
 
 	var music = null;
-	var playButton = null;
+	
     var titleText;
     
     var styleTitle;
