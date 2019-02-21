@@ -165,7 +165,7 @@ GameStates.makeGame = function( game, shared ) {
 
         this.health = 5;
         this.turnDirection = 1;
-        this.SPEED = 100;
+        this.SPEED = 75;
         this.LETTERDELAY = 5000;
         this.LASTLETTERFIRED;
         this.distanceToPlayer = 0;
