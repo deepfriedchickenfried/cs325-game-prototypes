@@ -163,7 +163,7 @@ GameStates.makeGame = function( game, shared ) {
         this.health = 5;
         this.turnDirection = 1;
         this.SPEED = 75;
-        this.LETTERDELAY = 500;
+        this.LETTERDELAY = 5000;
         this.LASTLETTERFIRED;
         this.distanceToPlayer = 0;
         
@@ -286,15 +286,7 @@ GameStates.makeGame = function( game, shared ) {
             }
 
             enemies = game.add.group();
-            enemyBullets = game.add.group();
-            for(var i = 0; i < 500; i++)
-            {
-                var bullet = game.add.sprite(0,0, 'enemyBullet');
-                enemyBullets.add(bullet);
-                bullet.anchor.setTo(0.5,0.5);
-                game.physics.arcade.enable(bullet);
-                bullet.kill();
-            }
+            
             
 
             timer = game.time.create(false);
