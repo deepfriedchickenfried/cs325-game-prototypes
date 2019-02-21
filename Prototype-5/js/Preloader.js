@@ -28,8 +28,12 @@ GameStates.makePreloader = function( game ) {
             game.load.audio('titleMusic', ['assets/Poppers and Prosecco.mp3']);
             //	+ lots of other required assets here
             game.load.image( 'logo', 'assets/phaser.png' );
-            game.load.spriteSheet('player', 'assets/topdownshooter.png', 32, 34);
-
+            game.load.spritesheet('player', 'assets/topdownshooter.png', 32, 32);
+            game.load.spritesheet('letters', 'assets/textSprite.png', 7,7);
+            game.load.image('ground', 'assets/ground.png');
+            game.load.image('enemy', 'assets/topdownenemy.png');
+            game.load.image('enemyBullet', 'assets/enemyBullet.png');
+            game.load.image('gameOverScreen', 'assets/gameOver.png');
         },
     
         create: function () {

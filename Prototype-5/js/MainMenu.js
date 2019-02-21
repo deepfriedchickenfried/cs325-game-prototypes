@@ -1,6 +1,6 @@
 "use strict";
 
-GameStates.makeMainMenu = function( game, shared ) {
+GameStates.makeMainMenu = function( game) {
 
 	var music = null;
 	var playButton = null;
@@ -11,7 +11,7 @@ GameStates.makeMainMenu = function( game, shared ) {
         music.stop();
 
         //	And start the actual game
-        game.state.start('Game');
+        game.state.start(MainMenu);
 
     }
     
