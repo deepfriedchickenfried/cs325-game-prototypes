@@ -389,7 +389,7 @@ GameStates.makeGame = function( game, shared ) {
             lettersGroup.forEachAlive(function(m)
             {
                 var distance = this.game.math.distance(m.x,m.y, player.x, player.y)
-                game.physics.arcade.collide(m,lettersGroup);
+                //game.physics.arcade.collide(m,lettersGroup);
                 
 
                 if(m.vacuum === true)
