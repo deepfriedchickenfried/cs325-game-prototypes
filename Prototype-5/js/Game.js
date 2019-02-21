@@ -30,6 +30,7 @@ GameStates.makeGame = function( game, shared ) {
     var up;
     var down;
     var space;
+    var shift;
 
     var maxEnemies = 10;
     var enemies;
@@ -126,6 +127,8 @@ GameStates.makeGame = function( game, shared ) {
         knockback();
     }
 
+    
+
     function spawnLetter(x,y, rotation, speed)
     {
         var letter = lettersGroup.getFirstDead();
@@ -156,9 +159,9 @@ GameStates.makeGame = function( game, shared ) {
     {
         Phaser.Sprite.call(this, game, x,y, 'enemy');
         this.anchor.setTo(0.5, 0.5);
-        
-
         game.physics.arcade.enable(this);
+        
+        this.body.setCircle(16);
 
         this.health = 5;
         this.turnDirection = 1;
@@ -219,7 +222,7 @@ GameStates.makeGame = function( game, shared ) {
     function updateCounter()
     {
         maxEnemies += 2;
-        maxLetters += 20;
+        maxLetters += 50;
     }
 
     function quitGame() {
@@ -230,6 +233,9 @@ GameStates.makeGame = function( game, shared ) {
         //  Then let's go back to the main menu.
         lives = 1;
         ammo = 0;
+
+        maxEnemies = 10;
+        maxLetters = 100;
         enemies.killAll();
         lettersGroup.killAll();
         game.state.start('GameOver', true);
@@ -257,6 +263,8 @@ GameStates.makeGame = function( game, shared ) {
             //  Honestly, just about anything could go here. It's YOUR game after all. Eat your heart out!
             game.physics.startSystem(Phaser.Physics.Arcade); 
             game.physics.arcade.enable(player, true);
+
+            player.body.setCircle(16);
             player.body.collideWorldBounds= true;
 
 
@@ -266,6 +274,7 @@ GameStates.makeGame = function( game, shared ) {
             up = game.input.keyboard.addKey(Phaser.Keyboard.W);
             down = game.input.keyboard.addKey(Phaser.Keyboard.S);
             space = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+            shift = game.input.keyboard.addKey(Phaser.Keyboard.SHIFT);
 
             lettersGroup =game.add.group();
             for(var i = 0; i < 100; i++)
@@ -366,6 +375,14 @@ GameStates.makeGame = function( game, shared ) {
 
                     
                 }, this);
+            } 
+            if(shift.isDown)
+            {
+                player.rotation = game.rnd.realInRange(0, Math.PI * 2);
+                letterShotDelay = 10;
+            } else
+            {
+                letterShotDelay = 100;
             }
             
             lettersGroup.forEachAlive(function(m)
@@ -431,14 +448,7 @@ GameStates.makeGame = function( game, shared ) {
                 }
             },this);
             
-            lettersBullets.forEachAlive(function(m)
-            {
-                var hit = game.physics.arcade.collide(m, enemies);
-                if(hit)
-                {
-                    m.kill();
-                }
-            },this);
+            
             
             
         }
