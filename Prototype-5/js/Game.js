@@ -15,7 +15,7 @@ GameStates.makeGame = function( game, shared ) {
     var letterShotDelay = 100;
     var lastLetterShotAt;
 
-    var maxLetters = 100;    
+    var maxLetters = 150;    
 
     var vomitSpeed = 200;    
     var vomitDrag = 100;
@@ -222,7 +222,7 @@ GameStates.makeGame = function( game, shared ) {
     function updateCounter()
     {
         maxEnemies += 2;
-        maxLetters += 25;
+       
     }
 
     function quitGame() {
@@ -236,7 +236,7 @@ GameStates.makeGame = function( game, shared ) {
         ammo = 0;
 
         maxEnemies = 10;
-        maxLetters = 100;
+        maxLetters = 150;
         enemies.killAll();
         lettersGroup.killAll();
         game.state.start('GameOver', true);
