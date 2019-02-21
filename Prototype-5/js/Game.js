@@ -5,7 +5,7 @@ GameStates.makeGame = function( game, shared ) {
     
     
    var music;
-    var lives = 3;
+    var lives = 1;
     var ammo;
     var player;
     var lettersGroup;
@@ -204,7 +204,7 @@ GameStates.makeGame = function( game, shared ) {
         if(game.time.now - this.LASTLETTERFIRED > this.LETTERDELAY)
         {
             this.LASTLETTERFIRED = game.time.now;
-            vomitLetters(this.x, this.y, this.direction);
+            //vomitLetters(this.x, this.y, this.direction);
             
         }
 
@@ -306,12 +306,12 @@ GameStates.makeGame = function( game, shared ) {
                 quitGame();
             }
 
-            /*
+            
             if(lettersGroup.countLiving() < 100)
             {
                 spawnLetter(game.rnd.integerInRange(0, game.world.width), game.rnd.integerInRange(0, game.world.width), 0, 0);
             }
-            */
+            
             var playerhit= game.physics.arcade.collide(player,enemies);
             
             if(playerhit)
