@@ -129,6 +129,14 @@ GameStates.makeGame = function( game, shared ) {
     function spawnLetter(x,y, rotation, speed)
     {
         var letter = lettersGroup.getFirstDead();
+        if(letter=== null)
+        {
+            letter = game.add.sprite(0,0, 'letters');
+                lettersGroup.add(letter);
+                letter.anchor.setTo(0.5,0.5);
+                game.physics.arcade.enable(letter);
+                letter.kill();
+        }
         letter.revive();
         letter.frame = game.rnd.integerInRange(0,25);
         letter.vacuum = false;
@@ -253,7 +261,7 @@ GameStates.makeGame = function( game, shared ) {
             space = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
             lettersGroup =game.add.group();
-            for(var i = 0; i < 500; i++)
+            for(var i = 0; i < 100; i++)
             {
                 var letterS = game.add.sprite(0,0, 'letters');
                 lettersGroup.add(letterS);
