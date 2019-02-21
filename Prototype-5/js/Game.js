@@ -227,7 +227,10 @@ GameStates.makeGame = function( game, shared ) {
         //  Stop music, delete sprites, purge caches, free resources, all that good stuff.
 
         //  Then let's go back to the main menu.
-        lives = 3;
+        lives = 1;
+        ammo = 0;
+        enemies.killAll();
+        lettersGroup.killAll();
         game.state.start('GameOver', true);
 
     }
