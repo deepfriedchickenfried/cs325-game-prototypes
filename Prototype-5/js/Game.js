@@ -221,8 +221,8 @@ GameStates.makeGame = function( game, shared ) {
 
     function updateCounter()
     {
-        maxEnemies += 2;
-        maxLetters += 50;
+        maxEnemies += 1;
+        maxLetters += 25;
     }
 
     function quitGame() {
