@@ -221,7 +221,7 @@ GameStates.makeGame = function( game, shared ) {
 
     function updateCounter()
     {
-        maxEnemies += 1;
+        maxEnemies += 2;
         maxLetters += 25;
     }
 
@@ -231,6 +231,7 @@ GameStates.makeGame = function( game, shared ) {
         //  Stop music, delete sprites, purge caches, free resources, all that good stuff.
 
         //  Then let's go back to the main menu.
+        music.stop();
         lives = 1;
         ammo = 0;
 
@@ -290,7 +291,7 @@ GameStates.makeGame = function( game, shared ) {
 
 
             lettersBullets = game.add.group();
-            for(var i = 0; i < 400; i++)
+            for(var i = 0; i < 200; i++)
             {
                 var letterBullet = game.add.sprite(0,0, 'letters');
                 lettersBullets.add(letterBullet);
