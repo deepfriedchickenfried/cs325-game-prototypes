@@ -242,6 +242,7 @@ GameStates.makeGame = function( game, shared ) {
             healthText = game.add.text(0,0, "Health: 3");
             bulletText = game.add.text(0, 24, "Ammo: 0");
             SpecialText = game.add.text(0,48 , "BOMB"); 
+            SpecialText.addColor('#5f574f',0);
             game.stage.backgroundColor = 0x5f574f;
             player = game.add.sprite(game.world.centerX, game.world.centerY, 'player');
             
