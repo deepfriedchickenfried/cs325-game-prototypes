@@ -15,7 +15,7 @@ GameStates.makeGame = function( game, shared ) {
     var letterShotDelay = 100;
     var lastLetterShotAt;
 
-    
+    var maxLetters = 100;    
 
     var vomitSpeed = 200;    
     var vomitDrag = 100;
@@ -218,7 +218,8 @@ GameStates.makeGame = function( game, shared ) {
 
     function updateCounter()
     {
-        maxEnemies += 1;
+        maxEnemies += 2;
+        maxLetters += 20;
     }
 
     function quitGame() {
@@ -424,12 +425,12 @@ GameStates.makeGame = function( game, shared ) {
                 {
                     m.x +=  (Math.cos((m.rotation + Math.PI) % (2 *Math.PI)) * 20);
                     m.y +=  (Math.sin((m.rotation + Math.PI) % (2 *Math.PI)) * 20);
-                    m.damage();
-                    //m.kill();
+                    //m.damage();
+                    m.kill();
 
                 }
             },this);
-            /*
+            
             lettersBullets.forEachAlive(function(m)
             {
                 var hit = game.physics.arcade.collide(m, enemies);
@@ -438,7 +439,7 @@ GameStates.makeGame = function( game, shared ) {
                     m.kill();
                 }
             },this);
-            */
+            
             
         }
     };
