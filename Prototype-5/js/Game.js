@@ -15,8 +15,10 @@ GameStates.makeGame = function( game, shared ) {
     var letterShotDelay = 100;
     var lastLetterShotAt;
 
+    
 
-
+    var vomitSpeed = 200;    
+    var vomitDrag = 175;
     var vacuumRadius;
     var vacuum = true;
 
@@ -37,9 +39,18 @@ GameStates.makeGame = function( game, shared ) {
     var style;
     var bulletText;
     var healthText;
-    
+
+    var SpecialText;
+    var SpecialBomb;
+
+
     var timer;
    
+
+    function checkSpecial()
+    {
+
+    }
 
 
     function spawnEnemy(x, y)
@@ -69,6 +80,16 @@ GameStates.makeGame = function( game, shared ) {
         bullet.body.velocity.x = Math.cos(bullet.rotation) * enemybulletSpeed;
         bullet.body.velocity.y = Math.sin(bullet.rotation) * enemybulletSpeed;
     }
+
+    function vomitLetters(x,y,direction)
+    {
+        for(var i = 0; i < 5; i++)
+        {
+            spawnLetter(x,y, (direction + game.rnd.realInRange(-Math.PI/4, Math.PI/4)), vomitSpeed);
+        }
+    }
+
+    
 
     function knockback()
     {
@@ -105,13 +126,15 @@ GameStates.makeGame = function( game, shared ) {
         knockback();
     }
 
-    function spawnLetter(x,y)
+    function spawnLetter(x,y, rotation, speed)
     {
         var letter = lettersGroup.getFirstDead();
         letter.revive();
         letter.frame = game.rnd.integerInRange(0,25);
         letter.vacuum = false;
-        letter.body.velocity.setTo(0,0);
+        letter.body.velocity.x =Math.cos(rotation) * speed;
+        letter.body.velocity.y = (Math.sin(rotation) * speed);
+        letter.body.drag.setTo(vomitDrag,vomitDrag);
         letter.checkWorldBounds = true;
         letter.outOfBoundsKill = true;
         letter.x = x;
@@ -133,10 +156,9 @@ GameStates.makeGame = function( game, shared ) {
         this.turnDirection = 1;
         this.SPEED = 75;
         this.LETTERDELAY = 500;
-        this.LASTLETTERFIRED = 0;
+        this.LASTLETTERFIRED;
         this.distanceToPlayer = 0;
-        this.BULLETDELAY = 400;
-        this.LASTBULLETFIRED;
+        
 
 
 
@@ -166,7 +188,15 @@ GameStates.makeGame = function( game, shared ) {
            
         this.body.velocity.x = Math.cos(this.rotation) * this.SPEED;
         this.body.velocity.y = Math.sin(this.rotation) * this.SPEED;
-        
+
+        if(this.LASTLETTERFIRED ===undefined)
+        {
+            this.LASTLETTERFIRED = 0;
+        }
+        if(game.time.now - this.LASTLETTERFIRED > this.LETTERDELAY)
+        {
+            vomitLetters(this.x, this.y, this.direction);
+        }
 
             if(this.health <= 0)
             {
@@ -202,8 +232,8 @@ GameStates.makeGame = function( game, shared ) {
             style = {font: "14px Arial", fill: "#ffffff"};
 
             healthText = game.add.text(0,0, "Health: 3");
-            bulletText = game.add.text(0, 20, "Ammo: 0");
-            
+            bulletText = game.add.text(0, 24, "Ammo: 0");
+            SpecialText = game.add.text(0,48 , "BOMB"); 
             game.stage.backgroundColor = 0x5f574f;
             player = game.add.sprite(game.world.centerX, game.world.centerY, 'player');
             
@@ -275,7 +305,7 @@ GameStates.makeGame = function( game, shared ) {
 
             if(lettersGroup.countLiving() < 100)
             {
-                spawnLetter(game.rnd.integerInRange(0, game.world.width), game.rnd.integerInRange(0, game.world.width));
+                spawnLetter(game.rnd.integerInRange(0, game.world.width), game.rnd.integerInRange(0, game.world.width), 0, 0);
             }
 
             var playerhit= game.physics.arcade.collide(player,enemies);

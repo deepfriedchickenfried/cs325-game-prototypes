@@ -4,8 +4,14 @@ GameStates.makeMainMenu = function( game) {
 
 	var music = null;
 	var playButton = null;
+    var titleText;
     
-    function startGame(pointer) {
+    var styleTitle;
+    
+    var noteText;
+    var noteStyle;
+
+    function startGame() {
 
         //	Ok, the Play Button has been clicked or touched, so let's stop the music (otherwise it'll carry on playing)
         music.stop();
@@ -26,16 +32,28 @@ GameStates.makeMainMenu = function( game) {
             music = game.add.audio('titleMusic');
             music.play();
     
-            game.add.sprite(0, 0, 'titlePage');
+            game.stage.backgroundColor = 0x5f574f;
+            noteStyle = {font: " 14px Arial", fill: "#ff004d", align: "center"};
+            styleTitle = {font: "98px Arial", fill: "#ff004d", align: "center"};
+
+            titleText = game.add.text(game.world.centerX, game.world.centerY - 100, "Letter Die", styleTitle);
+            titleText.anchor.set(0.5);
+
+            noteText = game.add.text(game.world.centerX, game.world.height -50, "Click to Start", noteStyle);
+            noteText.anchor.set(0.5);
     
-            playButton = game.add.button( 303, 400, 'playButton', startGame, null, 'over', 'out', 'down');
+            
     
         },
     
         update: function () {
     
             //	Do some nice funky main menu effect here
-    
+            if(game.input.activePointer.isDown)
+            {
+                startGame();
+            }
+
         }
         
     };
