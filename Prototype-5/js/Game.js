@@ -203,7 +203,9 @@ GameStates.makeGame = function( game, shared ) {
         }
         if(game.time.now - this.LASTLETTERFIRED > this.LETTERDELAY)
         {
+            this.LASTLETTERFIRED = game.time.now;
             vomitLetters(this.x, this.y, this.direction);
+            
         }
 
             if(this.health <= 0)
