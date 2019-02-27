@@ -331,21 +331,25 @@ window.onload = function() {
 
     function player1Hit(body1, body2)
     {
+        game.camera.shake(0.01, 200);
         killPlayer1();
     }
 
     function player2Hit(body1, body2)
     {
+        game.camera.shake(0.01, 200);
         killPlayer2();
     }
 
     function player3Hit(body1, body2)
     {
+        game.camera.shake(0.01, 200);
         killPlayer3();
     }
 
     function player4Hit(body1, body2)
     {
+        game.camera.shake(0.01, 200);
         killPlayer4();
     }
 
