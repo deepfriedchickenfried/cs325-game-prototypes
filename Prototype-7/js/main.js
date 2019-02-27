@@ -64,7 +64,7 @@ window.onload = function() {
    var p4Key;
     
     var ROTATION_SPEED = 300;
-    var ACCELERATION = 1000;
+    var ACCELERATION = 2000;
     
     var style;
     var titleText;
@@ -194,6 +194,7 @@ window.onload = function() {
         }
 
         //player 1 body initialization
+        
         pbody1 = game.add.sprite(64 + 16, 32*12 +16, 'Body');
         game.physics.p2.enable(pbody1,false);
         pbody1.body.setCircle(16);
@@ -216,7 +217,7 @@ window.onload = function() {
         pbody2.body.collides([sword1CollisionGroup, sword3CollisionGroup, sword4CollisionGroup],player2Hit,this);
       
 
-
+        //player 3 body initialization
         pbody3 = game.add.sprite(32 * 12 +16, 64 + 18, 'Body');
         game.physics.p2.enable(pbody3,false);
         pbody3.body.setCircle(16);
@@ -227,7 +228,7 @@ window.onload = function() {
         pbody3.body.collides([sword1CollisionGroup, sword2CollisionGroup,sword4CollisionGroup],player3Hit,this);
         
 
-
+        //player 4 body initialization
         pbody4 = game.add.sprite(32*12 + 16, game.world.height-98 + 16, 'Body');
         game.physics.p2.enable(pbody4,false);
         pbody4.body.setCircle(16);
@@ -239,7 +240,7 @@ window.onload = function() {
        
 
 
-
+        //player 1 sword initialization
         player1 = game.add.sprite(64 + 18, 32 * 12 + 16, 'Swords'); 
         game.physics.p2.enable(player1,false);
         player1.anchor.setTo(0.5, 1);
@@ -258,6 +259,7 @@ window.onload = function() {
         player1.body.collides(body4CollisionGroup);
         
         
+        //player 2 sword initialization
         player2 = game.add.sprite(game.world.width - 98 + 16, 32 * 12 + 16, 'Swords' );
         game.physics.p2.enable(player2,false);
         player2.anchor.setTo(0.5, 1);
@@ -276,7 +278,7 @@ window.onload = function() {
         player2.body.collides(body3CollisionGroup);
         player2.body.collides(body4CollisionGroup);
 
-
+        //player 3 sword initialization
         player3 = game.add.sprite(32*12 + 16, 64 + 18,  'Swords'); 
         game.physics.p2.enable(player3,false);
         player3.anchor.setTo(0.5, 1);
@@ -295,7 +297,7 @@ window.onload = function() {
         player3.body.collides(body2CollisionGroup);
         player3.body.collides(body4CollisionGroup);
 
-
+        //player 4 sword initialization
         player4 = game.add.sprite(32 *12 + 16, game.world.height - 98 + 16, 'Swords' );
         game.physics.p2.enable(player4,false);
         player4.anchor.setTo(0.5, 1);
@@ -314,7 +316,7 @@ window.onload = function() {
         player4.body.collides(body2CollisionGroup);
         player4.body.collides(body3CollisionGroup);
 
-
+        //player input
         p1Key = game.input.keyboard.addKey(Phaser.Keyboard.Q);
         p2Key = game.input.keyboard.addKey(Phaser.Keyboard.F);
         p3Key = game.input.keyboard.addKey(Phaser.Keyboard.J);
