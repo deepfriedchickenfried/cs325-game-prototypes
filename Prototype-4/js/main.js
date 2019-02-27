@@ -64,7 +64,7 @@ window.onload = function() {
    var p4Key;
     
     var ROTATION_SPEED = 300;
-    var ACCELERATION = 800;
+    var ACCELERATION = 1000;
     
     var style;
     var titleText;

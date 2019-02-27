@@ -333,6 +333,19 @@ window.onload = function() {
         missile.y = y;
     }
 //Borrowed from GameMechanicExplorer Homing missiles with some things modified to do what i want it to do
+    
+    var Launcher = function(game, x,y)
+    {
+        Phaser.Sprite.call(this,game, x,y, '');
+
+        this.anchor.setTo(0.5,0.5);
+
+        game.physics.enable(this, Phaser.Physics.ARCADE);
+
+        this.speed = 50;
+    }
+
+
     var Missile = function(game, x,y) 
     {
         Phaser.Sprite.call(this, game, x,y, 'missile');
@@ -384,6 +397,8 @@ window.onload = function() {
     Missile.prototype.update = function() {
         // If this missile is dead, don't do any of these calculations
         // Also, turn off the smoke emitter
+        
+        
         if (!this.alive) {
             this.smokeEmitter.on = false;
             return;
