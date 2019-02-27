@@ -334,16 +334,7 @@ window.onload = function() {
     }
 //Borrowed from GameMechanicExplorer Homing missiles with some things modified to do what i want it to do
     
-    var Launcher = function(game, x,y)
-    {
-        Phaser.Sprite.call(this,game, x,y, '');
-
-        this.anchor.setTo(0.5,0.5);
-
-        game.physics.enable(this, Phaser.Physics.ARCADE);
-
-        this.speed = 50;
-    }
+   
 
 
     var Missile = function(game, x,y) 

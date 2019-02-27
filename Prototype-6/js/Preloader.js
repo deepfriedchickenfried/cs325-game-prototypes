@@ -26,11 +26,15 @@ GameStates.makePreloader = function( game ) {
             game.load.image('titlePage', 'assets/title.jpg');
             game.load.atlas('playButton', 'assets/play_button.png', 'assets/play_button.json');
             game.load.audio('titleMusic', ['assets/Poppers and Prosecco.mp3']);
+            game.load.audio('gameMusic', ['assets/AbstractionThreeRedHeartsBoxJump.mp3']);
             //	+ lots of other required assets here
             game.load.image( 'logo', 'assets/phaser.png' );
             game.load.spritesheet('player', 'assets/topdownshooter.png', 32, 32);
             game.load.spritesheet('letters', 'assets/textSprite.png', 7,7);
             game.load.image('ground', 'assets/ground.png');
+            game.load.image('enemy', 'assets/topdownenemy.png');
+            game.load.image('enemyBullet', 'assets/enemyBullet.png');
+            game.load.image('gameOverScreen', 'assets/gameOver.png');
         },
     
         create: function () {
@@ -51,7 +55,7 @@ GameStates.makePreloader = function( game ) {
             //	If you don't have any music in your game then put the game.state.start line into the create function and delete
             //	the update function completely.
             
-            if (game.cache.isSoundDecoded('titleMusic') && ready == false)
+            if (game.cache.isSoundDecoded('titleMusic') && game.cache.isSoundDecoded('gameMusic') && ready == false)
             {
                 ready = true;
                 game.state.start('MainMenu');

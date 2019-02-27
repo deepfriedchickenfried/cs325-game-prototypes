@@ -28,9 +28,12 @@ window.onload = function() {
         game.load.image('smoke', 'assets/smoke.png');
 
         game.load.image('smallSmoke', 'assets/smallSmoke.png');
-
+        
+        game.load.image('launcherBase', 'assets/launcherBase.png');
+        game.load.image('launcherTop', 'assets/launcherTop.png');
         game.load.audio('explosion', 'assets/explosion13.wav');    
         game.load.audio('gameOver', 'assets/gameOver.wav');
+
 
     }
     var cursors;
@@ -336,15 +339,29 @@ window.onload = function() {
     
     var Launcher = function(game, x,y)
     {
-        Phaser.Sprite.call(this,game, x,y, '');
+        Phaser.Sprite.call(this,game, x,y, 'launcherBase');
 
         this.anchor.setTo(0.5,0.5);
 
         game.physics.enable(this, Phaser.Physics.ARCADE);
 
-        this.speed = 50;
+        this.SPEED = 50;
+
+        this.launcherTop = game.add.sprite(x,y,'launcherTop');
+        this.launcherTop.anchor.setTo(0.5,0.5);
+        this.body.gravity = 200;
+
+        
     }
 
+    Launcher.prototype = Object.create(Phaser.Sprite.prototype);
+    Launcher.prototype.constructor = Launcher;
+    Launcher.prototype.update = function() {
+
+        this.launcherTop.rotation = 
+
+
+    }
 
     var Missile = function(game, x,y) 
     {
