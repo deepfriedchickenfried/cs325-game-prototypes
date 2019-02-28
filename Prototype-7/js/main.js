@@ -19,7 +19,7 @@ window.onload = function() {
         game.load.spritesheet( 'wallBlocks', 'assets/mapTiles.png', 32,32);
         game.load.spritesheet( 'Body', 'assets/Body.png', 32, 32);
         game.load.spritesheet('Swords', 'assets/Swords.png', 10, 48,4);
-        game.load.image('lootBox', 'assets/lootbox.png');
+        game.load.image('lootBox', 'assets/lootBox.png');
          //game.load.image('dude', 'assets/testperson');
          
     }
@@ -67,6 +67,13 @@ window.onload = function() {
    var p2Key;
    var p3Key;
    var p4Key;
+
+   var rotDirLeft = 1; 
+
+    var power1 = [0,0,0,0];
+    var power2 = [0,0,0,0];
+    var power3 = [0,0,0,0];
+    var power4 = [0,0,0,0];
 
     var lootBoxes;
     var lootBoxesCollisionGroup;
@@ -158,13 +165,14 @@ window.onload = function() {
 
        for(var i = 0; i < 10; i++)
        {
-           var lootBox = lootBoxes.create(0,0, 'lootbox');
+           var lootBox = lootBoxes.create(0,0, 'lootBox');
            lootBox.body.setRectangle(32,32);
-           lootBox.body.static = true;
+           
            lootBox.body.setCollisionGroup(lootBoxesCollisionGroup);
            lootBox.body.collides([body1CollisionGroup,body2CollisionGroup,body3CollisionGroup,body4CollisionGroup]);
+           
        }
-
+       lootBoxes.killAll();
         wallsCollisionGroup = game.physics.p2.createCollisionGroup();
 
         game.physics.p2.updateBoundsCollisionGroup();
@@ -449,12 +457,108 @@ window.onload = function() {
         var randomNumX = game.rnd.integerInRange(0,13);
         var randomNumY = game.rnd.integerInRange(0,13);
 
-        lootBox.reset(16+32*5 +32 * randomNumX, 16+ 32 *5 + 32 * randomNumy);
+        lootBox.reset(16+32*5 +32 * randomNumX, 16+ 32 *5 + 32 * randomNumY);
 
-        lootBox.body.velocity.setTo(0,0);
-
+        
 
     }
+
+    function powerUp1()
+    {
+        var randInt = game.rnd.integerInRange(0,3);
+        
+        switch(randInt)
+        {
+            
+            case 0: //superDash
+                power1[0] = 1;
+                break;
+            case 1: // swords
+                power1[1] +=1;
+                break;
+            case 2: // ball
+                power1[2] += 2;
+                break;
+            case 3: // rotation control
+                power1[3] = 1;
+                break;
+
+        }
+
+    }
+
+    function powerUp2()
+    {
+        var randInt = game.rnd.integerInRange(0,3);
+        
+        switch(randInt)
+        {
+            
+            case 0: //superDash
+                power2[0] = 1;
+                break;
+            case 1: // swords
+                power2[1] +=1;
+                break;
+            case 2: // ball
+                power2[2] += 2;
+                break;
+            case 3: // rotation control
+                power2[3] = 1;
+                break;
+
+        }
+
+    }
+
+    function powerUp3()
+    {
+        var randInt = game.rnd.integerInRange(0,3);
+        
+        switch(randInt)
+        {
+            
+            case 0: //superDash
+                power3[0] = 1;
+                break;
+            case 1: // swords
+                power3[1] +=1;
+                break;
+            case 2: // ball
+                power3[2] += 2;
+                break;
+            case 3: // rotation control
+                power3[3] = 1;
+                break;
+
+        }
+
+    }
+
+    function powerUp4()
+    {
+        var randInt = game.rnd.integerInRange(0,3);
+        
+        switch(randInt)
+        {
+            
+            case 0: //superDash
+                power4[0] = 1;
+                break;
+            case 1: // swords
+                power4[1] +=1;
+                break;
+            case 2: // ball
+                power4[2] += 2;
+                break;
+            case 3: // rotation control
+                power4[3] = 1;
+                break;
+
+        }
+
+    }
+
 
     function collect1(body1, body2)
     {
@@ -478,6 +582,9 @@ window.onload = function() {
 
     function player1Hit(body1, body2)
     {
+
+        power1 = [0,0,0,0];
+        
         game.camera.shake(0.02, 200);
         deathEmitter1.x = pbody1.x;
         deathEmitter1.y = pbody1.y;
@@ -487,6 +594,7 @@ window.onload = function() {
 
     function player2Hit(body1, body2)
     {
+        power2 = [0,0,0,0];
         game.camera.shake(0.02, 200);
         deathEmitter2.x = pbody2.x;
         deathEmitter2.y = pbody2.y;
@@ -496,6 +604,7 @@ window.onload = function() {
 
     function player3Hit(body1, body2)
     {
+        power3 = [0,0,0,0];
         game.camera.shake(0.02, 200);
         deathEmitter3.x = pbody3.x;
         deathEmitter3.y = pbody3.y;
@@ -505,6 +614,7 @@ window.onload = function() {
 
     function player4Hit(body1, body2)
     {
+        power4= [0,0,0,0];
         game.camera.shake(0.02, 200);
         deathEmitter4.x = pbody4.x;
         deathEmitter4.y = pbody4.y;
@@ -517,13 +627,18 @@ window.onload = function() {
 
     function resetGame()
     {
-        lootBoxTimer.stop();
-        lootBoxTimer.start();
+        lootBoxes.killAll();
         liveCount = 4;
         player1Lives = 3;
         player2Lives = 3;
         player3Lives = 3;
         player4Lives = 3;
+
+        power1 = [0,0,0,0];
+        power2 = [0,0,0,0];
+        power3 = [0,0,0,0];
+        power4 = [0,0,0,0];
+    
        
         titleText.addColor('#ff004d', 0);
         titleText.addColor('#29adff', 2);
@@ -698,19 +813,36 @@ window.onload = function() {
         if(player1.alive)
         {
             pbody1.bringToTop();
+           
+            if(p1Key.onDown && power1[3] === 1)
+            {
+                rotDirLeft *= -1;
+            }
+            
             if (p1Key.isDown)
             {
                 player1.body.setZeroRotation();
-                player1.body.thrust(ACCELERATION);
+                if(power1[0] === 1)
+                {
+                    player1.body.thrust(ACCELERATION*2);
+                } else
+                {
+                    player1.body.thrust(ACCELERATION);
+                }
                 emitter1.x = pbody1.x;
                 emitter1.y = pbody1.y;
-                emitter1.setXSpeed(player1.body.velocity.x);
-                emitter1.setYSpeed(player1.body.velocity.y);
+                
                 emitter1.on = true;
 
             }else
             {
-                player1.body.rotateLeft(ROTATION_SPEED);
+                if(rotDirLeft === 1)
+                {
+                    player1.body.rotateLeft(ROTATION_SPEED);
+                }else if(rotDirLeft === -1)
+                {
+                    player1.body.rotateRight(ROTATION_SPEED);
+                }
                 emitter1.on = false;
             }
            
@@ -722,16 +854,32 @@ window.onload = function() {
         if(player2.alive)
         {
             pbody2.bringToTop();
+            if(p2Key.onDown && power2[3] === 1)
+            {
+                rotDirLeft *= -1;
+            }
             if(p2Key.isDown)
             {
                 player2.body.setZeroRotation();
-                player2.body.thrust(ACCELERATION);
+                if(power2[0] === 1)
+                {
+                    player2.body.thrust(ACCELERATION*2);
+                }else
+                {
+                    player2.body.thrust(ACCELERATION);
+                }
                 emitter2.x = pbody2.x;
                 emitter2.y = pbody2.y;
                 emitter2.on = true;
             } else
             {
-                player2.body.rotateLeft(ROTATION_SPEED);
+                if(rotDirLeft === 1)
+                {
+                    player2.body.rotateLeft(ROTATION_SPEED);
+                }else if(rotDirLeft === -1)
+                {
+                    player2.body.rotateRight(ROTATION_SPEED);
+                }
                 emitter2.on = false;
             }
             
@@ -743,16 +891,33 @@ window.onload = function() {
         if(player3.alive)
         {
             pbody3.bringToTop();
+            if(p3Key.onDown && power3[3] === 1)
+            {
+                rotDirLeft *= -1;
+            }
             if(p3Key.isDown)
             {
                 player3.body.setZeroRotation();
-                player3.body.thrust(ACCELERATION);
+                if(power3[0] === 1)
+                {
+                    player3.body.thrust(ACCELERATION*2);
+                }else
+                {
+                    player3.body.thrust(ACCELERATION);
+                }
                 emitter3.x = pbody3.x;
                 emitter3.y = pbody3.y;
                 emitter3.on = true;
             } else
             {
-                player3.body.rotateLeft(ROTATION_SPEED);
+                if(rotDirLeft === 1)
+                {
+                    player3.body.rotateLeft(ROTATION_SPEED);
+                }else if(rotDirLeft === -1)
+                {
+                    player3.body.rotateRight(ROTATION_SPEED);
+                }
+                
                 emitter3.on = false;
             }
            
@@ -764,16 +929,33 @@ window.onload = function() {
         if(player4.alive)
         {
             pbody4.bringToTop();
+            if(p4Key.onDown && power4[3] === 1)
+            {
+                rotDirLeft *= -1;
+            }
             if(p4Key.isDown)
             {
                 player4.body.setZeroRotation();
-                player4.body.thrust(ACCELERATION);
+                if(power4[0] === 1)
+                {
+                    player4.body.thrust(ACCELERATION*2);
+                }else
+                {
+                    player4.body.thrust(ACCELERATION);
+                }
                 emitter4.x = pbody4.x;
                 emitter4.y = pbody4.y;
                 emitter4.on = true;
             } else
             {
-                player4.body.rotateLeft(ROTATION_SPEED);
+                if(rotDirLeft === 1)
+                {
+                    player4.body.rotateLeft(ROTATION_SPEED);
+                }else if(rotDirLeft === -1)
+                {
+                    player4.body.rotateRight(ROTATION_SPEED);
+                }
+                
                 emitter4.on = false;
             }
             
@@ -782,13 +964,7 @@ window.onload = function() {
             emitter4.on = false;
         }
 
-        if(lootBoxes.countLiving() < 10)
-        {
-           
-            spawnLootBox();
-
-        }
-
+       
     }
 
 
