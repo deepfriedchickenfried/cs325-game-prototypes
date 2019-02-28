@@ -92,7 +92,7 @@ window.onload = function() {
     var deathEmitter3;
     var deathEmitter4;
     var pDrag = 100;
-    var pLifetime = 2000;
+    var pLifetime = 5000;
 
 
     function create() {
@@ -356,7 +356,7 @@ window.onload = function() {
         deathEmitter1.particleDrag.setTo(pDrag,pDrag);
         deathEmitter1.minParticleScale = 0.3;
         deathEmitter1.maxParticleScale = .6;
-        deathEmitter1.setAlpha(.8,0, pLifetime,Phaser.Easing.Linear.InOut);
+        deathEmitter1.setAlpha(.6,0, pLifetime,Phaser.Easing.Linear.InOut);
 
         emitter1 = game.add.emitter(0,0, 200);
         emitter1.makeParticles('Body', 0, 200, true, true);
@@ -373,7 +373,7 @@ window.onload = function() {
         deathEmitter2.particleDrag.setTo(pDrag,pDrag);
         deathEmitter2.minParticleScale = 0.3;
         deathEmitter2.maxParticleScale = .6;
-        deathEmitter2.setAlpha(.8,0, pLifetime,Phaser.Easing.Linear.InOut);
+        deathEmitter2.setAlpha(.6,0, pLifetime,Phaser.Easing.Linear.InOut);
 
         emitter2 = game.add.emitter(0,0, 200);
         emitter2.makeParticles('Body', 1, 200, true, true);
@@ -389,7 +389,7 @@ window.onload = function() {
         deathEmitter3.particleDrag.setTo(pDrag,pDrag);
         deathEmitter3.minParticleScale = 0.3;
         deathEmitter3.maxParticleScale = .6;
-        deathEmitter3.setAlpha(.8,0, pLifetime,Phaser.Easing.Linear.InOut);
+        deathEmitter3.setAlpha(.6,0, pLifetime,Phaser.Easing.Linear.InOut);
 
         emitter3 = game.add.emitter(0,0, 200);
         emitter3.makeParticles('Body', 2, 200, true, true);
@@ -405,7 +405,7 @@ window.onload = function() {
         deathEmitter4.particleDrag.setTo(pDrag,pDrag);
         deathEmitter4.minParticleScale = 0.3;
         deathEmitter4.maxParticleScale = .6;
-        deathEmitter4.setAlpha(.8,0, pLifetime,Phaser.Easing.Linear.InOut);
+        deathEmitter4.setAlpha(.6,0, pLifetime,Phaser.Easing.Linear.InOut);
 
         emitter4 = game.add.emitter(0,0, 200);
         emitter4.makeParticles('Body', 3, 200, true, true);
@@ -634,6 +634,7 @@ window.onload = function() {
 
         if(player1.alive)
         {
+            pbody1.bringToTop();
             if (p1Key.isDown)
             {
                 player1.body.setZeroRotation();
@@ -655,6 +656,7 @@ window.onload = function() {
 
         if(player2.alive)
         {
+            pbody2.bringToTop();
             if(p2Key.isDown)
             {
                 player2.body.setZeroRotation();
@@ -675,6 +677,7 @@ window.onload = function() {
 
         if(player3.alive)
         {
+            pbody3.bringToTop();
             if(p3Key.isDown)
             {
                 player3.body.setZeroRotation();
@@ -695,6 +698,7 @@ window.onload = function() {
 
         if(player4.alive)
         {
+            pbody4.bringToTop();
             if(p4Key.isDown)
             {
                 player4.body.setZeroRotation();
