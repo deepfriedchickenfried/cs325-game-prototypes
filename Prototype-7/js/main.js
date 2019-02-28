@@ -72,6 +72,7 @@ window.onload = function() {
     var lootBoxesCollisionGroup;
     var lootBoxDelay = 5000;
     var lastLootBoxSpawned;
+    var lootBoxTimer;
 
     var ROTATION_SPEED = 300;
     var ACCELERATION = 2000;
@@ -430,15 +431,15 @@ window.onload = function() {
         emitter4.setYSpeed(0,0);
         emitter4.setAlpha(.8,0, 200, Phaser.Easing.Linear.InOut);
         emitter4.start(false, 200, 100);
+
+
+        lootBoxTimer = game.time.create(false);
+        lootBoxTimer.loop(5000,spawnLootBox, this);
+        lootBoxTimer.start();
     }
 
     function spawnLootBox()
     {
-        if(lastLootBoxSpawned === undefined) lastLootBoxSpawned = 0;
-        if(game.time.now-lastLootBoxSpawned < lootBoxDelay) return;
-
-        lastLootBoxSpawned = game.time.now;
-
         var lootBox = lootBoxes.getFirstDead();
         if (lootBox === null || lootBox === undefined) return;
 
@@ -516,6 +517,8 @@ window.onload = function() {
 
     function resetGame()
     {
+        lootBoxTimer.stop();
+        lootBoxTimer.start();
         liveCount = 4;
         player1Lives = 3;
         player2Lives = 3;
