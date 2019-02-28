@@ -70,6 +70,8 @@ window.onload = function() {
 
     var lootBoxes;
     var lootBoxesCollisionGroup;
+    var lootBoxDelay = 5000;
+    var lastLootBoxSpawned;
 
     var ROTATION_SPEED = 300;
     var ACCELERATION = 2000;
@@ -148,7 +150,19 @@ window.onload = function() {
         body4CollisionGroup = game.physics.p2.createCollisionGroup();
 
        
-       
+       lootBoxesCollisionGroup = game.physics.p2.createCollisionGroup();
+       lootBoxes = game.add.group();
+       lootBoxes.enableBody = true;
+       lootBoxes.physicsBodyType = Phaser.Physics.P2JS;
+
+       for(var i = 0; i < 10; i++)
+       {
+           var lootBox = lootBoxes.create(0,0, 'lootbox');
+           lootBox.body.setRectangle(32,32);
+           lootBox.body.static = true;
+           lootBox.body.setCollisionGroup(lootBoxesCollisionGroup);
+           lootBox.body.collides([body1CollisionGroup,body2CollisionGroup,body3CollisionGroup,body4CollisionGroup]);
+       }
 
         wallsCollisionGroup = game.physics.p2.createCollisionGroup();
 
@@ -229,6 +243,8 @@ window.onload = function() {
         //body 1 sword collision
         pbody1.body.collides([sword2CollisionGroup,sword3CollisionGroup,sword4CollisionGroup],player1Hit,this);
        
+        pbody1.body.collides(lootBoxesCollisionGroup,collect1, this);
+
         //player 2 body initialization
         pbody2 = game.add.sprite(game.world.width - 98 + 16, 32* 12 + 16, 'Body');
         game.physics.p2.enable(pbody2,false);
@@ -238,7 +254,7 @@ window.onload = function() {
         pbody2.body.collides(wallsCollisionGroup);
         
         pbody2.body.collides([sword1CollisionGroup, sword3CollisionGroup, sword4CollisionGroup],player2Hit,this);
-       
+        pbody2.body.collides(lootBoxesCollisionGroup,collect2, this);
 
         //player 3 body initialization
         pbody3 = game.add.sprite(32 * 12 +16, 64 + 18, 'Body');
@@ -249,7 +265,7 @@ window.onload = function() {
         pbody3.body.collides(wallsCollisionGroup);
         
         pbody3.body.collides([sword1CollisionGroup, sword2CollisionGroup,sword4CollisionGroup],player3Hit,this);
-     
+        pbody3.body.collides(lootBoxesCollisionGroup,collect3, this);
 
         //player 4 body initialization
         pbody4 = game.add.sprite(32*12 + 16, game.world.height-98 + 16, 'Body');
@@ -260,7 +276,7 @@ window.onload = function() {
         pbody4.body.collides(wallsCollisionGroup);
         
         pbody4.body.collides([sword1CollisionGroup,sword2CollisionGroup,sword3CollisionGroup],player4Hit,this);
-       
+        pbody4.body.collides(lootBoxesCollisionGroup,collect4, this);
 
         //player 1 sword initialization
         player1 = game.add.sprite(64 + 18, 32 * 12 + 16, 'Swords'); 
@@ -355,7 +371,7 @@ window.onload = function() {
         deathEmitter1.gravity = 0;
         deathEmitter1.particleDrag.setTo(pDrag,pDrag);
         deathEmitter1.minParticleScale = 0.3;
-        deathEmitter1.maxParticleScale = .6;
+        deathEmitter1.maxParticleScale = .9;
         deathEmitter1.setAlpha(.6,0, pLifetime,Phaser.Easing.Linear.InOut);
 
         emitter1 = game.add.emitter(0,0, 200);
@@ -372,7 +388,7 @@ window.onload = function() {
         deathEmitter2.gravity = 0;
         deathEmitter2.particleDrag.setTo(pDrag,pDrag);
         deathEmitter2.minParticleScale = 0.3;
-        deathEmitter2.maxParticleScale = .6;
+        deathEmitter2.maxParticleScale = .9;
         deathEmitter2.setAlpha(.6,0, pLifetime,Phaser.Easing.Linear.InOut);
 
         emitter2 = game.add.emitter(0,0, 200);
@@ -388,7 +404,7 @@ window.onload = function() {
         deathEmitter3.gravity = 0;
         deathEmitter3.particleDrag.setTo(pDrag,pDrag);
         deathEmitter3.minParticleScale = 0.3;
-        deathEmitter3.maxParticleScale = .6;
+        deathEmitter3.maxParticleScale = .9;
         deathEmitter3.setAlpha(.6,0, pLifetime,Phaser.Easing.Linear.InOut);
 
         emitter3 = game.add.emitter(0,0, 200);
@@ -404,7 +420,7 @@ window.onload = function() {
         deathEmitter4.gravity = 0;
         deathEmitter4.particleDrag.setTo(pDrag,pDrag);
         deathEmitter4.minParticleScale = 0.3;
-        deathEmitter4.maxParticleScale = .6;
+        deathEmitter4.maxParticleScale = .9;
         deathEmitter4.setAlpha(.6,0, pLifetime,Phaser.Easing.Linear.InOut);
 
         emitter4 = game.add.emitter(0,0, 200);
@@ -414,6 +430,49 @@ window.onload = function() {
         emitter4.setYSpeed(0,0);
         emitter4.setAlpha(.8,0, 200, Phaser.Easing.Linear.InOut);
         emitter4.start(false, 200, 100);
+    }
+
+    function spawnLootBox()
+    {
+        if(lastLootBoxSpawned === undefined) lastLootBoxSpawned = 0;
+        if(game.time.now-lastLootBoxSpawned < lootBoxDelay) return;
+
+        lastLootBoxSpawned = game.time.now;
+
+        var lootBox = lootBoxes.getFirstDead();
+        if (lootBox === null || lootBox === undefined) return;
+
+        lootBox.revive();
+
+        
+        var randomNumX = game.rnd.integerInRange(0,13);
+        var randomNumY = game.rnd.integerInRange(0,13);
+
+        lootBox.reset(16+32*5 +32 * randomNumX, 16+ 32 *5 + 32 * randomNumy);
+
+        lootBox.body.velocity.setTo(0,0);
+
+
+    }
+
+    function collect1(body1, body2)
+    {
+        body2.sprite.kill();
+    }
+
+    function collect2(body1,body2)
+    {
+        body2.sprite.kill();
+    }
+    
+    function collect3(body1, body2)
+    {
+        body2.sprite.kill();
+    }
+
+    function collect4(body1, body2)
+    {
+        body2.sprite.kill();
     }
 
     function player1Hit(body1, body2)
@@ -550,7 +609,7 @@ window.onload = function() {
             resetPlayer2();
         }else
         {
-            titleText.addColor('#ff004d', 2);
+            
             liveCount--;
         }
     }
@@ -614,6 +673,7 @@ window.onload = function() {
         }
         
 
+
         if(pbody1.alive)
         {
             pbody1.body.reset(player1.x,player1.y);
@@ -641,6 +701,8 @@ window.onload = function() {
                 player1.body.thrust(ACCELERATION);
                 emitter1.x = pbody1.x;
                 emitter1.y = pbody1.y;
+                emitter1.setXSpeed(player1.body.velocity.x);
+                emitter1.setYSpeed(player1.body.velocity.y);
                 emitter1.on = true;
 
             }else
@@ -716,6 +778,14 @@ window.onload = function() {
         {
             emitter4.on = false;
         }
+
+        if(lootBoxes.countLiving() < 10)
+        {
+           
+            spawnLootBox();
+
+        }
+
     }
 
 
