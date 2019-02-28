@@ -30,6 +30,9 @@ window.onload = function() {
     var liveCount;
 
     var walls;
+    var balls;
+    var ballCollisionGroup;
+    
 
     var sword1CollisionGroup;
     var sword2CollisionGroup;
@@ -53,10 +56,7 @@ window.onload = function() {
    var player3;
    var player4;
    
-   var numOfSwords1;
-   var numOfSwords2;
-   var numOfSwords3;
-   var numOfSwords4;
+   
 
    var pbody1;
    var pbody2;
@@ -84,6 +84,8 @@ window.onload = function() {
     var ROTATION_SPEED = 300;
     var ACCELERATION = 2000;
     
+    
+
     var style;
     var titleText;
 
@@ -156,8 +158,24 @@ window.onload = function() {
         body2CollisionGroup = game.physics.p2.createCollisionGroup();
         body3CollisionGroup = game.physics.p2.createCollisionGroup();
         body4CollisionGroup = game.physics.p2.createCollisionGroup();
+        /*
+        ballCollisionGroup = game.physics.p2.createCollisionGroup();
+        balls = game.add.group();
+        balls.enableBody = true;
+        balls.physicsBodyType = Phaser.Physics.P2JS;
 
-       
+        for(var i = 0; i < 50; i++)
+        {
+            var ball = balls.create(64,63, 'Body');
+            ball.alpha = .9;
+            ball.body.setCircle(16);
+
+            ball.body.setCollisionGroup(ballCollisionGroup);
+                
+            ball.body.collides([sword1CollisionGroup,body1CollisionGroup,sword2CollisionGroup,body2CollisionGroup,sword3CollisionGroup, body3CollisionGroup,sword4CollisionGroup,body4CollisionGroup,wallsCollisionGroup]);
+
+        }
+       */
        lootBoxesCollisionGroup = game.physics.p2.createCollisionGroup();
        lootBoxes = game.add.group();
        lootBoxes.enableBody = true;
@@ -263,6 +281,7 @@ window.onload = function() {
         pbody2.body.collides(wallsCollisionGroup);
         
         pbody2.body.collides([sword1CollisionGroup, sword3CollisionGroup, sword4CollisionGroup],player2Hit,this);
+        //pbody2.body.collides(ballCollisionGroup, ballHit2, this);
         pbody2.body.collides(lootBoxesCollisionGroup,collect2, this);
 
         //player 3 body initialization
@@ -271,6 +290,7 @@ window.onload = function() {
         pbody3.body.setCircle(16);
         pbody3.frame = 2;
         pbody3.body.setCollisionGroup(body3CollisionGroup);
+        //pbody3.body.collides(ballCollisionGroup, ballHit3, this);
         pbody3.body.collides(wallsCollisionGroup);
         
         pbody3.body.collides([sword1CollisionGroup, sword2CollisionGroup,sword4CollisionGroup],player3Hit,this);
@@ -282,6 +302,7 @@ window.onload = function() {
         pbody4.body.setCircle(16);
         pbody4.frame = 3;
         pbody4.body.setCollisionGroup(body4CollisionGroup);
+        //pbody4.body.collides(ballCollisionGroup, ballHit4, this);
         pbody4.body.collides(wallsCollisionGroup);
         
         pbody4.body.collides([sword1CollisionGroup,sword2CollisionGroup,sword3CollisionGroup],player4Hit,this);
@@ -304,6 +325,7 @@ window.onload = function() {
         player1.body.collides(body2CollisionGroup);
         player1.body.collides(body3CollisionGroup);
         player1.body.collides(body4CollisionGroup);
+        //player1.body.collides(ballCollisionGroup);
         
         
         //player 2 sword initialization
@@ -324,6 +346,7 @@ window.onload = function() {
         player2.body.collides(body1CollisionGroup);
         player2.body.collides(body3CollisionGroup);
         player2.body.collides(body4CollisionGroup);
+        //player2.body.collides(ballCollisionGroup);
 
         //player 3 sword initialization
         player3 = game.add.sprite(32*12 + 16, 64 + 18,  'Swords'); 
@@ -343,6 +366,7 @@ window.onload = function() {
         player3.body.collides(body1CollisionGroup);
         player3.body.collides(body2CollisionGroup);
         player3.body.collides(body4CollisionGroup);
+        //player3.body.collides(ballCollisionGroup);
 
         //player 4 sword initialization
         player4 = game.add.sprite(32 *12 + 16, game.world.height - 98 + 16, 'Swords' );
@@ -362,6 +386,7 @@ window.onload = function() {
         player4.body.collides(body1CollisionGroup);
         player4.body.collides(body2CollisionGroup);
         player4.body.collides(body3CollisionGroup);
+        //player4.body.collides(ballCollisionGroup);
 
         //player input
         p1Key = game.input.keyboard.addKey(Phaser.Keyboard.Q);
@@ -465,19 +490,20 @@ window.onload = function() {
 
     function powerUp1()
     {
-        var randInt = game.rnd.integerInRange(0,3);
+        var randInt = 0;
         
         switch(randInt)
         {
             
             case 0: //superDash
-                power1[0] = 1;
+                power1[0] += 1;
                 break;
             case 1: // swords
-                power1[1] +=1;
+                power1[0] =1;
                 break;
             case 2: // ball
-                power1[2] += 2;
+                power1[3] = 1;
+                //summonBall(1);
                 break;
             case 3: // rotation control
                 power1[3] = 1;
@@ -489,19 +515,20 @@ window.onload = function() {
 
     function powerUp2()
     {
-        var randInt = game.rnd.integerInRange(0,3);
+        var randInt = 0;
         
         switch(randInt)
         {
             
             case 0: //superDash
-                power2[0] = 1;
+                power2[0] += 1;
                 break;
             case 1: // swords
-                power2[1] +=1;
+                power2[0] =1;
                 break;
             case 2: // ball
-                power2[2] += 2;
+                power2[3] = 1;
+                //summonBall(2);
                 break;
             case 3: // rotation control
                 power2[3] = 1;
@@ -513,19 +540,20 @@ window.onload = function() {
 
     function powerUp3()
     {
-        var randInt = game.rnd.integerInRange(0,3);
+        var randInt = 0;
         
         switch(randInt)
         {
             
             case 0: //superDash
-                power3[0] = 1;
+                power3[0] += 1;
                 break;
             case 1: // swords
-                power3[1] +=1;
+                power3[0] =1;
                 break;
             case 2: // ball
-                power3[2] += 2;
+                power3[3] = 1;
+                //summonBall(3);
                 break;
             case 3: // rotation control
                 power3[3] = 1;
@@ -537,19 +565,20 @@ window.onload = function() {
 
     function powerUp4()
     {
-        var randInt = game.rnd.integerInRange(0,3);
+        var randInt = 0;
         
         switch(randInt)
         {
             
             case 0: //superDash
-                power4[0] = 1;
+                power4[0] += 1;
                 break;
             case 1: // swords
-                power4[1] +=1;
+                power4[0] =1;
                 break;
             case 2: // ball
-                power4[2] += 2;
+                power4[3] = 1;
+                //summonBall(4);
                 break;
             case 3: // rotation control
                 power4[3] = 1;
@@ -559,26 +588,123 @@ window.onload = function() {
 
     }
 
-
+    
     function collect1(body1, body2)
     {
+        powerUp1();
         body2.sprite.kill();
     }
 
     function collect2(body1,body2)
     {
+        powerUp2();
         body2.sprite.kill();
     }
     
     function collect3(body1, body2)
     {
+        powerUp3();
         body2.sprite.kill();
     }
 
     function collect4(body1, body2)
     {
+        powerUp4();
         body2.sprite.kill();
     }
+    /*
+    function summonBall(n)
+    {
+        var posX;
+        var posY;
+        switch(n)
+        {
+            case 1:
+                posX =64 + 18;
+                posY = 32 * 12 + 16;
+                break;
+            case 2:
+                posX =game.world.width - 98 + 16;
+                posY = 32 * 12 + 16;
+                break;
+            case 3:
+                posX = 32*12 + 16;
+                posY = 64 + 18;
+                break;
+            case 4:
+                posX = 32 *12 + 16;
+                posY = game.world.height - 98 + 16;
+                break; 
+        }
+        var ball = balls.getFirstDead();
+
+        ball.reset(posX, posY);
+        ball.frame = n-1;
+        ball.body.angle = game.rnd.integerInRange(0, 359);
+        ball.body.thrust = 400;
+
+        
+    }
+
+    function ballHit1(body1, body2)
+    {
+        if(body2.sprite.frame !== 0)
+        {
+            power1 = [0,0,0,0];
+        
+            game.camera.shake(0.02, 200);
+            deathEmitter1.x = pbody1.x;
+            deathEmitter1.y = pbody1.y;
+            deathEmitter1.start(true,pLifetime, null, 20);
+            killPlayer1();
+        }
+    }
+
+    function ballHit2(body1, body2)
+    {
+        if(body2.sprite.frame !== 1)
+        {
+            power2 = [0,0,0,0];
+        
+            game.camera.shake(0.02, 200);
+            deathEmitter2.x = pbody2.x;
+            deathEmitter2.y = pbody2.y;
+            deathEmitter2.start(true,pLifetime, null, 20);
+            killPlayer2();
+            body2.sprite.kill();
+        }
+    }
+
+    function ballHit3(body1, body2)
+    {
+        if(body2.sprite.frame !== 2)
+        {
+            power3 = [0,0,0,0];
+        
+            game.camera.shake(0.02, 200);
+            deathEmitter3.x = pbody3.x;
+            deathEmitter3.y = pbody3.y;
+            deathEmitter3.start(true,pLifetime, null, 20);
+            killPlayer3();
+            body2.sprite.kill();
+        }
+    }
+
+    function ballHit4(body1, body2)
+    {
+        if(body2.sprite.frame !== 3)
+        {
+            power4 = [0,0,0,0];
+        
+            game.camera.shake(0.02, 200);
+            deathEmitter4.x = pbody4.x;
+            deathEmitter4.y = pbody4.y;
+            deathEmitter4.start(true,pLifetime, null, 20);
+            killPlayer4();
+            body2.sprite.kill();
+        }
+    }
+*/
 
     function player1Hit(body1, body2)
     {
@@ -824,7 +950,7 @@ window.onload = function() {
                 player1.body.setZeroRotation();
                 if(power1[0] === 1)
                 {
-                    player1.body.thrust(ACCELERATION*2);
+                    player1.body.thrust(ACCELERATION*(power1[0] +1));
                 } else
                 {
                     player1.body.thrust(ACCELERATION);
@@ -863,7 +989,7 @@ window.onload = function() {
                 player2.body.setZeroRotation();
                 if(power2[0] === 1)
                 {
-                    player2.body.thrust(ACCELERATION*2);
+                    player2.body.thrust(ACCELERATION*(power2[0] +1));
                 }else
                 {
                     player2.body.thrust(ACCELERATION);
@@ -900,7 +1026,7 @@ window.onload = function() {
                 player3.body.setZeroRotation();
                 if(power3[0] === 1)
                 {
-                    player3.body.thrust(ACCELERATION*2);
+                    player3.body.thrust(ACCELERATION*(power3[0] +1));
                 }else
                 {
                     player3.body.thrust(ACCELERATION);
@@ -910,10 +1036,10 @@ window.onload = function() {
                 emitter3.on = true;
             } else
             {
-                if(rotDirLeft === 1)
+                if(rotDirLeft > 0)
                 {
                     player3.body.rotateLeft(ROTATION_SPEED);
-                }else if(rotDirLeft === -1)
+                }else if(rotDirLeft < 0)
                 {
                     player3.body.rotateRight(ROTATION_SPEED);
                 }
@@ -938,7 +1064,7 @@ window.onload = function() {
                 player4.body.setZeroRotation();
                 if(power4[0] === 1)
                 {
-                    player4.body.thrust(ACCELERATION*2);
+                    player4.body.thrust(ACCELERATION*(power4[0] + 1) );
                 }else
                 {
                     player4.body.thrust(ACCELERATION);
@@ -948,10 +1074,10 @@ window.onload = function() {
                 emitter4.on = true;
             } else
             {
-                if(rotDirLeft === 1)
+                if(rotDirLeft >0)
                 {
                     player4.body.rotateLeft(ROTATION_SPEED);
-                }else if(rotDirLeft === -1)
+                }else if(rotDirLeft < 0)
                 {
                     player4.body.rotateRight(ROTATION_SPEED);
                 }
