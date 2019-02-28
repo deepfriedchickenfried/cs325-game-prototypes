@@ -19,7 +19,7 @@ window.onload = function() {
         game.load.spritesheet( 'wallBlocks', 'assets/mapTiles.png', 32,32);
         game.load.spritesheet( 'Body', 'assets/Body.png', 32, 32);
         game.load.spritesheet('Swords', 'assets/Swords.png', 10, 48,4);
-        
+        game.load.image('lootBox', 'assets/lootbox.png');
          //game.load.image('dude', 'assets/testperson');
          
     }
@@ -52,6 +52,11 @@ window.onload = function() {
    var player2;
    var player3;
    var player4;
+   
+   var numOfSwords1;
+   var numOfSwords2;
+   var numOfSwords3;
+   var numOfSwords4;
 
    var pbody1;
    var pbody2;
@@ -62,7 +67,10 @@ window.onload = function() {
    var p2Key;
    var p3Key;
    var p4Key;
-    
+
+    var lootBoxes;
+    var lootBoxesCollisionGroup;
+
     var ROTATION_SPEED = 300;
     var ACCELERATION = 2000;
     
@@ -78,8 +86,14 @@ window.onload = function() {
     var emitter2;
     var emitter3;
     var emitter4;
+
+    var deathEmitter1;
+    var deathEmitter2;
+    var deathEmitter3;
+    var deathEmitter4;
     var pDrag = 100;
     var pLifetime = 2000;
+
 
     function create() {
        
@@ -132,6 +146,9 @@ window.onload = function() {
         body2CollisionGroup = game.physics.p2.createCollisionGroup();
         body3CollisionGroup = game.physics.p2.createCollisionGroup();
         body4CollisionGroup = game.physics.p2.createCollisionGroup();
+
+       
+       
 
         wallsCollisionGroup = game.physics.p2.createCollisionGroup();
 
@@ -211,8 +228,7 @@ window.onload = function() {
         pbody1.body.collides(wallsCollisionGroup);
         //body 1 sword collision
         pbody1.body.collides([sword2CollisionGroup,sword3CollisionGroup,sword4CollisionGroup],player1Hit,this);
-        
-
+       
         //player 2 body initialization
         pbody2 = game.add.sprite(game.world.width - 98 + 16, 32* 12 + 16, 'Body');
         game.physics.p2.enable(pbody2,false);
@@ -222,7 +238,7 @@ window.onload = function() {
         pbody2.body.collides(wallsCollisionGroup);
         
         pbody2.body.collides([sword1CollisionGroup, sword3CollisionGroup, sword4CollisionGroup],player2Hit,this);
-      
+       
 
         //player 3 body initialization
         pbody3 = game.add.sprite(32 * 12 +16, 64 + 18, 'Body');
@@ -233,7 +249,7 @@ window.onload = function() {
         pbody3.body.collides(wallsCollisionGroup);
         
         pbody3.body.collides([sword1CollisionGroup, sword2CollisionGroup,sword4CollisionGroup],player3Hit,this);
-        
+     
 
         //player 4 body initialization
         pbody4 = game.add.sprite(32*12 + 16, game.world.height-98 + 16, 'Body');
@@ -245,7 +261,6 @@ window.onload = function() {
         
         pbody4.body.collides([sword1CollisionGroup,sword2CollisionGroup,sword3CollisionGroup],player4Hit,this);
        
-
 
         //player 1 sword initialization
         player1 = game.add.sprite(64 + 18, 32 * 12 + 16, 'Swords'); 
@@ -335,76 +350,110 @@ window.onload = function() {
         player4Lives = 3;
         liveCount = 4;
 
-        emitter1 = game.add.emitter(0,0, 100);
-        emitter1.makeParticles('Body',0, 100, true, true);
+        deathEmitter1 = game.add.emitter(0,0, 100);
+        deathEmitter1.makeParticles('Body',0, 100, true, true);
+        deathEmitter1.gravity = 0;
+        deathEmitter1.particleDrag.setTo(pDrag,pDrag);
+        deathEmitter1.minParticleScale = 0.3;
+        deathEmitter1.maxParticleScale = .6;
+        deathEmitter1.setAlpha(.8,0, pLifetime,Phaser.Easing.Linear.InOut);
+
+        emitter1 = game.add.emitter(0,0, 200);
+        emitter1.makeParticles('Body', 0, 200, true, true);
         emitter1.gravity = 0;
-        emitter1.particleDrag.setTo(pDrag,pDrag);
-        emitter1.minParticleScale = 0.3;
-        emitter1.maxParticleScale = .6;
-        emitter1.setAlpha(.8,0, pLifetime,Phaser.Easing.Linear.InOut);
+        emitter1.setXSpeed(0,0);
+        emitter1.setYSpeed(0,0);
+        emitter1.setAlpha(.8,0, 200, Phaser.Easing.Linear.InOut);
+        emitter1.start(false,200, 100);
 
-        emitter2 = game.add.emitter(0,0, 100);
-        emitter2.makeParticles('Body',1, 100, true, true);
+
+        deathEmitter2 = game.add.emitter(0,0, 100);
+        deathEmitter2.makeParticles('Body',1, 100, true, true);
+        deathEmitter2.gravity = 0;
+        deathEmitter2.particleDrag.setTo(pDrag,pDrag);
+        deathEmitter2.minParticleScale = 0.3;
+        deathEmitter2.maxParticleScale = .6;
+        deathEmitter2.setAlpha(.8,0, pLifetime,Phaser.Easing.Linear.InOut);
+
+        emitter2 = game.add.emitter(0,0, 200);
+        emitter2.makeParticles('Body', 1, 200, true, true);
         emitter2.gravity = 0;
-        emitter2.particleDrag.setTo(pDrag,pDrag);
-        emitter2.minParticleScale = 0.3;
-        emitter2.maxParticleScale = .6;
-        emitter2.setAlpha(.8,0, pLifetime,Phaser.Easing.Linear.InOut);
+        emitter2.setXSpeed(0,0);
+        emitter2.setYSpeed(0,0);
+        emitter2.setAlpha(.8,0, 200, Phaser.Easing.Linear.InOut);
+        emitter2.start(false, 200, 100);
 
-        emitter3 = game.add.emitter(0,0, 100);
-        emitter3.makeParticles('Body',2, 100, true, true);
+        deathEmitter3 = game.add.emitter(0,0, 100);
+        deathEmitter3.makeParticles('Body',2, 100, true, true);
+        deathEmitter3.gravity = 0;
+        deathEmitter3.particleDrag.setTo(pDrag,pDrag);
+        deathEmitter3.minParticleScale = 0.3;
+        deathEmitter3.maxParticleScale = .6;
+        deathEmitter3.setAlpha(.8,0, pLifetime,Phaser.Easing.Linear.InOut);
+
+        emitter3 = game.add.emitter(0,0, 200);
+        emitter3.makeParticles('Body', 2, 200, true, true);
         emitter3.gravity = 0;
-        emitter3.particleDrag.setTo(pDrag,pDrag);
-        emitter3.minParticleScale = 0.3;
-        emitter3.maxParticleScale = .6;
-        emitter3.setAlpha(.8,0, pLifetime,Phaser.Easing.Linear.InOut);
+        emitter3.setXSpeed(0,0);
+        emitter3.setYSpeed(0,0);
+        emitter3.setAlpha(.8,0, 200, Phaser.Easing.Linear.InOut);
+        emitter3.start(false,200, 100);
 
-        emitter4 = game.add.emitter(0,0, 100);
-        emitter4.makeParticles('Body',3, 100, true, true);
+        deathEmitter4 = game.add.emitter(0,0, 100);
+        deathEmitter4.makeParticles('Body',3, 100, true, true);
+        deathEmitter4.gravity = 0;
+        deathEmitter4.particleDrag.setTo(pDrag,pDrag);
+        deathEmitter4.minParticleScale = 0.3;
+        deathEmitter4.maxParticleScale = .6;
+        deathEmitter4.setAlpha(.8,0, pLifetime,Phaser.Easing.Linear.InOut);
+
+        emitter4 = game.add.emitter(0,0, 200);
+        emitter4.makeParticles('Body', 3, 200, true, true);
         emitter4.gravity = 0;
-        emitter4.particleDrag.setTo(pDrag,pDrag);
-        emitter4.minParticleScale = 0.3;
-        emitter4.maxParticleScale = .6;
-        emitter4.setAlpha(.8,0, pLifetime,Phaser.Easing.Linear.InOut);
+        emitter4.setXSpeed(0,0);
+        emitter4.setYSpeed(0,0);
+        emitter4.setAlpha(.8,0, 200, Phaser.Easing.Linear.InOut);
+        emitter4.start(false, 200, 100);
     }
 
     function player1Hit(body1, body2)
     {
         game.camera.shake(0.02, 200);
-        emitter1.x = pbody1.x;
-        emitter1.y = pbody1.y;
-        emitter1.start(true,pLifetime, null, 20);
+        deathEmitter1.x = pbody1.x;
+        deathEmitter1.y = pbody1.y;
+        deathEmitter1.start(true,pLifetime, null, 20);
         killPlayer1();
     }
 
     function player2Hit(body1, body2)
     {
         game.camera.shake(0.02, 200);
-        emitter2.x = pbody2.x;
-        emitter2.y = pbody2.y;
-        emitter2.start(true,pLifetime, null, 20);
+        deathEmitter2.x = pbody2.x;
+        deathEmitter2.y = pbody2.y;
+        deathEmitter2.start(true,pLifetime, null, 20);
         killPlayer2();
     }
 
     function player3Hit(body1, body2)
     {
         game.camera.shake(0.02, 200);
-        emitter3.x = pbody3.x;
-        emitter3.y = pbody3.y;
-        emitter3.start(true,pLifetime, null, 20);
+        deathEmitter3.x = pbody3.x;
+        deathEmitter3.y = pbody3.y;
+        deathEmitter3.start(true,pLifetime, null, 20);
         killPlayer3();
     }
 
     function player4Hit(body1, body2)
     {
         game.camera.shake(0.02, 200);
-        emitter4.x = pbody4.x;
-        emitter4.y = pbody4.y;
-        emitter4.start(true,pLifetime, null, 20);
+        deathEmitter4.x = pbody4.x;
+        deathEmitter4.y = pbody4.y;
+        deathEmitter4.start(true,pLifetime, null, 20);
         killPlayer4();
     }
 
-    
+
+   
 
     function resetGame()
     {
@@ -480,6 +529,7 @@ window.onload = function() {
         {
             resetPlayer1();
         }else{
+           
             liveCount--;
         }
         
@@ -500,6 +550,7 @@ window.onload = function() {
             resetPlayer2();
         }else
         {
+            titleText.addColor('#ff004d', 2);
             liveCount--;
         }
     }
@@ -516,6 +567,7 @@ window.onload = function() {
             resetPlayer3();
         }else
         {
+            
             liveCount--;
         }
     }
@@ -532,9 +584,12 @@ window.onload = function() {
             resetPlayer4();
         }else
         {
+            
             liveCount--;
         }
     }
+
+
 
     function update() {
         
@@ -583,11 +638,19 @@ window.onload = function() {
             {
                 player1.body.setZeroRotation();
                 player1.body.thrust(ACCELERATION);
+                emitter1.x = pbody1.x;
+                emitter1.y = pbody1.y;
+                emitter1.on = true;
 
             }else
             {
                 player1.body.rotateLeft(ROTATION_SPEED);
+                emitter1.on = false;
             }
+           
+        }else 
+        {
+            emitter1.on = false;
         }
 
         if(player2.alive)
@@ -596,10 +659,18 @@ window.onload = function() {
             {
                 player2.body.setZeroRotation();
                 player2.body.thrust(ACCELERATION);
+                emitter2.x = pbody2.x;
+                emitter2.y = pbody2.y;
+                emitter2.on = true;
             } else
             {
                 player2.body.rotateLeft(ROTATION_SPEED);
+                emitter2.on = false;
             }
+            
+        }else
+        {
+            emitter2.on = false;
         }
 
         if(player3.alive)
@@ -608,10 +679,18 @@ window.onload = function() {
             {
                 player3.body.setZeroRotation();
                 player3.body.thrust(ACCELERATION);
+                emitter3.x = pbody3.x;
+                emitter3.y = pbody3.y;
+                emitter3.on = true;
             } else
             {
                 player3.body.rotateLeft(ROTATION_SPEED);
+                emitter3.on = false;
             }
+           
+        }else
+        {
+            emitter3.on = false;
         }
 
         if(player4.alive)
@@ -620,10 +699,18 @@ window.onload = function() {
             {
                 player4.body.setZeroRotation();
                 player4.body.thrust(ACCELERATION);
+                emitter4.x = pbody4.x;
+                emitter4.y = pbody4.y;
+                emitter4.on = true;
             } else
             {
                 player4.body.rotateLeft(ROTATION_SPEED);
+                emitter4.on = false;
             }
+            
+        }else
+        {
+            emitter4.on = false;
         }
     }
 
