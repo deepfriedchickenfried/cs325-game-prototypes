@@ -496,7 +496,7 @@ window.onload = function() {
         {
             
             case 0: //superDash
-                power1[0] += 1;
+                power1[0] = 1;
                 break;
             case 1: // swords
                 power1[0] =1;
@@ -521,7 +521,7 @@ window.onload = function() {
         {
             
             case 0: //superDash
-                power2[0] += 1;
+                power2[0] = 1;
                 break;
             case 1: // swords
                 power2[0] =1;
@@ -546,7 +546,7 @@ window.onload = function() {
         {
             
             case 0: //superDash
-                power3[0] += 1;
+                power3[0] = 1;
                 break;
             case 1: // swords
                 power3[0] =1;
@@ -571,7 +571,7 @@ window.onload = function() {
         {
             
             case 0: //superDash
-                power4[0] += 1;
+                power4[0] = 1;
                 break;
             case 1: // swords
                 power4[0] =1;
