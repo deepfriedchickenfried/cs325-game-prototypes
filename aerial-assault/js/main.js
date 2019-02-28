@@ -358,7 +358,7 @@ window.onload = function() {
     Launcher.prototype.constructor = Launcher;
     Launcher.prototype.update = function() {
 
-        this.launcherTop.rotation = 
+      
 
 
     }

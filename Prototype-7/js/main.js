@@ -74,6 +74,11 @@ window.onload = function() {
     var player3Text;
     var player4Text;
 
+    var emitter1;
+    var emitter2;
+    var emitter3;
+    var emitter4;
+    
     function create() {
        
         game.stage.backgroundColor = 0xc2c3c7;
@@ -327,31 +332,69 @@ window.onload = function() {
         player3Lives = 3;
         player4Lives = 3;
         liveCount = 4;
+
+        emitter1 = game.add.emitter(0,0, 100);
+        emitter1.makeParticles('Body',0, 100, true, true);
+        emitter1.minParticleScale = 0.3;
+        emitter1.maxParticleScale = .6;
+        emitter1.setAlpha(1,0, 3000,Phaser.Easing.Linear.InOut);
+
+        emitter2 = game.add.emitter(0,0, 100);
+        emitter2.makeParticles('Body',1, 100, true, true);
+        emitter2.minParticleScale = 0.3;
+        emitter2.maxParticleScale = .6;
+        emitter2.setAlpha(1,0, 3000,Phaser.Easing.Linear.InOut);
+
+        emitter3 = game.add.emitter(0,0, 100);
+        emitter3.makeParticles('Body',2, 100, true, true);
+        emitter3.minParticleScale = 0.3;
+        emitter3.maxParticleScale = .6;
+        emitter3.setAlpha(1,0, 3000,Phaser.Easing.Linear.InOut);
+
+        emitter4 = game.add.emitter(0,0, 100);
+        emitter4.makeParticles('Body',3, 100, true, true);
+        emitter4.minParticleScale = 0.3;
+        emitter4.maxParticleScale = .6;
+        emitter4.setAlpha(1,0, 3000,Phaser.Easing.Linear.InOut);
     }
 
     function player1Hit(body1, body2)
     {
-        game.camera.shake(0.01, 200);
+        game.camera.shake(0.02, 200);
+        emitter1.x = pbody1.x;
+        emitter1.y = pbody1.y;
+        emitter1.start(true,3000, null, 10);
         killPlayer1();
     }
 
     function player2Hit(body1, body2)
     {
-        game.camera.shake(0.01, 200);
+        game.camera.shake(0.02, 200);
+        emitter2.x = pbody2.x;
+        emitter2.y = pbody2.y;
+        emitter2.start(true,3000, null, 10);
         killPlayer2();
     }
 
     function player3Hit(body1, body2)
     {
-        game.camera.shake(0.01, 200);
+        game.camera.shake(0.02, 200);
+        emitter3.x = pbody3.x;
+        emitter3.y = pbody3.y;
+        emitter3.start(true,3000, null, 10);
         killPlayer3();
     }
 
     function player4Hit(body1, body2)
     {
-        game.camera.shake(0.01, 200);
+        game.camera.shake(0.02, 200);
+        emitter4.x = pbody4.x;
+        emitter4.y = pbody4.y;
+        emitter4.start(true,3000, null, 10);
         killPlayer4();
     }
+
+    
 
     function resetGame()
     {

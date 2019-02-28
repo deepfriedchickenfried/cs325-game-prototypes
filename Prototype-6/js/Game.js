@@ -73,7 +73,7 @@ GameStates.makeGame = function( game, shared ) {
            
             if(player.stopped)
             {
-                if()
+                
                 player.body.velocity.setTo(0,0);
 
             }
