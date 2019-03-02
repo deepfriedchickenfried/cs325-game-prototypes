@@ -26,12 +26,12 @@ body
 
 <ul>
 <li><strong>Originality:</strong>
-It is a somewhat unique physics based multiplayer concept that only uses 1 button per player.
+ This is an iteration on my previous game that is a somewhat unique physics based multiplayer concept that only uses 1 button per player.
 
 </li>
 
 <li><strong>Technical Merit:</strong>
-This game uses Phaser's p2 physics instead of its Arcade physics and makes full use of collision groups. One unique thing about this game is that the majority of the players movement is done through collisions
+This game uses Phaser's p2 physics instead of its Arcade physics and makes full use of collision groups. One unique thing about this game is that the majority of the players movement is done through collisions. This game also now has particle effects and powerups
 </li>
 
 <li><strong>Prototype Postmortem:</strong>
@@ -41,6 +41,8 @@ I learned how to use p2 physics and that bodies made using arcade physics can't 
 The easiest part of making this game was the text and camera flash at the end of a round.
 
 The hardest part of making this game was figuring out how to use the p2 physics.
+
+Figured out how to make power ups work. I actually wanted to add a total of 4 but i couldnt get the collisions to work properly so there is only 1
 </li>
 
 <li><strong>Prototype Assets:</strong>
@@ -51,7 +53,8 @@ Virtually all of my assets are made from scratch except for the music.
 </li>
 
 <li><strong>Prototype Closest Other Game:</strong>
-This game is an iteration on my previous game called QFJP. The main difference from the original is more particle effects and screen shake.
+This game is an iteration on my previous game called QFJP. The main difference from the original is more particle effects and screen shake. There are also powerups that you can pick up which will give you a speed boost.
+I also increased the base movespeed of the characters to make it more intense
 </li>
 
 <li><strong>High Concept:</strong>
@@ -68,7 +71,7 @@ This is a multiplayer game.
 </li>
 
 <li><strong>Prototype Goal:</strong>
-This prototype is evaluating the movement of characters and the overall feel of the game. 
+This prototype is evaluating the movement of characters and the overall feel of the game, in addition to testing the powerups 
 
 </li>
 
@@ -81,7 +84,7 @@ This game is a 4 player game with only 4 buttons in total. The red player is con
 When the button is not pressed each player will swing their sword around them very quickly and pressing the button will cause the player to stop rotating and to move forward in their current direction. If a players sword hits a wall or another sword while rotating they will most likely be propelled in a certain direction. Players are less likely to be propelled if their button is pressed.
 Each player has three lives and can lose a life if their body is hit by an opponents sword. When a player loses a life if they have any remaining lives they will be sent back to their original spawn. One future feature for this game would be some way to prevent spawn camping like the spawn being accessible only to its own player or giving the player invinsibility frames. Additional features could be tiles that grant abilities when walked on like more swords, a different weapon or a speed boost.
 The main goal of the game is to be the last man standing at which point the screen will flash in the winners color and the game will reset.    
-
+There are now powerups in the game in the form of lootboxes that can be picked up and will give the player a speed boosts. I originally intended three other powerups in the form of additional swords, spike balls and different rotation direction for others when youre dashing;
 </li>
 
 <li><strong>Strategies:</strong>
