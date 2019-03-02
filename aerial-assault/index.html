@@ -2,9 +2,18 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Aerial Assault</title>
-    <script src="js/phaser.js"></script>
-    <script src="js/main.js"></script>
+    <title>Digital Assignment 4</title>
+    <!--<script src="js/phaser.js"></script>-->
+    <script src="js/phaser.min.js"></script>
+	<!-- Boot.js must come first since it creates the BasicGame object
+	that stores all the states. -->
+	<script src="js/Boot.js"></script>
+	<script src="js/Preloader.js"></script>
+	<script src="js/MainMenu.js"></script>
+	<script src="js/Game.js"></script>
+	<script src="js/EndScreen.js"></script>
+	<!-- main.js must come last since it references the other ones. -->
+	<script src="js/main.js"></script>
 
 <style>
 body
@@ -22,79 +31,71 @@ body
 <body>
 <div id="game"></div>
 <div id="readme">
-<h2>Aerial Assault</h2>
+<h2>Escape Enemy Terroritory!</h2>
 
 <ul>
 <li><strong>Originality:</strong>
-
-While I have seen several games about dodging missiles in a plane, the addition of gravity adds a new element
+I added a few new concepts to one of my favorite games I saw in class so far
 </li>
 
 <li><strong>Technical Merit:</strong>
-There is nothing too interesting except for maybe the missiles, but the majority of that isn't my code. 
+I borrowed the code from the original game, but I did implement what I thought would be fun additions to this game
 </li>
 
 <li><strong>Prototype Postmortem:</strong>
-With this project I learned the basics of phaser and also how to make multiple enemies. 
-The hardest part was making sure that the missiles interacted properly with the plane and to remove them when the player dies.
-The easiest part would have to be adding screenshake.
+Playing a game and then thinking fun things to add to it is a very effective way of prototyping
 </li>
 
 <li><strong>Prototype Assets:</strong>
 Did you make your prototype assets from scratch? Did you borrow them? Cite your sources here.
 <ul>
-<li>I made all of my assets from scratch. I made the sprites in Aseprite and the sound in BFXR
+<li>Original game: <a href="https://deepfriedchickenfried.github.io/cs325-game-prototypes/aerial-manuevers/">Aerial MayDay</a></li>
+<li>Main Menu Picture: <a href="https://www.google.com/url?sa=i&source=images&cd=&cad=rja&uact=8&ved=2ahUKEwj_5d6lgd_gAhWwTd8KHRUBDNAQjRx6BAgBEAQ&url=http%3A%2F%2Fwww.kcchronicle.com%2F2018%2F07%2F24%2Fwwii-planes-on-display-at-dupage-airport%2Fa5xyt81%2F&psig=AOvVaw1rsJF-XoljUDQcIYhehhZ2&ust=1551463285877806">here</a></li>
 </ul>
 </li>
 
 <li><strong>Prototype Closest Other Game:</strong>
-I am borrowing two pieces of code from the gamemechanicexplorer.com: the flocking homing missiles code and the lunar lander code.
+Aerial MayDay
 </li>
 
-<li><strong>High Concept:</strong>
-Control a plane as it is bombarded from all sides with missiles and try to survive as long as possible.
+<li><strong>High Concept:</strong>    
+Dodge an increasing number of missiles to escape the enemy country
 </li>
 
 <li><strong>Theme:</strong>
-None.
+Escape
 </li>
 
 <li><strong>Mandated Variety:</strong>
-None.
+Random Missile locations
 </li>
 
 <li><strong>Prototype Goal:</strong>
-This prototype is testing the control of the plane and the movement of the missiles.
+Interating on a previous game
 </li>
 
 <li><strong>Player Experience Goals:</strong>
-I want players to be on the edge of their seat as they try and last as long as possible.
-
+Suffer through strategizing how to dodge all the missiles
 </li>
 
 <li><strong>Gameplay:</strong>
-Players control the red airplane in the center with the keyboard. The left key rotates the plane counter clockwise, the right key rotates the plane clockwise and the up key causes the plane to accelerate in the direction that its facing.
-Players have 3 seconds at the start of the game before the missiles will flood the area. The goal is to simply dodge the missiles for as long as possible.
-Players must also avoid hitting the ground as that will result in a game over as well. Another thing of note is that the left and right sides of the screen wrap around
+Dodge the increasing ammount of missiles until time runs out. Use the LEFT and RIGHT arrow keys the turn left and right and UP to accelerate
 </li>
 
 <li><strong>Strategies:</strong>
-I think that there are several strategies that could be useful. The plane is slower than the incoming missiles but it makes up for this with a higher turn speed this allows players to dodge and weave between missiles very quickly.
-Another strategy is to make use of the wrapping walls which can give the player a bit of breathing room. The player can also try and lead missiles into the ground so that they crash.
+Utilize going off the screen as much as possible. While disorienting, you can't be blown up off screen.
 </li>
 
 <li><strong>Story/Setting/Premise:</strong>
-In a bleak and dark night, a rebel plane must avoid incoming missiles for as long as possible in hope that help will eventually arrive. Though it never will...
-This game doesn't really have a large story, its just about a plane thats trying to avoid missiles.
-
+You are a scholar of science and are trying to flee the enemy country after being captured.
 </li>
 
 <li><strong>Target Audience:</strong>
-This game should appeal to those who like challenge, difficulty and games that require quick movement.
+Everyone.
 </li>
 
-<li><strong>Play Time:</strong>
-Games don't last that long, though the time to get back into a game is relatively quick.
+<li><strong>Play Time:</strong>  
+1-5 minutes
 </li>
 
 </ul>
