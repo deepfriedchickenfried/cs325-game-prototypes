@@ -95,6 +95,11 @@ GameStates.makeGame = function( game, shared ) {
         
     }
     
+    function planeFrame()
+    {
+        
+    }
+
      //launches a missile
     function launchMissile(x,y)
     {
