@@ -33,7 +33,7 @@ GameStates.makePreloader = function( game ) {
        	    game.load.spritesheet('plane', 'assets/plane.png', 21,24, 19);
 
         	game.load.image('missile', 'assets/missile.png');
-
+            game.load.image('pBullet', 'assets/pBullet.png');
        		game.load.spritesheet('explosion', 'assets/Explosion.png', 128, 128, 4);
 	
         	game.load.image('smoke', 'assets/smoke.png');

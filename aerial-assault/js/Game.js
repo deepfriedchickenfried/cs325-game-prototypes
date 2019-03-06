@@ -3,13 +3,22 @@
 GameStates.makeGame = function( game, shared ) {
     // Create your own variables.
     var cursors;
+    
+    var shiftKey;
+    var attackKey;
 
     var ROTATION_SPEED_PLANE = 300;
     var ACCELERATION_PLANE = 600;
     var MAX_SPEED_PLANE = 200;
     var DRAG = 10;
     var GRAVITY = 100;
-    
+    var rollAnimation;
+    var rollDelay = 600;
+    var rollDuration;
+
+    var lastBulletShotAt;
+    var BulletDelay = 400;
+
     var fx;
 
     var endedfx;
@@ -32,7 +41,7 @@ GameStates.makeGame = function( game, shared ) {
 
     var MAX_MISSILES = 1;
 
-    
+    var pBullets;
 
     var planeSmoke;
 
@@ -95,9 +104,30 @@ GameStates.makeGame = function( game, shared ) {
         
     }
     
-    function planeFrame()
+    function roll(x)
     {
+        if(!plane.alive) return;
+
+        if(rollDuration === undefined) rollDuration = 0;
+        if(game.time.now -rollDuration < rollDelay) return;
+
+        rollDuration = game.time.now;
         
+        plane.animations.play('roll');
+        if(x === 1)
+        {
+            //left
+            plane.body.moveTo(rollDelay, 50, (plane.rotation + Math.PI /2) % (Math.PI *2));
+
+        }else if(x === -1)
+        {
+            //right
+            plane.body.moveTo(rollDelay, 50, (plane.rotation + Math.PI * 3 /2) % (Math.PI *2));
+
+        }
+
+        
+
     }
 
      //launches a missile
@@ -116,6 +146,30 @@ GameStates.makeGame = function( game, shared ) {
         missile.x = x;
         missile.y = y;
     }
+
+    function shootBullet()
+    {
+        if(lastBulletShotAt === undefined) lastBulletShotAt = 0;
+        if(game.time.now-lastBulletShotAt < BulletDelay) return;
+
+        lastBulletShotAt = game.time.now;
+
+        var bullet = pBullets.getFirstDead();
+
+        if(bullet === null || bullet === undefined) return;
+
+        bullet.revive();
+        
+        bullet.checkWorldBounds = true;
+        bullet.outOfBoundsKill = true;
+        bullet.reset((Math.cos((plane.rotation) % (2 *Math.PI)) * 6) + plane.x, (Math.sin((plane.rotation) % (2 *Math.PI)) * 6) + plane.y);
+        bullet.rotation = plane.rotation;
+
+        bullet.body.velocity.x = Math.cos(bullet.rotation) * 350 + plane.body.velocity.x;
+        bullet.body.velocity.y = Math.sin(bullet.rotation) * 350 + plane.body.velocity.y;
+
+    }
+
 //Borrowed from GameMechanicExplorer Homing missiles
     
 var Missile = function(game, x,y) 
@@ -282,7 +336,7 @@ var Missile = function(game, x,y)
             planeSmoke = game.add.emitter(0,0,100);
             planeSmoke.gravity = 0;
             planeSmoke.setXSpeed(0,0);
-            planeSmoke.setYSpeed(-70, -40);
+            planeSmoke.setYSpeed(-40, -10);
 
             planeSmoke.setAlpha(1,0, planeSmokeLifetime, Phaser.Easing.Linear.InOut);
 
@@ -294,6 +348,7 @@ var Missile = function(game, x,y)
 
             plane.body.gravity.y = GRAVITY;
 
+            rollAnimation = plane.animations.add('roll',[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18, 0],60, false);
             ground = game.add.group();
             ground.enableBody = true;
             for(var x = 0; x < game.world.width; x += 32)
@@ -306,6 +361,20 @@ var Missile = function(game, x,y)
 
            missileGroup = game.add.group();
             cursors = game.input.keyboard.createCursorKeys();
+            
+            attackKey = game.input.keyboard.addKey(Phaser.Keyboard.X);
+
+
+            pBullets = game.add.group();
+            for(var i = 0; i < 200; i++)
+            {
+                var pBullet = game.add.sprite(0,0, 'pBullet');
+                pBullets.add(pBullet);
+
+                pBullet.anchor.setTo(0.5,0.5);
+                game.physics.arcade.enable(pBullet);
+                pBullet.kill();
+            }
 
             timer = game.time.create(false);
 
@@ -347,12 +416,37 @@ var Missile = function(game, x,y)
              }
          }
         
+         pBullets.forEachAlive(function(c)
+         {
+             
+             if(elapsedTime >= 60 || elapsedTime <= 0)
+             {
+                 c.kill();
+             }
 
+         },this);
+         
          //things that all alive missiles check for
          missileGroup.forEachAlive(function(m)
          {
            //if the distance between a missile and the plane is less than 5 game over
             var distance = this.game.math.distance(m.x, m.y, plane.x, plane.y);
+            
+            pBullets.forEachAlive(function(o)
+            {
+                if(game.physics.arcade.collide(m, o))
+                {
+                    m.kill();
+                    o.kill();
+                    getExplosion(m.x, m.y);
+                }
+
+                if(elapsedTime >= 60 || elapsedTime <= 0)
+                {
+                    o.kill();
+                }
+
+            },this);
             if(distance < 5 )
             {
                 m.kill();
@@ -366,6 +460,8 @@ var Missile = function(game, x,y)
                 m.kill();
                 getExplosion(m.x, m.y);
             }
+
+            
             // if the player dies and time is reset, kill all missiles
             if(elapsedTime >= 60)
             {
@@ -403,18 +499,16 @@ var Missile = function(game, x,y)
         {
             plane.angle = game.rnd.integerInRange(80,100);
         }
+        //var lastLeftDownDuration = game.input.keyboard.downDuration(Phaser.keycode.LEFT, game.input.justPressedRate);
+        //var lastRightDownDuration = game.input.keyboard.downDuration(Phaser.keycode.RIGHT, game.input.justPressedRate);
 
+        /*if(game.input.keyboard.upDuration(Phaser.keycode.LEFT, game.input.doubleTapRate) && lastLeftDownDuration && cursors.left.onDown)
+        {
+
+        }*/
         // turning
-        if(cursors.left.isDown)
-        {
-            plane.body.angularVelocity = -ROTATION_SPEED_PLANE;
-        } else if(cursors.right.isDown)
-        {
-            plane.body.angularVelocity = ROTATION_SPEED_PLANE;
-        } else
-        {
-            plane.body.angularVelocity = 0;
-        }
+        
+        
 
         // if the plane hits the ground explode
         var planeOnTheGround = plane.body.touching.down;
@@ -425,6 +519,8 @@ var Missile = function(game, x,y)
             getExplosion(plane.x, plane.y);
             resetPlane();
         }
+
+        
 
         // acceleration
         if(cursors.up.isDown)
@@ -438,7 +534,38 @@ var Missile = function(game, x,y)
             plane.body.acceleration.setTo(0,0);
            planeSmoke.on = false;
         }
+
+        //var lastLeftDownDuration = game.input.keyboard.downDuration(Phaser.keycode.LEFT, game.input.justPressedRate);
+        //var lastRightDownDuration = game.input.keyboard.downDuration(Phaser.keycode.RIGHT, game.input.justPressedRate);
+
+        /*if(game.input.keyboard.upDuration(Phaser.keycode.LEFT, game.input.doubleTapRate) && lastLeftDownDuration && cursors.left.onDown)
+        {
+
+        }*/
+        // turning
+        
+        if(cursors.left.isDown)
+        {
+           
+            plane.body.angularVelocity = -ROTATION_SPEED_PLANE;
+            
+        } else if(cursors.right.isDown)
+        {
+            
+            plane.body.angularVelocity = ROTATION_SPEED_PLANE;
+            
+        } else
+        {
+            plane.body.angularVelocity = 0;
+        }
        
+
+        if(attackKey.isDown)
+        {
+            shootBullet();
+        }
        }
+
+      
     };
 };
