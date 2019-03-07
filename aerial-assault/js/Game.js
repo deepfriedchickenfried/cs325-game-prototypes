@@ -465,7 +465,7 @@ var Missile = function(game, x,y)
                 pBombs.add(pBomb);
                 pBomb.anchor.setTo(0.5,0.5);
                 game.physics.arcade.enable(pBomb);
-                pBomb.body.gravity.y = 300;
+                pBomb.body.gravity.y = 250;
                 pBomb.kill();
 
             }
@@ -519,7 +519,17 @@ var Missile = function(game, x,y)
                 launchMissile(game.world.width +50, game.rnd.integerInRange(50, game.world.height - 50));
              }
          }
-        
+        pExplosionGroup.forEachAlive(function(m)
+        {
+            missileGroup.forEachAlive(function(n)
+            {
+                if(game.physics.arcade.collide(m,n))
+                {
+                    n.kill();
+                    getPExplosion(n.x,n.y);
+                }
+            },this);
+        },this);
          pBullets.forEachAlive(function(c)
          {
              
@@ -556,6 +566,8 @@ var Missile = function(game, x,y)
                     m.kill();
                     o.kill();
                     getPExplosion(m.x, m.y);
+                    getPExplosion(o.x,o.y);
+                    
                 }
 
             },this)
