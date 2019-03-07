@@ -24,10 +24,10 @@ GameStates.makeGame = function( game, shared ) {
     var rollDuration;
 
     var lastBulletShotAt;
-    var BulletDelay = 300;
+    var BulletDelay = 250;
 
     var lastBombShotAt;
-    var BombDelay = 900;
+    var BombDelay = 800;
 
     var fx;
 
@@ -85,8 +85,10 @@ GameStates.makeGame = function( game, shared ) {
         if(explosion === null)
         {
             explosion = game.add.sprite(0,0, 'explosion');
-            game.physics.arcade.enable(explosion);
             explosion.anchor.setTo(0.5,0.5);
+            explosion.scale.setTo(1.5,1.5);
+            game.physics.arcade.enable(explosion);
+            
             explosion.tint = 0xffd541;
             var animation = explosion.animations.add('boom', [0,1,2,3], 60, false);
             animation.killOnComplete = true;
