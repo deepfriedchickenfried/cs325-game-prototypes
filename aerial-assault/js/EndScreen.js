@@ -1,6 +1,6 @@
 "use strict";
 
-GameStates.makeEndScreen = function( game, shared ) {
+var EndScreen = function( game) {
 
 	var music = null;
     

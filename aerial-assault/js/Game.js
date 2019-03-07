@@ -17,7 +17,7 @@ GameStates.makeGame = function( game, shared ) {
     var rollDuration;
 
     var lastBulletShotAt;
-    var BulletDelay = 400;
+    var BulletDelay = 200;
 
     var fx;
 
@@ -53,7 +53,7 @@ GameStates.makeGame = function( game, shared ) {
         //  Stop music, delete sprites, purge caches, free resources, all that good stuff.
 
         //  Then let's go back to the main menu.
-        game.state.start('EndScreen');
+        game.state.start('EndScreen', true);
 
     }
     
@@ -104,6 +104,12 @@ GameStates.makeGame = function( game, shared ) {
         
     }
     
+    function knockback()
+    {
+        plane.x +=  (Math.cos((plane.rotation + Math.PI) % (2 *Math.PI)) * 1);
+        plane.y +=  (Math.sin((plane.rotation + Math.PI) % (2 *Math.PI)) * 1);
+    }
+
     function roll(x)
     {
         if(!plane.alive) return;
@@ -395,9 +401,7 @@ var Missile = function(game, x,y)
             elapsedMax -=5;
         }
         
-        if(elapsedTime <= 0){
-            quitGame();
-        }
+        
 
         //if there are a max number of missiles spawn some in from the sides of the game
          if (missileGroup.countLiving() < MAX_MISSILES && elapsedTime >= 0)
@@ -473,6 +477,9 @@ var Missile = function(game, x,y)
             {
                 m.kill();
                 getExplosion(m.x, m.y);
+                quitGame();
+
+
             }
           
          }, this);

@@ -38,7 +38,8 @@ GameStates.makePreloader = function( game ) {
 	
         	game.load.image('smoke', 'assets/smoke.png');
 
-        	game.load.image('smallSmoke', 'assets/smallSmoke.png');
+            game.load.image('smallSmoke', 'assets/smallSmoke.png');
+            game.load.image('missileExplosion', 'assets/MissileExplosion.png');
 
         	game.load.audio('explosion', 'assets/explosion13.wav');    
         	game.load.audio('gameOver', 'assets/gameOver.wav');
