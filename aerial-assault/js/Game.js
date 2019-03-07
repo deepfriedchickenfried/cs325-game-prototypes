@@ -5,7 +5,12 @@ GameStates.makeGame = function( game, shared ) {
     var cursors;
     
     var shiftKey;
+    var shift;
     var attackKey;
+
+    var boss;
+
+    var bossHealth;
 
     var ROTATION_SPEED_PLANE = 300;
     var ACCELERATION_PLANE = 600;
@@ -110,7 +115,7 @@ GameStates.makeGame = function( game, shared ) {
         plane.y +=  (Math.sin((plane.rotation + Math.PI) % (2 *Math.PI)) * 1);
     }
 
-    function roll(x)
+    function roll()
     {
         if(!plane.alive) return;
 
@@ -118,19 +123,9 @@ GameStates.makeGame = function( game, shared ) {
         if(game.time.now -rollDuration < rollDelay) return;
 
         rollDuration = game.time.now;
-        
+        shift = true;
         plane.animations.play('roll');
-        if(x === 1)
-        {
-            //left
-            plane.body.moveTo(rollDelay, 50, (plane.rotation + Math.PI /2) % (Math.PI *2));
-
-        }else if(x === -1)
-        {
-            //right
-            plane.body.moveTo(rollDelay, 50, (plane.rotation + Math.PI * 3 /2) % (Math.PI *2));
-
-        }
+        
 
         
 
@@ -360,7 +355,9 @@ var Missile = function(game, x,y)
             for(var x = 0; x < game.world.width; x += 32)
             {
                var groundBlock = ground.create(x,game.world.height - 32, 'ground');
-               groundBlock.body.immovable = true
+               groundBlock.body.immovable = true;
+               groundBlock = ground.create(x,game.world.height, 'ground');
+               groundBlock.body.immovable = true;
             }
 
             explosionGroup = game.add.group();
@@ -369,7 +366,7 @@ var Missile = function(game, x,y)
             cursors = game.input.keyboard.createCursorKeys();
             
             attackKey = game.input.keyboard.addKey(Phaser.Keyboard.X);
-
+            shiftKey = game.input.keyboard.addKey(Phaser.Keyboard.Z);
 
             pBullets = game.add.group();
             for(var i = 0; i < 200; i++)
@@ -571,6 +568,12 @@ var Missile = function(game, x,y)
         {
             shootBullet();
         }
+
+        if(shiftKey.isDown)
+        {
+            plane.animations.play('roll');
+        }
+
        }
 
       
