@@ -16,7 +16,7 @@ var EndScreen = function( game) {
     {
         music.stop();
 
-        game.state.start('MainMenu');
+        game.state.start('Game');
     }
 
     return {
@@ -33,10 +33,10 @@ var EndScreen = function( game) {
             noteStyle = {font: " 14px Arial", fill: "#ff004d", align: "center"};
             styleTitle = {font: "98px Arial", fill: "#ff004d", align: "center"};
 
-            titleText = game.add.text(game.world.centerX, game.world.centerY - 100, "You Win", styleTitle);
+            titleText = game.add.text(game.world.centerX, game.world.centerY - 100, "You Died", styleTitle);
             titleText.anchor.set(0.5);
 
-            noteText = game.add.text(game.world.centerX, game.world.height -50, "Press enter to go to main menu", noteStyle);
+            noteText = game.add.text(game.world.centerX, game.world.height -50, "Press enter to try again", noteStyle);
             noteText.anchor.set(0.5);
 
         },
