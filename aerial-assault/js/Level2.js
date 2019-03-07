@@ -23,7 +23,7 @@ var Level2 = function( game) {
     var rollDuration;
 
     var lastBulletShotAt;
-    var BulletDelay = 200;
+    var BulletDelay = 300;
 
     var lastBombShotAt;
     var BombDelay = 800;

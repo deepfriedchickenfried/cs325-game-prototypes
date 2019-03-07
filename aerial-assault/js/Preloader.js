@@ -40,7 +40,7 @@ GameStates.makePreloader = function( game ) {
 
             game.load.image('smallSmoke', 'assets/smallSmoke.png');
             game.load.image('missileExplosion', 'assets/MissileExplosion.png');
-            game.load.image('boss', 'assets/Boss.png');
+            game.load.image('boss', 'assets/Boss-sheet.png',222,86);
 
         	game.load.audio('explosion', 'assets/explosion13.wav');    
             game.load.audio('gameOver', 'assets/gameOver.wav');

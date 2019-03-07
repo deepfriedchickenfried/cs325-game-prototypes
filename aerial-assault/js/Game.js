@@ -10,6 +10,7 @@ GameStates.makeGame = function( game, shared ) {
     var bombKey;
 
     var boss;
+    var bossAnim;
 
     var bossHealth;
 
@@ -23,10 +24,10 @@ GameStates.makeGame = function( game, shared ) {
     var rollDuration;
 
     var lastBulletShotAt;
-    var BulletDelay = 200;
+    var BulletDelay = 300;
 
     var lastBombShotAt;
-    var BombDelay = 800;
+    var BombDelay = 900;
 
     var fx;
 
@@ -382,8 +383,10 @@ var Missile = function(game, x,y)
         create: function () {
             game.physics.startSystem(Phaser.Physics.ARCADE);
             
-            boss = game.add.sprite(400,300, '')
-            
+            boss = game.add.sprite(game.world.centerX, game.world.centerY, 'boss');
+            boss.anchor.setTo(0.5,0.5);
+            boss.alpha = 0;
+            bossAnim = boss.animations.add('fire', [0,1,2,3], 60, false);
             fx = game.add.audio('explosion');
             endedfx = game.add.audio('gameOver');
 
@@ -489,6 +492,14 @@ var Missile = function(game, x,y)
             highScore = elapsedTime;
         }
         
+        if(elapsedTime >= 100 && elapsedTime <= 105)
+        {
+            boss.alpha = .5;
+            boss.animations.play('fire');
+        }else
+        {
+            boss.alpha = 0;
+        }
 
         //if there are a max number of missiles spawn some in from the sides of the game
          if (missileGroup.countLiving() < MAX_MISSILES && elapsedTime >= 0)
