@@ -629,7 +629,7 @@ var Missile = function(game, x,y)
         },this);
          //put the plane on top of the smoke trail
          plane.bringToTop();
-         ground.bringToTop();
+         
          // put the smoke trail behind the plane
          planeSmoke.x = (Math.cos((plane.rotation + Math.PI) % (2 *Math.PI)) * 6) + plane.x;
          planeSmoke.y = (Math.sin((plane.rotation + Math.PI) % (2 *Math.PI)) * 6) + plane.y;
