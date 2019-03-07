@@ -519,7 +519,17 @@ var Missile = function(game, x,y)
                 launchMissile(game.world.width +50, game.rnd.integerInRange(50, game.world.height - 50));
              }
          }
-        
+         pExplosionGroup.forEachAlive(function(m)
+        {
+            missileGroup.forEachAlive(function(n)
+            {
+                if(game.physics.arcade.collide(m,n))
+                {
+                    n.kill();
+                    getPExplosion(n.x,n.y);
+                }
+            },this);
+        },this);
          pBullets.forEachAlive(function(c)
          {
              
@@ -616,17 +626,7 @@ var Missile = function(game, x,y)
           
          }, this);
 
-         pExplosionGroup.forEachAlive(function(m)
-        {
-            missileGroup.forEachAlive(function(n)
-            {
-                if(game.physics.arcade.collide(m,n))
-                {
-                    n.kill();
-                    getPExplosion(n.x,n.y);
-                }
-            },this);
-        },this);
+        
          //put the plane on top of the smoke trail
          plane.bringToTop();
          
