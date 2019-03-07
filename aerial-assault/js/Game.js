@@ -538,6 +538,12 @@ var Missile = function(game, x,y)
                  getPExplosion(m.x,m.y);
              }
 
+             if(game.physics.arcade.collide(m,pBullets))
+             {
+                 m.kill();
+                 getPExplosion(m.x,m.y);
+             }
+
             if(game.physics.arcade.collide(m,ground))
             {
                 m.kill()
