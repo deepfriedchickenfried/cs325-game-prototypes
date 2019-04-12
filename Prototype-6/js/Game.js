@@ -35,7 +35,7 @@ GameStates.makeGame = function( game, shared ) {
             
             player.anchor.setTo(0.5, 0.5);
             player.stopped = true;
-            player.facing = 0;
+           
             //  Honestly, just about anything could go here. It's YOUR game after all. Eat your heart out!
             game.physics.startSystem(Phaser.Physics.Arcade); 
             game.physics.arcade.enable(player, true);
