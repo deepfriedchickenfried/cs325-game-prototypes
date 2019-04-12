@@ -11,7 +11,8 @@ window.onload = function() {
 	game.state.add( 'Preloader', GameStates.makePreloader( game ) );
 	game.state.add( 'MainMenu', GameStates.makeMainMenu( game, shared ) );
 	game.state.add( 'Game', GameStates.makeGame( game, shared ) );
-	game.state.add( 'EndScreen', GameStates.makeGame( game, shared ) );	
+	game.state.add( 'Level2', Level2);
+	game.state.add( 'EndScreen', EndScreen );	
 
 	//	Now start the Boot state.
 	game.state.start('Boot');

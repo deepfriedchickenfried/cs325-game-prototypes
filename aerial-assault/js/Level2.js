@@ -1,6 +1,6 @@
 "use strict";
 
-GameStates.makeGame = function( game, shared ) {
+var Level2 = function( game) {
     // Create your own variables.
     var cursors;
     
@@ -10,7 +10,6 @@ GameStates.makeGame = function( game, shared ) {
     var bombKey;
 
     var boss;
-    var bossAnim;
 
     var bossHealth;
 
@@ -24,7 +23,7 @@ GameStates.makeGame = function( game, shared ) {
     var rollDuration;
 
     var lastBulletShotAt;
-    var BulletDelay = 250;
+    var BulletDelay = 300;
 
     var lastBombShotAt;
     var BombDelay = 800;
@@ -35,11 +34,9 @@ GameStates.makeGame = function( game, shared ) {
 
     var timer;
 
-    var elapsedTime = 0;
+    var elapsedTime = 60.0;
 
-    var elapsedMax = 5;
-
-    var highScore = 60;
+    var elapsedMax = 50;
 
     var plane;
 
@@ -74,7 +71,7 @@ GameStates.makeGame = function( game, shared ) {
     //used to update the timer
     function updateCounter()
     {
-        elapsedTime += 1;
+        elapsedTime -= .1;
     }
     
 
@@ -86,13 +83,10 @@ GameStates.makeGame = function( game, shared ) {
         {
             explosion = game.add.sprite(0,0, 'explosion');
             explosion.anchor.setTo(0.5,0.5);
-            explosion.scale.setTo(1.5,1.5);
-            game.physics.arcade.enable(explosion);
-            
             explosion.tint = 0xffd541;
             var animation = explosion.animations.add('boom', [0,1,2,3], 60, false);
             animation.killOnComplete = true;
-            pExplosionGroup.add(explosion);
+            explosionGroup.add(explosion);
         }
 
         explosion.revive();
@@ -133,26 +127,8 @@ GameStates.makeGame = function( game, shared ) {
     {
         endedfx.play();
         timer.pause();
-
-        
-        elapsedTime = 0;
-        elapsedMax = 5;
-        MAX_MISSILES = 1;
-        missileGroup.forEachAlive(function (m)
-        {
-            m.kill();
-            getExplosion(m.x,m.y);
-        },this);
-        pBombs.forEachAlive(function (m)
-        {
-            m.kill();
-            getPExplosion(m.x,m.y);
-        },this);
-        pBullets.forEachAlive(function (m)
-        {
-            m.kill();
-        }, this);
-
+        elapsedTime = 60.0;
+        elapsedMax = 55;
         MAX_MISSILES = 1;
         plane.reset(400, 300);
         plane.body.acceleration.setTo(0,0);
@@ -384,11 +360,8 @@ var Missile = function(game, x,y)
     
         create: function () {
             game.physics.startSystem(Phaser.Physics.ARCADE);
-            
-            boss = game.add.sprite(game.world.centerX, game.world.centerY, 'boss');
-            boss.anchor.setTo(0.5,0.5);
-            boss.alpha = 0;
-            bossAnim = boss.animations.add('fire', [0,1,2,3], 60, false);
+        
+       
             fx = game.add.audio('explosion');
             endedfx = game.add.audio('gameOver');
 
@@ -438,8 +411,7 @@ var Missile = function(game, x,y)
             }
 
             explosionGroup = game.add.group();
-            
-            pExplosionGroup = game.add.group();
+            pExplosionGroup = game.add. group();
            missileGroup = game.add.group();
             cursors = game.input.keyboard.createCursorKeys();
             
@@ -465,43 +437,31 @@ var Missile = function(game, x,y)
                 pBombs.add(pBomb);
                 pBomb.anchor.setTo(0.5,0.5);
                 game.physics.arcade.enable(pBomb);
-                pBomb.body.gravity.y = 250;
+                pBomb.body.gravity.y = 200;
                 pBomb.kill();
 
             }
 
             timer = game.time.create(false);
 
-            timer.loop(1000, updateCounter, this);
+            timer.loop(100, updateCounter, this);
 
             timer.start();
         },
     
         update: function () {
-            game.debug.text('HIGHSCORE: ' + highScore + ' seconds', 32, 32 );
-            game.debug.text('Time Survived: ' + elapsedTime + ' seconds', 32, 64);
+             game.debug.text('Time Left: ' + elapsedTime + ' seconds', 32, 64);
         
         game.physics.arcade.collide(plane, ground);
         
         //every 5 seconds add a missile
-        if(elapsedTime >= elapsedMax)
+        if(elapsedTime < elapsedMax)
         {
             MAX_MISSILES += 2;
-            elapsedMax +=5;
-        }
-        if(elapsedTime > highScore)
-        {
-            highScore = elapsedTime;
+            elapsedMax -=5;
         }
         
-        if(elapsedTime >= 100 && elapsedTime <= 105)
-        {
-            boss.alpha = .5;
-            boss.animations.play('fire');
-        }else
-        {
-            boss.alpha = 0;
-        }
+        
 
         //if there are a max number of missiles spawn some in from the sides of the game
          if (missileGroup.countLiving() < MAX_MISSILES && elapsedTime >= 0)
@@ -519,21 +479,11 @@ var Missile = function(game, x,y)
                 launchMissile(game.world.width +50, game.rnd.integerInRange(50, game.world.height - 50));
              }
          }
-         pExplosionGroup.forEachAlive(function(m)
-        {
-            missileGroup.forEachAlive(function(n)
-            {
-                if(game.physics.arcade.collide(m,n))
-                {
-                    n.kill();
-                    getPExplosion(n.x,n.y);
-                }
-            },this);
-        },this);
+        
          pBullets.forEachAlive(function(c)
          {
              
-             if(elapsedTime <= 0)
+             if(elapsedTime >= 60 || elapsedTime <= 0)
              {
                  c.kill();
              }
@@ -542,13 +492,7 @@ var Missile = function(game, x,y)
          
          pBombs.forEachAlive(function(m)
          {
-            if(elapsedTime <= 0)
-             {
-                 m.kill();
-                 getPExplosion(m.x,m.y);
-             }
-
-             if(game.physics.arcade.collide(m,pBullets))
+            if(elapsedTime >= 60 || elapsedTime <= 0)
              {
                  m.kill();
                  getPExplosion(m.x,m.y);
@@ -566,8 +510,6 @@ var Missile = function(game, x,y)
                     m.kill();
                     o.kill();
                     getPExplosion(m.x, m.y);
-                    getPExplosion(o.x,o.y);
-                    
                 }
 
             },this)
@@ -589,7 +531,7 @@ var Missile = function(game, x,y)
                     getExplosion(m.x, m.y);
                 }
 
-                if( elapsedTime <= 0)
+                if(elapsedTime >= 60 || elapsedTime <= 0)
                 {
                     o.kill();
                 }
@@ -612,24 +554,28 @@ var Missile = function(game, x,y)
             if(game.physics.arcade.collide(m, pExplosionGroup))
             {
                 m.kill();
-                getPExplosion(m.x,m.y);
+                getExplosion(m.x,m.y);
             }
             
             // if the player dies and time is reset, kill all missiles
-            if(elapsedTime <= 0)
+            if(elapsedTime >= 60)
             {
                 m.kill();
                 getExplosion(m.x, m.y);
             }
             // if the player survived, destory all missles and move to win screen
-            
+            if(elapsedTime <= 0)
+            {
+                m.kill();
+                getExplosion(m.x, m.y);
+                quitGame();
+
+
+            }
           
          }, this);
-
-        
          //put the plane on top of the smoke trail
          plane.bringToTop();
-         
          // put the smoke trail behind the plane
          planeSmoke.x = (Math.cos((plane.rotation + Math.PI) % (2 *Math.PI)) * 6) + plane.x;
          planeSmoke.y = (Math.sin((plane.rotation + Math.PI) % (2 *Math.PI)) * 6) + plane.y;
