@@ -32,6 +32,7 @@ GameStates.makePreloader = function( game ) {
             
             game.load.spritesheet('letters', 'assets/textSprite.png', 7,7);
             game.load.tilemap('map', 'assets/vomitComet.json', null, Phaser.Tilemap.TILED_JSON);
+            game.load.tilemap('testmap', 'assets/vomitComet1.json', null, Phaser.Tilemap.TILED_JSON);
             game.load.image('people', 'assets/topdownpeople.png');
             game.load.image('walls', 'assets/walls1.png');
             game.load.image('player', 'assets/slime.png');

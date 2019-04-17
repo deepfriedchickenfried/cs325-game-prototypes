@@ -3,7 +3,7 @@
 GameStates.makeGame = function( game, shared ) {
     // Create your own variables.
     
-    
+    var map;
     var music;
     var outline;
     var player;
@@ -11,13 +11,14 @@ GameStates.makeGame = function( game, shared ) {
     var cursors
     var speed = 120;
     var changeDir;
-    var stationary = false;
+    var stationary = true;
     var charge = 1;
     var maxcharge = 1;
     var currentLevel = 0;
     var trailEmitter;
+    var blastEmitter;
     var deathEmitter;
-    var projectile;
+    var projectiles;
 
     function snapOutlineToGrid(x,y) 
     {
@@ -26,6 +27,36 @@ GameStates.makeGame = function( game, shared ) {
        outline.y = 16 + (Math.floor(y/32) * 32); 
 
     }
+
+    function fireProjectile(dir, x, y)
+    {
+        var projectile = projectiles.getFirstDead();
+        if(projectile === null || projectile === undefined) return;
+
+        projectile.revive();
+        projectile.checkWorldBounds = true;
+        projectile.outOfBoundsKill = true;
+        projectile.reset(x,y);
+        if(dir === "up")
+        {
+            projectile.body.velocity.x = 0;
+            projectile.body.velocity.y = -160;
+        }else if(dir === "down")
+        {
+            projectile.body.velocity.x = 0;
+            projectile.body.velocity.y = 160;
+        }else if(dir === "left")
+        {   
+            projectile.body.velocity.x = -160;
+            projectile.body.velocity.y = 0;
+        }else if(dir === "right")
+        {
+            projectile.body.velocity.x = 160;
+            projectile.body.velocity.y = 0;
+        }
+        
+    }
+
     function moveOneSpace(dir, x,y )
     {
         if(dir === "up")
@@ -71,19 +102,32 @@ GameStates.makeGame = function( game, shared ) {
             
             
 
-            game.stage.backgroundColor = 0x5f574f;
+            //map = this.game.add.tilemap('testmap');
+            //map.addTilesetImage('')
+            
+
             player = game.add.sprite(game.world.centerX, game.world.centerY, 'player');
             player.anchor.setTo(0.5, 0.5);
            
             outline = game.add.sprite(game.world.centerX, game.world.centerY, 'outline');
             outline.anchor.setTo(0.5, 0.5);
-            projectile = game.add.sprite(0,0, 'outline');
+         
             
             //  Honestly, just about anything could go here. It's YOUR game after all. Eat your heart out!
             game.physics.startSystem(Phaser.Physics.Arcade); 
             game.physics.arcade.enable(player, true);
             game.physics.arcade.enable(outline, true);
+           
             
+            projectiles = game.add.group();
+            for(var i = 0; i < 200; i++)
+            {
+                var projectile = game.add.sprite(0,0, 'projectile');
+                projectiles.add(projectile);
+                projectile.anchor.setTo(0.5,0.5);
+                game.physics.arcade.enable(projectile);
+                projectile.kill();
+            }
             
             outline.body.collideWorldBounds = true;
             
@@ -106,7 +150,7 @@ GameStates.makeGame = function( game, shared ) {
             trailEmitter.setAlpha(1, 0, 300, Phaser.Easing.Linear.InOut);
             trailEmitter.setScale(1,0,1,0,300,Phaser.Easing.Linear.InOut);
             trailEmitter.start(false,300, 100);    
-          
+            
 
             
             
@@ -116,15 +160,12 @@ GameStates.makeGame = function( game, shared ) {
     
         update: function () {
            
-            
-           
-            
             player.bringToTop();
             if(player.alive)
             {
                 if(stationary === true)
                 {
-                    emitter.on = false;
+                    trailEmitter.on = false;
 
                     if(cursors.right.isDown)
                     {
@@ -170,7 +211,10 @@ GameStates.makeGame = function( game, shared ) {
                     trailEmitter.x = player.x;
                     trailEmitter.y = player.y;
                     trailEmitter.on = true;
-                    
+                   
+
+
+
                     if(player.dir === "right" || player.dir === "left")
                     {
                         player.y = outline.y
@@ -188,7 +232,7 @@ GameStates.makeGame = function( game, shared ) {
                         player.body.velocity.x = speed;
                         player.body.velocity.y = 0;
                         player.dir = "right";
-                        
+                        fireProjectile("left",player.x,player.y);
                         //charge--;
                     }else if(charge >= 1 && cursors.up.isDown && player.dir !== "up")
                     {
@@ -197,6 +241,7 @@ GameStates.makeGame = function( game, shared ) {
                         player.body.velocity.y = -speed;
                         player.body.velocity.x = 0;
                         player.dir = "up";
+                        fireProjectile("down",player.x,player.y);
                         //charge--;
                     }else if(charge >= 1 && cursors.left.isDown && player.dir !== "left")
                     {
@@ -205,6 +250,7 @@ GameStates.makeGame = function( game, shared ) {
                         player.body.velocity.x = -speed;
                         player.body.velocity.y = 0;
                         player.dir = "left";
+                        fireProjectile("right",player.x,player.y);
                         //charge--;
                     }else if(charge >= 1 && cursors.down.isDown && player.dir !== "down")
                     {
@@ -213,6 +259,7 @@ GameStates.makeGame = function( game, shared ) {
                         player.body.velocity.y = speed;
                         player.body.velocity.x = 0;
                         player.dir = "down"; 
+                        fireProjectile("up",player.x,player.y);
                         //charge--;
                     }
 
