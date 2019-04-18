@@ -29,12 +29,14 @@ GameStates.makePreloader = function( game ) {
             game.load.audio('gameMusic', ['assets/AbstractionThreeRedHeartsBoxJump.mp3']);
             //	+ lots of other required assets here
             game.load.image( 'logo', 'assets/phaser.png' );
+            game.load.spritesheet('WallS', 'assets/walls1.png', 32,32);
             
-            game.load.spritesheet('letters', 'assets/textSprite.png', 7,7);
             game.load.tilemap('map', 'assets/vomitComet.json', null, Phaser.Tilemap.TILED_JSON);
-            game.load.tilemap('testmap', 'assets/vomitComet1.json', null, Phaser.Tilemap.TILED_JSON);
-            game.load.image('people', 'assets/topdownpeople.png');
-            game.load.image('walls', 'assets/walls1.png');
+            game.load.tilemap('testmap1', 'assets/vomitComet1.json', null, Phaser.Tilemap.TILED_JSON);
+            game.load.tilemap('testmap', 'assets/test.json', null, Phaser.Tilemap.TILED_JSON);
+            game.load.spritesheet('people', 'assets/topdownpeople.png', 32, 32);
+            //game.load.image('people', 'assets/topdownpeople.png');
+            game.load.image('Walls', 'assets/walls1.png');
             game.load.image('player', 'assets/slime.png');
             game.load.image('slime', 'assets/slimeParticle.png');
             game.load.image('projectile', 'assets/projectile.png');
