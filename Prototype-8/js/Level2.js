@@ -1,6 +1,6 @@
 "use strict";
 
-var Level1 = function( game) {
+var Level2 = function( game) {
     // Create your own variables.
     
     var map;
@@ -109,7 +109,7 @@ var Level1 = function( game) {
             
             //music = game.add.audio('gameMusic');
             //music.play();
-            map = this.game.add.tilemap('testmap1');
+            map = this.game.add.tilemap('testmap2');
             map.addTilesetImage('walls1', 'Walls');
             
             bgLayer = map.createLayer('background');
@@ -818,7 +818,7 @@ var Level1 = function( game) {
                         player.alpha = 0;
                         charge = 1;
                         stationary = true;
-                        game.state.start('Level2');
+                        game.state.start('GameOver');
                     }
 
             
