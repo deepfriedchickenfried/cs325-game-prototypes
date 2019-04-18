@@ -6,7 +6,7 @@ GameStates.makeGame = function( game, shared ) {
     var map;
     var bgLayer;
     var wallsLayer;
-
+    
     var uplefts;
     var uprights;
     var downlefts;
@@ -94,13 +94,41 @@ GameStates.makeGame = function( game, shared ) {
         }
     }
     
+    function destroyBody()
+    {
+        
+        this.game.physics.arcade.overlap(outline, blacks, this.playerblacksCollisionS, null, this);
 
+        this.playerblacksCollisionS = function(p, b)
+        {
+            g.kill()
+        }
+
+        this.game.physics.arcade.overlap(outline, whites, this.playerwhiteCollisionS, null, this);
+
+        this.playerwhiteCollisionS = function(p, w)
+        {
+            g.kill();
+            
+        }
+        
+       
+        this.game.physics.arcade.overlap(outline,spawns, this.playerspawnsCollisionS, null, this);
+
+        this.playerspawnsCollisionS = function(p,g)
+        {
+            g.kill();
+        }
+
+    }
     
 
     return {
     
         create: function () {
            
+            charge =1;
+            
             //music = game.add.audio('gameMusic');
             //music.play();
             map = this.game.add.tilemap('testmap');
@@ -187,7 +215,8 @@ GameStates.makeGame = function( game, shared ) {
 
             player = game.add.sprite(game.world.centerX, game.world.centerY, 'player');
             player.anchor.setTo(0.5, 0.5);
-           
+            player.frame = 0;
+            stationary = true;
             outline = game.add.sprite(game.world.centerX, game.world.centerY, 'outline');
             outline.anchor.setTo(0.5, 0.5);
          
@@ -407,7 +436,11 @@ GameStates.makeGame = function( game, shared ) {
             {
                 if(stationary === true)
                 {
+                   
                     trailEmitter.on = false;
+                    
+                
+
 
                     if(cursors.right.isDown)
                     {
@@ -416,6 +449,9 @@ GameStates.makeGame = function( game, shared ) {
                         player.body.velocity.x = speed;
                         player.body.velocity.y = 0;
                         player.dir = "right";
+                        player.alpha = 1;
+                       
+                        
                         stationary = false;        
                     }else if(cursors.up.isDown)
                     {
@@ -424,6 +460,9 @@ GameStates.makeGame = function( game, shared ) {
                         player.body.velocity.y = -speed;
                         player.body.velocity.x = 0;
                         player.dir = "up";
+                        player.alpha = 1;
+                       
+                        
                         stationary = false;
                     }else if(cursors.left.isDown)
                     {
@@ -431,7 +470,9 @@ GameStates.makeGame = function( game, shared ) {
                         player.y = outline.y;
                         player.body.velocity.x = -speed;
                         player.body.velocity.y = 0;
-                        player.dir = "down";
+                        player.dir = "left";
+                        player.alpha =1;
+                        
                         stationary = false;
                     }else if(cursors.down.isDown)
                     {
@@ -439,7 +480,9 @@ GameStates.makeGame = function( game, shared ) {
                         player.y = outline.y;
                         player.body.velocity.y = speed;
                         player.body.velocity.x = 0;
-                        player.dir = "left"; 
+                        player.dir = "down"; 
+                        player.alpha = 1;
+                        
                         stationary = false;
                     }else
                     {
@@ -452,6 +495,7 @@ GameStates.makeGame = function( game, shared ) {
                 {
                     trailEmitter.x = player.x;
                     trailEmitter.y = player.y;
+                    
                     trailEmitter.on = true;
                     
 
@@ -473,6 +517,7 @@ GameStates.makeGame = function( game, shared ) {
                         if (player.dir === "down")
                         {
                             //upleft.bounced = true;
+                            
                             player.x = outline.x;
                             player.y = outline.y;
                             player.body.velocity.x = -speed;
@@ -551,6 +596,7 @@ GameStates.makeGame = function( game, shared ) {
                         if (player.dir === "up")
                         {
                             //upleft.bounced = true;
+                            
                             player.x = outline.x;
                             player.y = outline.y;
                             player.body.velocity.x = speed;
@@ -569,59 +615,7 @@ GameStates.makeGame = function( game, shared ) {
                         }
                     }
 
-                    this.game.physics.arcade.overlap(outline, reds,this.playerredsCollision, null, this);
-
-                    this.playerredsCollision = function(p, r)
-                    {
-                        game.state.restart();    
-                    }
-
-                    this.game.physics.arcade.overlap(outline, blacks, this.playerblacksCollision, null, this);
-
-                    this.playerblacksCollision = function(p, b)
-                    {
-                        player.x = p.x;
-                        player.y = p.y;
-                        b.frame = 3;
-                        charge = 1;
-                        player.stationary = true;
-                    }
-
-                    this.game.physics.arcade.overlap(outline, whites, this.playerwhiteCollision, null, this);
-
-                    this.playerwhiteCollision = function(p, w)
-                    {
-                        w.frame = 1;
-                        charge = 1;
-                        player.alpha = 0;
-                        player.stationary = true;
-                        
-                    }
                     
-                    this.game.physics.arcade.overlap(outline, ghosts, this.playerghostCollision, null, this);
-
-                    this.playerghostCollision = function(p, g)
-                    {
-                        player.x = p.x;
-                        player.y = p.y;
-                        charge = 1;
-                        g.kill();
-                    }
-
-                    this.game.physics.arcade.overlap(outline,spawns, this.playerspawnsCollision, null, this);
-
-                    this.playerspawnsCollision = function(p,g)
-                    {
-                        player.x = p.x;
-                        player.y = p.y;
-                        g.frame = 8;
-                        player.alpha = 0;
-                        charge = 1;
-                        player.stationary = true;
-
-                    }
-
-                    this.game.physics.arcade.overlap(outline, )
 
                     if(charge >= 1 && cursors.right.isDown && player.dir !== "right")
                     {
@@ -631,7 +625,7 @@ GameStates.makeGame = function( game, shared ) {
                         player.body.velocity.y = 0;
                         player.dir = "right";
                         fireProjectile("left",player.x,player.y);
-                        //charge--;
+                        charge--;
                     }else if(charge >= 1 && cursors.up.isDown && player.dir !== "up")
                     {
                         player.x = outline.x;
@@ -640,7 +634,7 @@ GameStates.makeGame = function( game, shared ) {
                         player.body.velocity.x = 0;
                         player.dir = "up";
                         fireProjectile("down",player.x,player.y);
-                        //charge--;
+                        charge--;
                     }else if(charge >= 1 && cursors.left.isDown && player.dir !== "left")
                     {
                         player.x = outline.x;
@@ -649,7 +643,7 @@ GameStates.makeGame = function( game, shared ) {
                         player.body.velocity.y = 0;
                         player.dir = "left";
                         fireProjectile("right",player.x,player.y);
-                        //charge--;
+                        charge--;
                     }else if(charge >= 1 && cursors.down.isDown && player.dir !== "down")
                     {
                         player.x = outline.x;
@@ -658,12 +652,103 @@ GameStates.makeGame = function( game, shared ) {
                         player.body.velocity.x = 0;
                         player.dir = "down"; 
                         fireProjectile("up",player.x,player.y);
-                        //charge--;
+                        charge--;
                     }
 
 
 
                 }
+                this.game.physics.arcade.overlap(outline, reds,this.playerredsCollisionM, null, this);
+
+                    this.playerredsCollisionM = function(p, r)
+                    {
+                        if(stationary === false)
+                        {
+                            game.state.restart();
+                        }    
+                    }
+
+                    this.game.physics.arcade.overlap(outline, blacks, this.playerblacksCollisionM, null, this);
+
+                    this.playerblacksCollisionM = function(p, b)
+                    {   
+                            if(stationary === false && b.frame !== 3)
+                            {
+                                player.x = p.x;
+                                player.y = p.y;
+                                b.frame = 3;
+                                charge = 1;
+                                trailEmitter.on = false;
+                                player.alpha = 0;
+                                stationary = true;
+                            }
+
+                        
+                    }
+
+                    this.game.physics.arcade.overlap(outline, whites, this.playerwhiteCollisionM, null, this);
+
+                    this.playerwhiteCollisionM = function(p, w)
+                    {
+                            if(stationary === false && w.frame !== 1)
+                            {
+                                player.x = p.x;
+                                player.y = p.y;
+                                w.frame = 1;
+                                charge = 1;
+                                trailEmitter.on = false;
+                                player.alpha = 0;
+                                stationary = true;
+                            }
+
+                       
+                        
+                    }
+                    
+                    this.game.physics.arcade.overlap(outline, ghosts, this.playerghostCollisionM, null, this);
+
+                    this.playerghostCollisionM = function(p, g)
+                    {
+                        player.x = p.x;
+                        player.y = p.y;
+                        charge = 1;
+                        g.kill();
+                    }
+
+                    this.game.physics.arcade.overlap(outline,spawns, this.playerspawnsCollisionM, null, this);
+
+                    this.playerspawnsCollisionM = function(p,s)
+                    {
+                            if(stationary === false && s.frame !== 8)
+                            {
+                                player.x = p.x;
+                                player.y = p.y;
+                                s.frame = 8;
+                                trailEmitter.on = false;
+                                player.alpha = 0;
+                                charge = 1;
+                                stationary = true;
+                            }else if(stationary === false && s.frame ===8)
+                            {
+                                s.kill();
+                            }
+                        
+
+                    }
+
+                    this.game.physics.arcade.overlap(outline, goals, this.playerGoalsCollisionM, null, this );
+
+                    this.playerGoalsCollisionM = function(p,g)
+                    {
+                        player.x = p.x;
+                        player.y = p.y;
+                        g.frame = 8;
+                        trailEmitter.on = false;
+                        player.alpha = 0;
+                        charge = 1;
+                        stationary = true;
+                    }
+
             
                 snapOutlineToGrid(player.x, player.y);
             }
