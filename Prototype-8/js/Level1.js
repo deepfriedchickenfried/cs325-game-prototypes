@@ -1,6 +1,6 @@
 "use strict";
 
-GameStates.makeGame = function( game, shared ) {
+var Level1 = function( game) {
     // Create your own variables.
     
     var map;
@@ -109,7 +109,7 @@ GameStates.makeGame = function( game, shared ) {
             
             //music = game.add.audio('gameMusic');
             //music.play();
-            map = this.game.add.tilemap('testmap');
+            map = this.game.add.tilemap('testmap1');
             map.addTilesetImage('walls1', 'Walls');
             
             bgLayer = map.createLayer('background');
@@ -818,7 +818,7 @@ GameStates.makeGame = function( game, shared ) {
                         player.alpha = 0;
                         charge = 1;
                         stationary = true;
-                        game.state.start('Level1');
+                        game.state.start('GameOver');
                     }
 
             
