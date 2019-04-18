@@ -32,12 +32,11 @@ GameStates.makeMainMenu = function( game,shared) {
             music = game.add.audio('titleMusic');
             music.play();
     
-            game.stage.backgroundColor = 0x5f574f;
+           
             noteStyle = {font: " 14px Arial", fill: "#ff004d", align: "center"};
             styleTitle = {font: "98px Arial", fill: "#ff004d", align: "center"};
 
-            titleText = game.add.text(game.world.centerX, game.world.centerY - 100, "Letter Die", styleTitle);
-            titleText.anchor.set(0.5);
+            game.add.sprite(0,0,'titlePage');
 
             noteText = game.add.text(game.world.centerX, game.world.height -50, "Click to Start", noteStyle);
             noteText.anchor.set(0.5);

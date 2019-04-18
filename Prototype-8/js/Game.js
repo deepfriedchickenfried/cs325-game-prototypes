@@ -223,7 +223,7 @@ GameStates.makeGame = function( game, shared ) {
             outline.body.collideWorldBounds = true;
             
             
-            player.body.setCircle(12);
+            player.body.setCircle(10);
             player.body.collideWorldBounds= true;
             player.body.velocity.setTo(0,0);
             player.dir = "none";
@@ -266,7 +266,7 @@ GameStates.makeGame = function( game, shared ) {
     
         update: function () {
            
-            if (this.game.physics.arcade.collide(player, wallsLayer))
+            if (this.game.physics.arcade.collide(player, wallsLayer) && stationary !== true)
             {
                 slimeEmitter.x = player.x;
                 slimeEmitter.y = player.y;
@@ -742,6 +742,24 @@ GameStates.makeGame = function( game, shared ) {
                     {
                             if(stationary === false)
                             {
+                                w.kill();
+                                if(player.dir === "up")
+                                {
+                                    p.y -= 32;
+                                    player.y -=32;
+                                }else if(player.dir === "down")
+                                {
+                                    p.y += 32;
+                                    player.y += 32;
+                                }else if(player.dir === "left")
+                                {   
+                                    p.x -= 32;
+                                    player.x -= 32;
+                                }else if(player.dir === "right")
+                                {
+                                    p.x += 32;
+                                    player.x += 32;
+                                }
                                 player.x = p.x;
                                 player.y = p.y;
                                 w.kill();
@@ -800,6 +818,7 @@ GameStates.makeGame = function( game, shared ) {
                         player.alpha = 0;
                         charge = 1;
                         stationary = true;
+                        game.state.start('GameOver');
                     }
 
             
