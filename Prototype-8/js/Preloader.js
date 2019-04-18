@@ -39,6 +39,7 @@ GameStates.makePreloader = function( game ) {
             game.load.image('Walls', 'assets/walls1.png');
             game.load.spritesheet('player', 'assets/slime.png', 32, 32);
             game.load.image('slime', 'assets/slimeParticle.png');
+            game.load.image('blood', 'assets/bloodParticle.png');
             game.load.image('projectile', 'assets/projectile.png');
             game.load.image('outline', 'assets/outline.png');
         },

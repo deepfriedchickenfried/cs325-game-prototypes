@@ -7,6 +7,11 @@ GameStates.makeGame = function( game, shared ) {
     var bgLayer;
     var wallsLayer;
     
+    var Rkey;
+
+    var spawnX;
+    var spawnY;
+
     var uplefts;
     var uprights;
     var downlefts;
@@ -29,12 +34,11 @@ GameStates.makeGame = function( game, shared ) {
     var stationary = true;
     var charge = 1;
     var trailEmitter;
+    var bloodEmitter;
+    var slimeEmitter;
     var projectiles;
-
-    function restartGame()
-    {
-
-    }
+    var pLifetime = 5000;
+    
 
     function snapOutlineToGrid(x,y) 
     {
@@ -94,33 +98,7 @@ GameStates.makeGame = function( game, shared ) {
         }
     }
     
-    function destroyBody()
-    {
-        
-        this.game.physics.arcade.overlap(outline, blacks, this.playerblacksCollisionS, null, this);
-
-        this.playerblacksCollisionS = function(p, b)
-        {
-            g.kill()
-        }
-
-        this.game.physics.arcade.overlap(outline, whites, this.playerwhiteCollisionS, null, this);
-
-        this.playerwhiteCollisionS = function(p, w)
-        {
-            g.kill();
-            
-        }
-        
-       
-        this.game.physics.arcade.overlap(outline,spawns, this.playerspawnsCollisionS, null, this);
-
-        this.playerspawnsCollisionS = function(p,g)
-        {
-            g.kill();
-        }
-
-    }
+    
     
 
     return {
@@ -169,7 +147,9 @@ GameStates.makeGame = function( game, shared ) {
             map.createFromObjects('people', 'spawn', 'people', 9, true, false, spawns);
 
             spawns.forEach(function(s){
-                s.infected = false;
+                spawnX = s.x;
+                spawnY = s.y;
+                s.kill();
             });
 
             goals = this.game.add.physicsGroup();
@@ -213,11 +193,11 @@ GameStates.makeGame = function( game, shared ) {
             });
 
 
-            player = game.add.sprite(game.world.centerX, game.world.centerY, 'player');
+            player = game.add.sprite(spawnX+ 16, spawnY + 16, 'player');
             player.anchor.setTo(0.5, 0.5);
-            player.frame = 0;
+            player.frame = 5;
             stationary = true;
-            outline = game.add.sprite(game.world.centerX, game.world.centerY, 'outline');
+            outline = game.add.sprite(spawnX + 16, spawnY + 16, 'outline');
             outline.anchor.setTo(0.5, 0.5);
          
             
@@ -249,6 +229,7 @@ GameStates.makeGame = function( game, shared ) {
             player.dir = "none";
             cursors = game.input.keyboard.createCursorKeys();
 
+            Rkey = game.input.keyboard.addKey(Phaser.Keyboard.R);
             
 
 
@@ -262,7 +243,21 @@ GameStates.makeGame = function( game, shared ) {
             trailEmitter.setScale(1,0,1,0,300,Phaser.Easing.Linear.InOut);
             trailEmitter.start(false,300, 100);    
             
+            slimeEmitter = game.add.emitter(0,0,100);
+            slimeEmitter.makeParticles('slime', 0, 100, true, true);
+            slimeEmitter.gravity = 0;
+            slimeEmitter.particleDrag.setTo(100,100);
+            slimeEmitter.minParticleScale = .1;
+            slimeEmitter.maxParticleScale = .4;
+            slimeEmitter.setAlpha(.5, 0, pLifetime, Phaser.Easing.Linear.InOut);
 
+            bloodEmitter = game.add.emitter(0,0,100);
+            bloodEmitter.makeParticles('blood', 0, 100, true, true);
+            bloodEmitter.gravity = 0;
+            bloodEmitter.particleDrag.setTo(100,100);
+            bloodEmitter.minParticleScale = .1;
+            bloodEmitter.maxParticleScale = .5;
+            bloodEmitter.setAlpha(.5, 0, pLifetime, Phaser.Easing.Linear.InOut);
             
             
 
@@ -273,9 +268,17 @@ GameStates.makeGame = function( game, shared ) {
            
             if (this.game.physics.arcade.collide(player, wallsLayer))
             {
+                slimeEmitter.x = player.x;
+                slimeEmitter.y = player.y;
+                slimeEmitter.start(true,pLifetime, null, 20);
                 game.state.restart();
             }
             
+            if(Rkey.isDown)
+            {
+                game.state.restart();
+            }
+
             //projectiles walls
             this.game.physics.arcade.collide(projectiles,wallsLayer, this.projwallsCollision, null, this);
 
@@ -389,31 +392,42 @@ GameStates.makeGame = function( game, shared ) {
 
             this.projwhitesCollision = function(p,w)
             {
-             p.kill();
-             w.kill();   
+                bloodEmitter.x = w.x + 16;
+                bloodEmitter.y = w.y + 16;
+                bloodEmitter.start(true,pLifetime, null, 20);
+                p.kill();
+                w.kill();   
             }
 
             this.game.physics.arcade.overlap(projectiles,reds, this.projredsCollision, null, this);
 
             this.projredsCollision = function(p,r)
             {
-             p.kill();
-             r.kill();   
+                bloodEmitter.x = r.x + 16;
+                bloodEmitter.y = r.y + 16;
+                bloodEmitter.start(true,pLifetime, null, 20);
+                p.kill();
+                r.kill();   
             }
 
             this.game.physics.arcade.overlap(projectiles,blacks, this.projblacksCollision, null, this);
 
             this.projblacksCollision = function(p,b)
             {
-             p.kill();
-             b.kill();   
+                bloodEmitter.x = b.x + 16;
+                bloodEmitter.y = b.y + 16;
+                bloodEmitter.start(true,pLifetime, null, 20);
+                p.kill();
+                b.kill();   
             }
 
             this.game.physics.arcade.overlap(projectiles,ghosts, this.projghostsCollision, null, this);
 
             this.projghostsCollision = function(p,g)
             {
-                
+                bloodEmitter.x = g.x + 16;
+                bloodEmitter.y = g.y + 16;
+                bloodEmitter.start(true,pLifetime, null, 20);
                 g.kill();   
             }
 
@@ -421,6 +435,9 @@ GameStates.makeGame = function( game, shared ) {
 
             this.projgoalsCollision = function(p,g)
             {
+                bloodEmitter.x = g.x + 16;
+                bloodEmitter.y = g.y + 16;
+                bloodEmitter.start(true,pLifetime, null, 20);
                 p.kill();
                 g.kill();
                 game.state.restart();    
@@ -436,25 +453,40 @@ GameStates.makeGame = function( game, shared ) {
             {
                 if(stationary === true)
                 {
-                   
+                
+
                     trailEmitter.on = false;
                     
-                
+                    
 
 
                     if(cursors.right.isDown)
-                    {
+                    {   
+                        bloodEmitter.x = player.x;
+                        bloodEmitter.y = player.y;
+                        slimeEmitter.x = player.x;
+                        slimeEmitter.y = player.y;
+                        bloodEmitter.start(true,pLifetime, null, 20);
+                        slimeEmitter.start(true,pLifetime, null, 20);
+                        player.frame = 0;
                         player.x = outline.x;
                         player.y = outline.y;
                         player.body.velocity.x = speed;
                         player.body.velocity.y = 0;
                         player.dir = "right";
-                        player.alpha = 1;
+                        
                        
                         
                         stationary = false;        
                     }else if(cursors.up.isDown)
                     {
+                        bloodEmitter.x = player.x;
+                        bloodEmitter.y = player.y;
+                        slimeEmitter.x = player.x;
+                        slimeEmitter.y = player.y;
+                        bloodEmitter.start(true,pLifetime, null, 20);
+                        slimeEmitter.start(true,pLifetime, null, 20);
+                        player.frame = 0;
                         player.x = outline.x;
                         player.y = outline.y;
                         player.body.velocity.y = -speed;
@@ -466,26 +498,43 @@ GameStates.makeGame = function( game, shared ) {
                         stationary = false;
                     }else if(cursors.left.isDown)
                     {
+                        bloodEmitter.x = player.x;
+                        bloodEmitter.y = player.y;
+                        slimeEmitter.x = player.x;
+                        slimeEmitter.y = player.y;
+                        bloodEmitter.start(true,pLifetime, null, 20);
+                        slimeEmitter.start(true,pLifetime, null, 20);
+                        player.frame = 0;
                         player.x = outline.x;
                         player.y = outline.y;
                         player.body.velocity.x = -speed;
                         player.body.velocity.y = 0;
                         player.dir = "left";
-                        player.alpha =1;
+                        
                         
                         stationary = false;
                     }else if(cursors.down.isDown)
                     {
+                        bloodEmitter.x = player.x;
+                        bloodEmitter.y = player.y;
+                        slimeEmitter.x = player.x;
+                        slimeEmitter.y = player.y;
+                        bloodEmitter.start(true,pLifetime, null, 20);
+                        slimeEmitter.start(true,pLifetime, null, 20);
+                        player.frame = 0;
                         player.x = outline.x;
                         player.y = outline.y;
                         player.body.velocity.y = speed;
                         player.body.velocity.x = 0;
                         player.dir = "down"; 
-                        player.alpha = 1;
+                        
                         
                         stationary = false;
                     }else
                     {
+                        
+                        player.x = outline.x;
+                        player.y = outline.y
                         player.body.velocity.y = 0;
                         player.body.velocity.x = 0;
                     }
@@ -672,14 +721,15 @@ GameStates.makeGame = function( game, shared ) {
 
                     this.playerblacksCollisionM = function(p, b)
                     {   
-                            if(stationary === false && b.frame !== 3)
+                            if(stationary === false)
                             {
+                                b.kill();
                                 player.x = p.x;
                                 player.y = p.y;
-                                b.frame = 3;
+                                player.frame = 2;
                                 charge = 1;
                                 trailEmitter.on = false;
-                                player.alpha = 0;
+                                
                                 stationary = true;
                             }
 
@@ -690,14 +740,14 @@ GameStates.makeGame = function( game, shared ) {
 
                     this.playerwhiteCollisionM = function(p, w)
                     {
-                            if(stationary === false && w.frame !== 1)
+                            if(stationary === false)
                             {
                                 player.x = p.x;
                                 player.y = p.y;
-                                w.frame = 1;
+                                w.kill();
                                 charge = 1;
                                 trailEmitter.on = false;
-                                player.alpha = 0;
+                                player.frame = 1;
                                 stationary = true;
                             }
 
@@ -709,6 +759,12 @@ GameStates.makeGame = function( game, shared ) {
 
                     this.playerghostCollisionM = function(p, g)
                     {
+                        bloodEmitter.x = g.x + 16;
+                        bloodEmitter.y = g.y + 16;
+                        bloodEmitter.start(true,pLifetime, null, 20);
+                        slimeEmitter.x = g.x + 16;
+                        slimeEmitter.y = g.y + 16;
+                        slimeEmitter.start(true,pLifetime, null, 20);
                         player.x = p.x;
                         player.y = p.y;
                         charge = 1;
@@ -719,18 +775,15 @@ GameStates.makeGame = function( game, shared ) {
 
                     this.playerspawnsCollisionM = function(p,s)
                     {
-                            if(stationary === false && s.frame !== 8)
-                            {
-                                player.x = p.x;
-                                player.y = p.y;
-                                s.frame = 8;
-                                trailEmitter.on = false;
-                                player.alpha = 0;
-                                charge = 1;
-                                stationary = true;
-                            }else if(stationary === false && s.frame ===8)
+                            if(stationary === false)
                             {
                                 s.kill();
+                                player.x = p.x;
+                                player.y = p.y;
+                                player.frame = 5;
+                                trailEmitter.on = false;
+                                charge = 1;
+                                stationary = true;
                             }
                         
 
