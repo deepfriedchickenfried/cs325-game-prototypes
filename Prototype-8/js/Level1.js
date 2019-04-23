@@ -81,22 +81,7 @@ var Level1 = function( game) {
         
     }
 
-    function moveOneSpace(dir, x,y )
-    {
-        if(dir === "up")
-        {
-
-        }else if(dir === "down")
-        {
-
-        }else if(dir === "left")
-        {   
-
-        }else if(dir === "right")
-        {
-
-        }
-    }
+    
     
     
     
@@ -242,7 +227,7 @@ var Level1 = function( game) {
             //trailEmitter.setAlpha(1, 0, 300, Phaser.Easing.Linear.InOut);
             trailEmitter.setScale(1,0,1,0,300,Phaser.Easing.Linear.InOut);
             trailEmitter.start(false,300, 100);    
-            
+            //slime particles
             slimeEmitter = game.add.emitter(0,0,100);
             slimeEmitter.makeParticles('slime', 0, 100, true, true);
             slimeEmitter.gravity = 0;
@@ -250,7 +235,7 @@ var Level1 = function( game) {
             slimeEmitter.minParticleScale = .1;
             slimeEmitter.maxParticleScale = .4;
             slimeEmitter.setAlpha(.5, 0, pLifetime, Phaser.Easing.Linear.InOut);
-
+            //blood particles
             bloodEmitter = game.add.emitter(0,0,100);
             bloodEmitter.makeParticles('blood', 0, 100, true, true);
             bloodEmitter.gravity = 0;
