@@ -3,7 +3,6 @@
 GameStates.makeGame = function( game, shared ) {
     // Create your own variables.
     var deathText;
-    var deathStyle;
     var map;
     var bgLayer;
     var wallsLayer;
@@ -17,6 +16,14 @@ GameStates.makeGame = function( game, shared ) {
     var uprights;
     var downlefts;
     var downrights;
+    
+    var projectileWall;
+    
+    var up;
+    var left;
+    var right;
+    var down;
+
 
     var reds;
     var whites;
@@ -25,7 +32,6 @@ GameStates.makeGame = function( game, shared ) {
     var goals;
     var blacks;
 
-    
     var outline;
     var player;
  
@@ -86,7 +92,7 @@ GameStates.makeGame = function( game, shared ) {
     {
         if(dir === "up")
         {
-
+            
         }else if(dir === "down")
         {
 
@@ -99,11 +105,11 @@ GameStates.makeGame = function( game, shared ) {
         }
     }
     
-    
-    function deathState()
+    function deathEvent()
     {
-        deathText.alpha
-    } 
+        deathText.alpha = 1;
+    }
+    
 
     return {
     
@@ -196,6 +202,19 @@ GameStates.makeGame = function( game, shared ) {
                 dr.bounced = false;
             });
 
+            projectileWall = this.game.add.physicsGroup();
+
+            up = this.game.add.physicsGroup();
+
+
+            right = this.game.add.physicsGroup();
+
+
+            left = this.game.add.physicsGroup();
+
+
+            down = this.game.add.physicsGroup();
+            
 
             player = game.add.sprite(spawnX+ 16, spawnY + 16, 'player');
             player.anchor.setTo(0.5, 0.5);
@@ -266,7 +285,7 @@ GameStates.makeGame = function( game, shared ) {
             deathStyle = {font: " 14px Arial", fill: "#ff004d", align: "center"};
             deathText = game.add.text(game.world.centerX, game.world.height -50, "You died, press R to try again", noteStyle);
             deathText.anchor.set(0.5);
-
+            deathText.alpha = 0;
            
         },
     
@@ -277,7 +296,7 @@ GameStates.makeGame = function( game, shared ) {
                 slimeEmitter.x = player.x;
                 slimeEmitter.y = player.y;
                 slimeEmitter.start(true,pLifetime, null, 20);
-                game.state.restart();
+                deathEvent();
             }
             
             if(Rkey.isDown)
@@ -446,7 +465,8 @@ GameStates.makeGame = function( game, shared ) {
                 bloodEmitter.start(true,pLifetime, null, 20);
                 p.kill();
                 g.kill();
-                death  
+                player.kill();
+                deathEvent();
             }
 
             //player and person collisions
@@ -719,7 +739,7 @@ GameStates.makeGame = function( game, shared ) {
                     {
                         if(stationary === false)
                         {
-                            game.state.restart();
+                            deathEvent();
                         }    
                     }
 
