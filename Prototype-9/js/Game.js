@@ -17,7 +17,12 @@ GameStates.makeGame = function( game, shared ) {
     var downlefts;
     var downrights;
     
-    var projectileWall;
+    var pipes;
+    var destructible;
+    var uponly;
+    var downonly;
+    var leftonly;
+    var rightonly;
     
     var up;
     var left;
@@ -202,18 +207,30 @@ GameStates.makeGame = function( game, shared ) {
                 dr.bounced = false;
             });
 
-            projectileWall = this.game.add.physicsGroup();
+            pipes = this.game.add.physicsGroup();
+            map.createFromObjects('blocks', 'pipe', 'WallS', 3, true, false, pipes);
+            
+            pipes.forEach(function(p){
+                p.body.immovable = true;
+            });
 
-            up = this.game.add.physicsGroup();
+            uponly = this.game.add.physicsGroup();
+            map.createFromObjects('blocks', 'up', 'WallS', 3, true, false, uponly);
+
+            uponly.forEach(function(u){
+                u.body.immovable = true;
+            });
+
+            rightonly = this.game.add.physicsGroup();
 
 
-            right = this.game.add.physicsGroup();
+            leftonly = this.game.add.physicsGroup();
 
 
-            left = this.game.add.physicsGroup();
+            downonly = this.game.add.physicsGroup();
+            
 
-
-            down = this.game.add.physicsGroup();
+            destructible = this.game.add.physicsGroup();
             
 
             player = game.add.sprite(spawnX+ 16, spawnY + 16, 'player');

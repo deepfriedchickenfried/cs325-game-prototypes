@@ -16,6 +16,8 @@ var Level1 = function( game) {
     var uprights;
     var downlefts;
     var downrights;
+    var destructible;
+    var 
 
     var reds;
     var whites;
