@@ -33,7 +33,7 @@
   <object id="91" name="black" gid="3" x="416" y="192" width="32" height="32"/>
   <object id="92" name="spawn" gid="10" x="224" y="96" width="32" height="32"/>
   <object id="93" name="black" gid="3" x="352" y="256" width="32" height="32"/>
-  <object id="94" name="black" gid="3" x="416" y="384" width="32" height="32"/>
+  <object id="94" name="black" gid="3" x="416" y="384" width="32" height="32" visible="0"/>
   <object id="95" name="red" gid="5" x="448" y="416" width="32" height="32"/>
   <object id="96" name="black" gid="3" x="448" y="448" width="32" height="32"/>
   <object id="97" name="red" gid="5" x="416" y="480" width="32" height="32"/>

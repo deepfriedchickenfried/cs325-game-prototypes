@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="25" height="19" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="67">
+<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="25" height="19" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="66">
  <tileset firstgid="1" name="topdownpeople" tilewidth="32" tileheight="32" tilecount="12" columns="2">
   <image source="topdownpeople.png" width="64" height="192"/>
  </tileset>
@@ -43,7 +43,6 @@
   <object id="44" name="red" gid="5" x="544" y="320" width="32" height="32"/>
   <object id="54" name="black" gid="3" x="640" y="96" width="32" height="32"/>
   <object id="55" name="black" gid="3" x="608" y="224" width="32" height="32"/>
-  <object id="66" name="red" gid="5" x="96" y="576" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="3" name="corners">
   <object id="1" name="upright" gid="15" x="32" y="576" width="32" height="32"/>
