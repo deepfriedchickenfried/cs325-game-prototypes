@@ -32,15 +32,15 @@ GameStates.makePreloader = function( game ) {
             game.load.spritesheet('WallS', 'assets/walls1.png', 32,32);
             
 
-            game.load.tilemap('map', 'assets/vomitComet.json', null, Phaser.Tilemap.TILED_JSON);
-            game.load.tilemap('testmap1', 'assets/test1.json', null, Phaser.Tilemap.TILED_JSON);
-            game.load.tilemap('testmap2', 'assets/test2.json', null, Phaser.Tilemap.TILED_JSON);
-            game.load.tilemap('testmap', 'assets/test.json', null, Phaser.Tilemap.TILED_JSON);
+          
+           
+            game.load.tilemap('testmap', 'assets/level1.json', null, Phaser.Tilemap.TILED_JSON);
             game.load.spritesheet('people', 'assets/topdownpeople.png', 32, 32);
             //game.load.image('people', 'assets/topdownpeople.png');
             game.load.image('Walls', 'assets/walls1.png');
             game.load.spritesheet('player', 'assets/slime.png', 32, 32);
             game.load.image('slime', 'assets/slimeParticle.png');
+            game.load.spritesheet('debris', 'assets/debris.png', 12, 12);
             game.load.image('blood', 'assets/bloodParticle.png');
             game.load.image('projectile', 'assets/projectile.png');
             game.load.image('outline', 'assets/outline.png');

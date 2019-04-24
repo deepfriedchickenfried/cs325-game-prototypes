@@ -2,6 +2,7 @@
 
 GameStates.makeGame = function( game, shared ) {
     // Create your own variables.
+    var deathStyle;
     var deathText;
     var map;
     var bgLayer;
@@ -45,6 +46,8 @@ GameStates.makeGame = function( game, shared ) {
     var trailEmitter;
     var bloodEmitter;
     var slimeEmitter;
+    var miniEmitter;
+    var debrisEmitter;
     var projectiles;
     var pLifetime = 5000;
     
@@ -110,6 +113,12 @@ GameStates.makeGame = function( game, shared ) {
     function deathEvent()
     {
         deathText.alpha = 1;
+        slimeEmitter.x = player.x;
+        slimeEmitter.y = player.y;
+        slimeEmitter.start(true,pLifetime, null, 20);
+        trailEmitter.on = false;
+        player.kill();
+        outline.kill();
     }
     
 
@@ -126,7 +135,7 @@ GameStates.makeGame = function( game, shared ) {
             
             bgLayer = map.createLayer('background');
             wallsLayer = map.createLayer('walls');
-            map.setCollision(13,true,wallsLayer);
+            map.setCollision(1,true,wallsLayer);
 
             //people
             reds = this.game.add.physicsGroup();
@@ -205,21 +214,21 @@ GameStates.makeGame = function( game, shared ) {
             });
 
             pipes = this.game.add.physicsGroup();
-            map.createFromObjects('blocks', 'pipe', 'WallS', 3, true, false, pipes);
+            map.createFromObjects('corners', 'pipe', 'WallS', 7, true, false, pipes);
             
             pipes.forEach(function(p){
                 p.body.immovable = true;
             });
 
             uponly = this.game.add.physicsGroup();
-            map.createFromObjects('blocks', 'up', 'WallS', 3, true, false, uponly);
+            map.createFromObjects('corners', 'up', 'WallS', 8, true, false, uponly);
 
             uponly.forEach(function(u){
                 u.body.immovable = true;
             });
 
             rightonly = this.game.add.physicsGroup();
-            map.createFromObjects('blocks', 'right', 'WallS', 3, true, false, rightonly);
+            map.createFromObjects('corners', 'right', 'WallS', 9, true, false, rightonly);
 
             rightonly.forEach(function(r)
             {
@@ -229,7 +238,7 @@ GameStates.makeGame = function( game, shared ) {
             
 
             leftonly = this.game.add.physicsGroup();
-            map.createFromObjects('blocks', 'left', 'WallS', 3, true, false, leftonly);
+            map.createFromObjects('corners', 'left', 'WallS', 11, true, false, leftonly);
 
             leftonly.forEach(function(r)
             {
@@ -237,7 +246,7 @@ GameStates.makeGame = function( game, shared ) {
             });
 
             downonly = this.game.add.physicsGroup();
-            map.createFromObjects('blocks', 'down', 'WallS', 3, true, false, downonly);
+            map.createFromObjects('corners', 'down', 'WallS', 10, true, false, downonly);
             
             downonly.forEach(function(r)
             {
@@ -245,7 +254,7 @@ GameStates.makeGame = function( game, shared ) {
             });
 
             destructible = this.game.add.physicsGroup();
-            map.createFromObjects('blocks', 'destructible', 'WallS', 3, true, false, destructible);
+            map.createFromObjects('corners', 'break', 'WallS', 12, true, false, destructible);
 
             destructible.forEach(function(r)
             {
@@ -255,6 +264,7 @@ GameStates.makeGame = function( game, shared ) {
             player = game.add.sprite(spawnX+ 16, spawnY + 16, 'player');
             player.anchor.setTo(0.5, 0.5);
             player.frame = 5;
+            
             stationary = true;
             outline = game.add.sprite(spawnX + 16, spawnY + 16, 'outline');
             outline.anchor.setTo(0.5, 0.5);
@@ -263,6 +273,7 @@ GameStates.makeGame = function( game, shared ) {
             //  Honestly, just about anything could go here. It's YOUR game after all. Eat your heart out!
             game.physics.startSystem(Phaser.Physics.Arcade); 
             game.physics.arcade.enable(player, true);
+            
             game.physics.arcade.enable(outline, true);
            
             
@@ -282,7 +293,7 @@ GameStates.makeGame = function( game, shared ) {
             outline.body.collideWorldBounds = true;
             
             
-            player.body.setCircle(10);
+            player.body.setCircle(8);
             player.body.collideWorldBounds= true;
             player.body.velocity.setTo(0,0);
             player.dir = "none";
@@ -310,6 +321,14 @@ GameStates.makeGame = function( game, shared ) {
             slimeEmitter.maxParticleScale = .4;
             slimeEmitter.setAlpha(.5, 0, pLifetime, Phaser.Easing.Linear.InOut);
 
+            miniEmitter = game.add.emitter(0,0,100);
+            miniEmitter.makeParticles('slime', 0, 100, true, true);
+            miniEmitter.gravity = 0;
+            miniEmitter.particleDrag.setTo(200,200);
+            miniEmitter.minParticleScale = .1;
+            miniEmitter.maxParticleScale = .2;
+            miniEmitter.setAlpha(.5, 0, pLifetime, Phaser.Easing.Linear.InOut);
+
             bloodEmitter = game.add.emitter(0,0,100);
             bloodEmitter.makeParticles('blood', 0, 100, true, true);
             bloodEmitter.gravity = 0;
@@ -317,9 +336,17 @@ GameStates.makeGame = function( game, shared ) {
             bloodEmitter.minParticleScale = .1;
             bloodEmitter.maxParticleScale = .5;
             bloodEmitter.setAlpha(.5, 0, pLifetime, Phaser.Easing.Linear.InOut);
+
+            debrisEmitter = game.add.emitter(0,0,100);
+            debrisEmitter.makeParticles('debris', [0,1,2,3], 100, true, true);
+            debrisEmitter.gravity = 0;
+            debrisEmitter.particleDrag.setTo(100,100);
+            debrisEmitter.minParticleScale = .1;
+            debrisEmitter.maxParticleScale = 1;
+            debrisEmitter.setAlpha(1, 0, pLifetime, Phaser.Easing.Linear.InOut);
             
             deathStyle = {font: " 14px Arial", fill: "#ff004d", align: "center"};
-            deathText = game.add.text(game.world.centerX, game.world.height -50, "You died, press R to try again", noteStyle);
+            deathText = game.add.text(game.world.centerX, game.world.height -50, "You died, press R to try again", deathStyle);
             deathText.anchor.set(0.5);
             deathText.alpha = 0;
            
@@ -327,7 +354,7 @@ GameStates.makeGame = function( game, shared ) {
     
         update: function () {
            
-            if ((this.game.physics.arcade.collide(player, wallsLayer) && stationary !== true) || (this.game.physics.arcade.collide(player, pipes) && stationary !== true))
+            if ((this.game.physics.arcade.collide(player, wallsLayer) && stationary !== true) || (this.game.physics.arcade.overlap(outline, pipes) && stationary !== true))
             {
                 slimeEmitter.x = player.x;
                 slimeEmitter.y = player.y;
@@ -335,7 +362,7 @@ GameStates.makeGame = function( game, shared ) {
                 deathEvent();
             }
             
-            if(((this.game.physics.arcade.collide(player, uponly) && player.dir !== "up") ||(this.game.physics.arcade.collide(player, downonly) && player.dir !== "down")||(this.game.physics.arcade.collide(player, rightonly) && player.dir !== "right")||(this.game.physics.arcade.collide(player, leftonly) && player.dir !== "left")) && stationary !== true)
+            if(((this.game.physics.arcade.overlap(outline, uponly) && player.dir !== "up") ||(this.game.physics.arcade.overlap(outline, downonly) && player.dir !== "down")||(this.game.physics.arcade.overlap(outline, rightonly) && player.dir !== "right")||(this.game.physics.arcade.overlap(outline, leftonly) && player.dir !== "left")) && stationary !== true)
             {
                 slimeEmitter.x = player.x;
                 slimeEmitter.y = player.y;
@@ -353,6 +380,9 @@ GameStates.makeGame = function( game, shared ) {
 
             this.projwallsCollision = function(p,w)
             {
+                miniEmitter.x = p.x;
+                miniEmitter.y = p.y;
+                miniEmitter.start(true,pLifetime, null, 20);
                 p.kill();
             }
 
@@ -461,6 +491,12 @@ GameStates.makeGame = function( game, shared ) {
 
             this.projdestructibleCollision = function(p,d)
             {
+                debrisEmitter.x = d.x + 16;
+                debrisEmitter.y = d.y + 16;
+                debrisEmitter.start(true,pLifetime, null, 20);
+                miniEmitter.x = p.x;
+                miniEmitter.y = p.y;
+                miniEmitter.start(true,pLifetime, null, 20);
                 p.kill();
                 d.kill();
             }
@@ -471,6 +507,9 @@ GameStates.makeGame = function( game, shared ) {
             {
                 if(p.dir !== "up")
                 {
+                    miniEmitter.x = p.x;
+                    miniEmitter.y = p.y;
+                    miniEmitter.start(true,pLifetime, null, 20);
                     p.kill();
                 }
             }
@@ -481,6 +520,9 @@ GameStates.makeGame = function( game, shared ) {
             {
                 if(p.dir !== "left")
                 {
+                    miniEmitter.x = p.x;
+                    miniEmitter.y = p.y;
+                    miniEmitter.start(true,pLifetime, null, 20);
                     p.kill();
                 }
             }
@@ -491,6 +533,9 @@ GameStates.makeGame = function( game, shared ) {
             {
                 if(p.dir !== "right")
                 {
+                    miniEmitter.x = p.x;
+                    miniEmitter.y = p.y;
+                    miniEmitter.start(true,pLifetime, null, 20);
                     p.kill();
                 }
             }
@@ -501,6 +546,9 @@ GameStates.makeGame = function( game, shared ) {
             {
                 if(p.dir !== "down")
                 {
+                    miniEmitter.x = p.x;
+                    miniEmitter.y = p.y;
+                    miniEmitter.start(true,pLifetime, null, 20);
                     p.kill();
                 }
             }
@@ -514,6 +562,9 @@ GameStates.makeGame = function( game, shared ) {
                 bloodEmitter.x = w.x + 16;
                 bloodEmitter.y = w.y + 16;
                 bloodEmitter.start(true,pLifetime, null, 20);
+                miniEmitter.x = p.x;
+                miniEmitter.y = p.y;
+                miniEmitter.start(true,pLifetime, null, 20);
                 p.kill();
                 w.kill();   
             }
@@ -525,6 +576,9 @@ GameStates.makeGame = function( game, shared ) {
                 bloodEmitter.x = r.x + 16;
                 bloodEmitter.y = r.y + 16;
                 bloodEmitter.start(true,pLifetime, null, 20);
+                miniEmitter.x = p.x;
+                miniEmitter.y = p.y;
+                miniEmitter.start(true,pLifetime, null, 20);
                 p.kill();
                 r.kill();   
             }
@@ -536,6 +590,9 @@ GameStates.makeGame = function( game, shared ) {
                 bloodEmitter.x = b.x + 16;
                 bloodEmitter.y = b.y + 16;
                 bloodEmitter.start(true,pLifetime, null, 20);
+                miniEmitter.x = p.x;
+                miniEmitter.y = p.y;
+                miniEmitter.start(true,pLifetime, null, 20);
                 p.kill();
                 b.kill();   
             }
@@ -557,6 +614,9 @@ GameStates.makeGame = function( game, shared ) {
                 bloodEmitter.x = g.x + 16;
                 bloodEmitter.y = g.y + 16;
                 bloodEmitter.start(true,pLifetime, null, 20);
+                miniEmitter.x = p.x;
+                miniEmitter.y = p.y;
+                miniEmitter.start(true,pLifetime, null, 20);
                 p.kill();
                 g.kill();
                 player.kill();
@@ -791,6 +851,9 @@ GameStates.makeGame = function( game, shared ) {
 
                     this.destructibleCollision = function(o, d)
                     {
+                        debrisEmitter.x = d.x + 16;
+                        debrisEmitter.y = d.y + 16;
+                        debrisEmitter.start(true,pLifetime, null, 20);
                         d.kill();
                         player.kill();
                         slimeEmitter.x = player.x;
@@ -807,7 +870,7 @@ GameStates.makeGame = function( game, shared ) {
                         player.body.velocity.y = 0;
                         player.dir = "right";
                         fireProjectile("left",player.x,player.y);
-                        charge--;
+                        //charge--;
                     }else if(charge >= 1 && cursors.up.isDown && player.dir !== "up")
                     {
                         player.x = outline.x;
@@ -816,7 +879,7 @@ GameStates.makeGame = function( game, shared ) {
                         player.body.velocity.x = 0;
                         player.dir = "up";
                         fireProjectile("down",player.x,player.y);
-                        charge--;
+                        //charge--;
                     }else if(charge >= 1 && cursors.left.isDown && player.dir !== "left")
                     {
                         player.x = outline.x;
@@ -825,7 +888,7 @@ GameStates.makeGame = function( game, shared ) {
                         player.body.velocity.y = 0;
                         player.dir = "left";
                         fireProjectile("right",player.x,player.y);
-                        charge--;
+                        //charge--;
                     }else if(charge >= 1 && cursors.down.isDown && player.dir !== "down")
                     {
                         player.x = outline.x;
@@ -834,7 +897,7 @@ GameStates.makeGame = function( game, shared ) {
                         player.body.velocity.x = 0;
                         player.dir = "down"; 
                         fireProjectile("up",player.x,player.y);
-                        charge--;
+                        //charge--;
                     }
 
                     
