@@ -335,7 +335,13 @@ GameStates.makeGame = function( game, shared ) {
                 deathEvent();
             }
             
-
+            if(((this.game.physics.arcade.collide(player, uponly) && player.dir !== "up") ||(this.game.physics.arcade.collide(player, downonly) && player.dir !== "down")||(this.game.physics.arcade.collide(player, rightonly) && player.dir !== "right")||(this.game.physics.arcade.collide(player, leftonly) && player.dir !== "left")) && stationary !== true)
+            {
+                slimeEmitter.x = player.x;
+                slimeEmitter.y = player.y;
+                slimeEmitter.start(true,pLifetime, null, 20);
+                deathEvent();
+            }
 
             if(Rkey.isDown)
             {
@@ -781,6 +787,16 @@ GameStates.makeGame = function( game, shared ) {
                         }
                     }
 
+                    this.game.physics.arcade.overlap(outline, destructible, this.destructibleCollision, null, this);
+
+                    this.destructibleCollision = function(o, d)
+                    {
+                        d.kill();
+                        player.kill();
+                        slimeEmitter.x = player.x;
+                        slimeEmitter.y = player.y;
+                        slimeEmitter.start(true,pLifetime, null, 20);
+                    }
                     
 
                     if(charge >= 1 && cursors.right.isDown && player.dir !== "right")
