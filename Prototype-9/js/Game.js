@@ -24,10 +24,7 @@ GameStates.makeGame = function( game, shared ) {
     var leftonly;
     var rightonly;
     
-    var up;
-    var left;
-    var right;
-    var down;
+   
 
 
     var reds;
@@ -222,16 +219,38 @@ GameStates.makeGame = function( game, shared ) {
             });
 
             rightonly = this.game.add.physicsGroup();
+            map.createFromObjects('blocks', 'right', 'WallS', 3, true, false, rightonly);
 
+            rightonly.forEach(function(r)
+            {
+                r.body.immovable = true;
+            });
+
+            
 
             leftonly = this.game.add.physicsGroup();
+            map.createFromObjects('blocks', 'left', 'WallS', 3, true, false, leftonly);
 
+            leftonly.forEach(function(r)
+            {
+                r.body.immovable = true;
+            });
 
             downonly = this.game.add.physicsGroup();
+            map.createFromObjects('blocks', 'down', 'WallS', 3, true, false, downonly);
             
+            downonly.forEach(function(r)
+            {
+                r.body.immovable = true;
+            });
 
             destructible = this.game.add.physicsGroup();
-            
+            map.createFromObjects('blocks', 'destructible', 'WallS', 3, true, false, destructible);
+
+            destructible.forEach(function(r)
+            {
+                r.body.immovable = true;
+            });
 
             player = game.add.sprite(spawnX+ 16, spawnY + 16, 'player');
             player.anchor.setTo(0.5, 0.5);
@@ -308,7 +327,7 @@ GameStates.makeGame = function( game, shared ) {
     
         update: function () {
            
-            if (this.game.physics.arcade.collide(player, wallsLayer) && stationary !== true)
+            if ((this.game.physics.arcade.collide(player, wallsLayer) && stationary !== true) || (this.game.physics.arcade.collide(player, pipes) && stationary !== true))
             {
                 slimeEmitter.x = player.x;
                 slimeEmitter.y = player.y;
@@ -316,6 +335,8 @@ GameStates.makeGame = function( game, shared ) {
                 deathEvent();
             }
             
+
+
             if(Rkey.isDown)
             {
                 game.state.restart();
@@ -430,6 +451,56 @@ GameStates.makeGame = function( game, shared ) {
                 }
             }
 
+            this.game.physics.arcade.overlap(projectiles,destructible, this.projdestructibleCollision, null, this);
+
+            this.projdestructibleCollision = function(p,d)
+            {
+                p.kill();
+                d.kill();
+            }
+
+            this.game.physics.arcade.overlap(projectiles, uponly, this.projupCollision, null, this);
+
+            this.projupCollision = function(p,u)
+            {
+                if(p.dir !== "up")
+                {
+                    p.kill();
+                }
+            }
+
+            this.game.physics.arcade.overlap(projectiles, leftonly, this.projleftCollision, null, this);
+
+            this.projleftCollision = function(p,l)
+            {
+                if(p.dir !== "left")
+                {
+                    p.kill();
+                }
+            }
+
+            this.game.physics.arcade.overlap(projectiles, rightonly, this.projrightCollision, null, this);
+
+            this.projrightCollision = function(p,r)
+            {
+                if(p.dir !== "right")
+                {
+                    p.kill();
+                }
+            }
+
+            this.game.physics.arcade.overlap(projectiles, downonly, this.projdownCollision, null, this);
+
+            this.projdownCollision = function(p,d)
+            {
+                if(p.dir !== "down")
+                {
+                    p.kill();
+                }
+            }
+
+
+
             this.game.physics.arcade.overlap(projectiles,whites, this.projwhitesCollision, null, this);
 
             this.projwhitesCollision = function(p,w)
@@ -485,6 +556,9 @@ GameStates.makeGame = function( game, shared ) {
                 player.kill();
                 deathEvent();
             }
+
+
+            
 
             //player and person collisions
             
@@ -747,7 +821,7 @@ GameStates.makeGame = function( game, shared ) {
                         charge--;
                     }
 
-
+                    
 
                 }
                 this.game.physics.arcade.overlap(outline, reds,this.playerredsCollisionM, null, this);
