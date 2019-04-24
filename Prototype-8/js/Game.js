@@ -2,8 +2,7 @@
 
 GameStates.makeGame = function( game, shared ) {
     // Create your own variables.
-    var deathText;
-    var deathStyle;
+    
     var map;
     var bgLayer;
     var wallsLayer;
@@ -100,10 +99,7 @@ GameStates.makeGame = function( game, shared ) {
     }
     
     
-    function deathState()
-    {
-        deathText.alpha
-    } 
+    
 
     return {
     
@@ -263,9 +259,7 @@ GameStates.makeGame = function( game, shared ) {
             bloodEmitter.maxParticleScale = .5;
             bloodEmitter.setAlpha(.5, 0, pLifetime, Phaser.Easing.Linear.InOut);
             
-            deathStyle = {font: " 14px Arial", fill: "#ff004d", align: "center"};
-            deathText = game.add.text(game.world.centerX, game.world.height -50, "You died, press R to try again", noteStyle);
-            deathText.anchor.set(0.5);
+            
 
            
         },
@@ -446,7 +440,7 @@ GameStates.makeGame = function( game, shared ) {
                 bloodEmitter.start(true,pLifetime, null, 20);
                 p.kill();
                 g.kill();
-                death  
+                game.state.restart();    
             }
 
             //player and person collisions
