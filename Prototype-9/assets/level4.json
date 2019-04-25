@@ -137,6 +137,30 @@
                  "width":32,
                  "x":416,
                  "y":288
+                }, 
+                {
+                 "gid":11,
+                 "height":32,
+                 "id":92,
+                 "name":"down",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":288,
+                 "y":256
+                }, 
+                {
+                 "gid":8,
+                 "height":32,
+                 "id":93,
+                 "name":"pipe",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":320,
+                 "y":192
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -228,7 +252,7 @@
          "y":0
         }],
  "nextlayerid":6,
- "nextobjectid":91,
+ "nextobjectid":94,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.2.3",

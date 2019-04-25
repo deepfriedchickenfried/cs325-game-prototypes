@@ -284,7 +284,7 @@ GameStates.makeGame = function( game, shared ) {
                 projectiles.add(projectile);
                 projectile.anchor.setTo(0.5,0.5);
                 game.physics.arcade.enable(projectile);
-                projectile.body.setCircle(4);
+                projectile.body.setCircle(6);
                 projectile.dir = "none";
                 
                 projectile.kill();
@@ -859,6 +859,7 @@ GameStates.makeGame = function( game, shared ) {
                         slimeEmitter.x = player.x;
                         slimeEmitter.y = player.y;
                         slimeEmitter.start(true,pLifetime, null, 20);
+                        deathEvent();
                     }
                     
 
