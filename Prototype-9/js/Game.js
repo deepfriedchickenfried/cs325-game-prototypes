@@ -40,7 +40,7 @@ GameStates.makeGame = function( game, shared ) {
  
     var cursors
     var speed = 120;
- 
+    var pspeed =200;
     var stationary = true;
     var charge = 1;
     var trailEmitter;
@@ -72,21 +72,21 @@ GameStates.makeGame = function( game, shared ) {
         if(dir === "up")
         {   
             projectile.body.velocity.x = 0;
-            projectile.body.velocity.y = -160;
+            projectile.body.velocity.y = -pspeed;
             projectile.dir = "up";
         }else if(dir === "down")
         {
             projectile.body.velocity.x = 0;
-            projectile.body.velocity.y = 160;
+            projectile.body.velocity.y = pspeed;
             projectile.dir = "down";
         }else if(dir === "left")
         {   
-            projectile.body.velocity.x = -160;
+            projectile.body.velocity.x = -pspeed;
             projectile.body.velocity.y = 0;
             projectile.dir = "left";
         }else if(dir === "right")
         {
-            projectile.body.velocity.x = 160;
+            projectile.body.velocity.x = pspeed;
             projectile.body.velocity.y = 0;
             projectile.dir = "right";
         }
@@ -395,7 +395,7 @@ GameStates.makeGame = function( game, shared ) {
                     //upleft.bounced = true;
                     p.x = 16 + (Math.floor(p.x/32) * 32);
                     p.y = 16 + (Math.floor(p.y/32) * 32) +32;
-                    p.body.velocity.x = -speed;
+                    p.body.velocity.x = -pspeed;
                     p.body.velocity.y = 0;
                     p.dir = "left";
                 }else if(p.dir === "right")
@@ -403,7 +403,7 @@ GameStates.makeGame = function( game, shared ) {
                     //upleft.bounced = true;
                     p.x = 16 + (Math.floor(p.x/32) * 32) +32;
                     p.y = 16 + (Math.floor(p.y/32) * 32);
-                    p.body.velocity.y = -speed;
+                    p.body.velocity.y = -pspeed;
                     p.body.velocity.x = 0;
                     p.dir = "up"; 
                 }
@@ -419,7 +419,7 @@ GameStates.makeGame = function( game, shared ) {
                     //upleft.bounced = true;
                     p.x = 16 + (Math.floor(p.x/32) * 32);
                     p.y = 16 + (Math.floor(p.y/32) * 32) + 32;
-                    p.body.velocity.x = speed;
+                    p.body.velocity.x = pspeed;
                     p.body.velocity.y = 0;
                     p.dir = "right";
 
@@ -429,7 +429,7 @@ GameStates.makeGame = function( game, shared ) {
                     //upleft.bounced = true;
                     p.x = 16 + (Math.floor(p.x/32) * 32) - 32;
                     p.y = 16 + (Math.floor(p.y/32) * 32) ;
-                    p.body.velocity.y = -speed;
+                    p.body.velocity.y = -pspeed;
                     p.body.velocity.x = 0;
                     p.dir = "up"; 
                 }
@@ -445,7 +445,7 @@ GameStates.makeGame = function( game, shared ) {
                     //upleft.bounced = true;
                     p.x = 16 + (Math.floor(p.x/32) * 32);
                     p.y = 16 + (Math.floor(p.y/32) * 32) - 32;
-                    p.body.velocity.x = -speed;
+                    p.body.velocity.x = -pspeed;
                     p.body.velocity.y = 0;
                     p.dir = "left";
 
@@ -455,7 +455,7 @@ GameStates.makeGame = function( game, shared ) {
                     //upleft.bounced = true;
                     p.x = 16 + (Math.floor(p.x/32) * 32) +32;
                     p.y = 16 + (Math.floor(p.y/32) * 32);
-                    p.body.velocity.y = speed;
+                    p.body.velocity.y = pspeed;
                     p.body.velocity.x = 0;
                     p.dir = "down"; 
                 }
@@ -471,7 +471,7 @@ GameStates.makeGame = function( game, shared ) {
                     //upleft.bounced = true;
                     p.x = 16 + (Math.floor(p.x/32) * 32);
                     p.y = 16 + (Math.floor(p.y/32) * 32) - 32;
-                    p.body.velocity.x = speed;
+                    p.body.velocity.x = pspeed;
                     p.body.velocity.y = 0;
                     p.dir = "right";
 
@@ -481,7 +481,7 @@ GameStates.makeGame = function( game, shared ) {
                     //upleft.bounced = true;
                     p.x = 16 + (Math.floor(p.x/32) * 32) - 32;
                     p.y = 16 + (Math.floor(p.y/32) * 32);
-                    p.body.velocity.y = speed;
+                    p.body.velocity.y = pspeed;
                     p.body.velocity.x = 0;
                     p.dir = "down"; 
                 }
