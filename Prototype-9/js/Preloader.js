@@ -35,6 +35,10 @@ GameStates.makePreloader = function( game ) {
           
            
             game.load.tilemap('testmap', 'assets/level1.json', null, Phaser.Tilemap.TILED_JSON);
+            game.load.tilemap('level2', 'assets/level2.json', null, Phaser.Tilemap.TILED_JSON);
+            game.load.tilemap('level3', 'assets/level3.json', null, Phaser.Tilemap.TILED_JSON);
+            game.load.tilemap('level4', 'assets/level4.json', null, Phaser.Tilemap.TILED_JSON);
+            game.load.tilemap('level5', 'assets/level5.json', null, Phaser.Tilemap.TILED_JSON);
             game.load.spritesheet('people', 'assets/topdownpeople.png', 32, 32);
             //game.load.image('people', 'assets/topdownpeople.png');
             game.load.image('Walls', 'assets/walls1.png');

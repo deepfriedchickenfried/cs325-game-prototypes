@@ -17,8 +17,11 @@ window.onload = function() {
 	game.state.add( 'Preloader', GameStates.makePreloader( game ) );
 	game.state.add( 'MainMenu', GameStates.makeMainMenu( game, shared) );
 	game.state.add( 'Game', GameStates.makeGame( game, shared ) );
-	//game.state.add( 'Level1', Level1);
-	//game.state.add( 'Level2', Level2);
+	
+	game.state.add( 'Level2', Level2);
+	game.state.add( 'Level3', Level3);
+	game.state.add( 'Level4', Level4);
+	game.state.add( 'Level5', Level5);
 	game.state.add( 'GameOver', GameOver);
     
 
