@@ -302,8 +302,7 @@ GameStates.makeGame = function( game, shared ) {
             cursors = game.input.keyboard.createCursorKeys();
 
             Rkey = game.input.keyboard.addKey(Phaser.Keyboard.R);
-            Ykey = game.input.keyboard.addKey(Phaser.Keyboard.Y);
-
+            
 
             // particle trail
             trailEmitter = game.add.emitter(0,0, 500);
