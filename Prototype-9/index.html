@@ -48,15 +48,15 @@ Making the player and the projectile bounce off the corner pieces were a pain
 
 <li><strong>Prototype Postmortem:</strong>
 What did you learn from this prototype?
-Figured out finally how to use tile maps and levels
+Learned a lot about collisions and how to use them.
 What was the easiest or hardest part of making it?
-The hardest part of making this was getting the collisions and interactions to work properly
+The hardest part was having to redo the maps because I added additional objects
 </li>
 
 <li><strong>Prototype Assets:</strong>
 Did you make your prototype assets from scratch? Did you borrow them? Cite your sources here.
 <ul>
-<li>The loading screen and initial music is from the example
+<li> Parabola by DOS-88	https://dos88.itch.io/dos-88-music-library
 </ul> Everything else is handcrafted beautiful pixel art that I did.(not really beautiful)
 </li>
 
@@ -68,13 +68,13 @@ Which other game most closely resembles your game? If you are borrowing code fro
 </li>
 
 <li><strong>High Concept:</strong>
-You are a parasitic organism that must leave a lab.
+You are a parasitic organism that must leave a lab and can launch out of people into others to survive.
 
 </li>
 
 
 <li><strong>Prototype Goal:</strong>
-This prototype is testing out the basic interactions and movement
+This prototype is continuing to test out the movement and mechanics as well as the newer objects.
 </li>
 
 <li><strong>Player Experience Goals:</strong>
@@ -83,7 +83,12 @@ Want players to have fun as they try to solve each puzzle
 
 <li><strong>Gameplay:</strong>
 
-The player can move with up down left right. You start at the green person and can press in any direction and your goal is to reach the orange person. 
+The player can move with up down left right. You start at the green person and can press in any direction and your goal is to reach the orange person. When you are in a host you can leave the host and move in any direction.
+When you are in the air, you have one projectile charge and can use that projectile charge to change your direction by pressing a key. Changing your direction this way will launch a projectile in the opposite direction. The projectile can be used to kill enemies that block your path and eventually trigger buttons. When you collide with a person your charge is refreshed. The game ends when the player collides with a red enemy or wall or if the orange enemy dies by a projectile.
+There are also several obstacles that the player can interact with.
+The corner pieces will bounce the player or projectile if it is going a certain direction and will do nothing otherwise.
+The mini blocks allow projectiles to pass through it but not players and the one way blocks only allow objects through it that are going in a certain direction.
+Finally there are destructible blocks that act like normal blocks except for the fact that they can only sustain one hit. 
 There are several different types of enemies.
 The red enemies kill you if you touch them, but can be killed by the projectile.
 The black enemies are normal and can be infected or killed with a projectile
