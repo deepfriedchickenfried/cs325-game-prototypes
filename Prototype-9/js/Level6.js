@@ -1,6 +1,6 @@
 "use strict";
 
-var Level5 = function( game, shared ) {
+var Level6 = function( game, shared ) {
     // Create your own variables.
     var marker;
     var deathStyle;
@@ -131,7 +131,7 @@ var Level5 = function( game, shared ) {
             
             //music = game.add.audio('gameMusic');
             //music.play();
-            map = this.game.add.tilemap('level5');
+            map = this.game.add.tilemap('level6');
             map.addTilesetImage('walls1', 'Walls');
             
             bgLayer = map.createLayer('background');
@@ -1042,7 +1042,7 @@ var Level5 = function( game, shared ) {
                         player.alpha = 0;
                         charge = 1;
                         stationary = true;
-                        game.state.start('Level6');
+                        game.state.start('GameOver');
                     }
 
             

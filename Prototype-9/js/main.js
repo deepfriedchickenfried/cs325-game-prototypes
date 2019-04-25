@@ -22,6 +22,7 @@ window.onload = function() {
 	game.state.add( 'Level3', Level3);
 	game.state.add( 'Level4', Level4);
 	game.state.add( 'Level5', Level5);
+	game.state.add( 'Level6', Level6);
 	game.state.add( 'GameOver', GameOver);
     
 
