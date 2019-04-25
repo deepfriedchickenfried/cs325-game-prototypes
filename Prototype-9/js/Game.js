@@ -10,6 +10,7 @@ GameStates.makeGame = function( game, shared ) {
     var wallsLayer;
     
     var Rkey;
+    
 
     var spawnX;
     var spawnY;
@@ -301,7 +302,7 @@ GameStates.makeGame = function( game, shared ) {
             cursors = game.input.keyboard.createCursorKeys();
 
             Rkey = game.input.keyboard.addKey(Phaser.Keyboard.R);
-            
+            Ykey = game.input.keyboard.addKey(Phaser.Keyboard.Y);
 
 
             // particle trail
@@ -356,6 +357,8 @@ GameStates.makeGame = function( game, shared ) {
         },
     
         update: function () {
+            
+
             if(charge > 0)
             {
                 marker.alpha = 1;
