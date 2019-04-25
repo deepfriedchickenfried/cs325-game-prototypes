@@ -49,6 +49,7 @@ GameStates.makePreloader = function( game ) {
             game.load.image('blood', 'assets/bloodParticle.png');
             game.load.image('projectile', 'assets/projectile.png');
             game.load.image('outline', 'assets/outline.png');
+            game.load.image('marker', 'assets/projectileMarker.png');
         },
     
         create: function () {

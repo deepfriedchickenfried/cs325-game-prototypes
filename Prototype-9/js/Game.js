@@ -2,6 +2,7 @@
 
 GameStates.makeGame = function( game, shared ) {
     // Create your own variables.
+    var marker;
     var deathStyle;
     var deathText;
     var map;
@@ -349,11 +350,21 @@ GameStates.makeGame = function( game, shared ) {
             deathText = game.add.text(game.world.centerX, game.world.height -50, "You died, press R to try again", deathStyle);
             deathText.anchor.set(0.5);
             deathText.alpha = 0;
+
+            marker = game.add.sprite(0,0,'marker');
            
         },
     
         update: function () {
-           
+            if(charge > 0)
+            {
+                marker.alpha = 1;
+            }else
+            {
+                marker.alpha = 0;
+            }
+
+
             if ((this.game.physics.arcade.collide(player, wallsLayer) && stationary !== true) || (this.game.physics.arcade.overlap(outline, pipes) && stationary !== true))
             {
                 slimeEmitter.x = player.x;
@@ -888,7 +899,7 @@ GameStates.makeGame = function( game, shared ) {
                         player.body.velocity.y = 0;
                         player.dir = "right";
                         fireProjectile("left",player.x,player.y);
-                        //charge--;
+                        charge--;
                     }else if(charge >= 1 && cursors.up.isDown && player.dir !== "up")
                     {
                         player.x = outline.x;
@@ -897,7 +908,7 @@ GameStates.makeGame = function( game, shared ) {
                         player.body.velocity.x = 0;
                         player.dir = "up";
                         fireProjectile("down",player.x,player.y);
-                        //charge--;
+                        charge--;
                     }else if(charge >= 1 && cursors.left.isDown && player.dir !== "left")
                     {
                         player.x = outline.x;
@@ -906,7 +917,7 @@ GameStates.makeGame = function( game, shared ) {
                         player.body.velocity.y = 0;
                         player.dir = "left";
                         fireProjectile("right",player.x,player.y);
-                        //charge--;
+                        charge--;
                     }else if(charge >= 1 && cursors.down.isDown && player.dir !== "down")
                     {
                         player.x = outline.x;
@@ -915,7 +926,7 @@ GameStates.makeGame = function( game, shared ) {
                         player.body.velocity.x = 0;
                         player.dir = "down"; 
                         fireProjectile("up",player.x,player.y);
-                        //charge--;
+                        charge--;
                     }
 
                     
