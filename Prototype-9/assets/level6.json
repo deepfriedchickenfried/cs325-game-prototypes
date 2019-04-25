@@ -381,18 +381,6 @@
                 {
                  "gid":13,
                  "height":32,
-                 "id":149,
-                 "name":"break",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":32,
-                 "x":736,
-                 "y":352
-                }, 
-                {
-                 "gid":13,
-                 "height":32,
                  "id":150,
                  "name":"break",
                  "rotation":0,
@@ -437,6 +425,18 @@
                  "width":32,
                  "x":608,
                  "y":224
+                }, 
+                {
+                 "gid":8,
+                 "height":32,
+                 "id":154,
+                 "name":"pipe",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":480,
+                 "y":416
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -696,7 +696,7 @@
          "y":0
         }],
  "nextlayerid":6,
- "nextobjectid":154,
+ "nextobjectid":155,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.2.2",
