@@ -40,7 +40,7 @@ GameStates.makeGame = function( game, shared ) {
  
     var cursors
     var speed = 120;
-    var pspeed =200;
+    var pspeed =240;
     var stationary = true;
     var charge = 1;
     var trailEmitter;
@@ -375,6 +375,8 @@ GameStates.makeGame = function( game, shared ) {
                 game.state.restart();
             }
 
+
+
             //projectiles walls
             this.game.physics.arcade.collide(projectiles,wallsLayer, this.projwallsCollision, null, this);
 
@@ -386,22 +388,24 @@ GameStates.makeGame = function( game, shared ) {
                 p.kill();
             }
 
-            this.game.physics.arcade.overlap(projectiles, uplefts, this.upleftsCollisionP, null, this);
-                    
+            this.game.physics.arcade.overlap(projectiles, uplefts, this.upleftsCollisionP, this.cornerCollision, this);
+            
+           
+
             this.upleftsCollisionP = function(p, upright)
             {
                 if (p.dir === "down")
                 {
                     //upleft.bounced = true;
                     p.x = 16 + (Math.floor(p.x/32) * 32);
-                    p.y = 16 + (Math.floor(p.y/32) * 32) +32;
+                    p.y = 16 + (Math.floor(p.y/32) * 32);
                     p.body.velocity.x = -pspeed;
                     p.body.velocity.y = 0;
                     p.dir = "left";
                 }else if(p.dir === "right")
                 {
                     //upleft.bounced = true;
-                    p.x = 16 + (Math.floor(p.x/32) * 32) +32;
+                    p.x = 16 + (Math.floor(p.x/32) * 32);
                     p.y = 16 + (Math.floor(p.y/32) * 32);
                     p.body.velocity.y = -pspeed;
                     p.body.velocity.x = 0;
@@ -409,7 +413,7 @@ GameStates.makeGame = function( game, shared ) {
                 }
             }
 
-            this.game.physics.arcade.overlap(projectiles, uprights, this.uprightsCollisionP, null, this);
+            this.game.physics.arcade.overlap(projectiles, uprights, this.uprightsCollisionP, this.cornerCollision, this);
                     
             this.uprightsCollisionP = function(p, upright)
             {
@@ -418,7 +422,7 @@ GameStates.makeGame = function( game, shared ) {
                 {
                     //upleft.bounced = true;
                     p.x = 16 + (Math.floor(p.x/32) * 32);
-                    p.y = 16 + (Math.floor(p.y/32) * 32) + 32;
+                    p.y = 16 + (Math.floor(p.y/32) * 32);
                     p.body.velocity.x = pspeed;
                     p.body.velocity.y = 0;
                     p.dir = "right";
@@ -427,7 +431,7 @@ GameStates.makeGame = function( game, shared ) {
                 }else if(p.dir === "left")
                 {
                     //upleft.bounced = true;
-                    p.x = 16 + (Math.floor(p.x/32) * 32) - 32;
+                    p.x = 16 + (Math.floor(p.x/32) * 32);
                     p.y = 16 + (Math.floor(p.y/32) * 32) ;
                     p.body.velocity.y = -pspeed;
                     p.body.velocity.x = 0;
@@ -435,7 +439,7 @@ GameStates.makeGame = function( game, shared ) {
                 }
             }
 
-            this.game.physics.arcade.overlap(projectiles, downlefts, this.downleftsCollisionP, null, this);
+            this.game.physics.arcade.overlap(projectiles, downlefts, this.downleftsCollisionP, this.cornerCollision, this);
             
             this.downleftsCollisionP = function(p, downleft)
             {
@@ -444,7 +448,7 @@ GameStates.makeGame = function( game, shared ) {
                 {
                     //upleft.bounced = true;
                     p.x = 16 + (Math.floor(p.x/32) * 32);
-                    p.y = 16 + (Math.floor(p.y/32) * 32) - 32;
+                    p.y = 16 + (Math.floor(p.y/32) * 32);
                     p.body.velocity.x = -pspeed;
                     p.body.velocity.y = 0;
                     p.dir = "left";
@@ -453,7 +457,7 @@ GameStates.makeGame = function( game, shared ) {
                 }else if(p.dir === "right")
                 {
                     //upleft.bounced = true;
-                    p.x = 16 + (Math.floor(p.x/32) * 32) +32;
+                    p.x = 16 + (Math.floor(p.x/32) * 32);
                     p.y = 16 + (Math.floor(p.y/32) * 32);
                     p.body.velocity.y = pspeed;
                     p.body.velocity.x = 0;
@@ -461,7 +465,7 @@ GameStates.makeGame = function( game, shared ) {
                 }
             }
 
-            this.game.physics.arcade.overlap(projectiles, downrights, this.downrightsCollisionP, null, this);
+            this.game.physics.arcade.overlap(projectiles, downrights, this.downrightsCollisionP, this.cornerCollision, this);
             
             this.downrightsCollisionP = function(p,downright)
             {
@@ -470,7 +474,7 @@ GameStates.makeGame = function( game, shared ) {
                 {
                     //upleft.bounced = true;
                     p.x = 16 + (Math.floor(p.x/32) * 32);
-                    p.y = 16 + (Math.floor(p.y/32) * 32) - 32;
+                    p.y = 16 + (Math.floor(p.y/32) * 32);
                     p.body.velocity.x = pspeed;
                     p.body.velocity.y = 0;
                     p.dir = "right";
@@ -479,11 +483,24 @@ GameStates.makeGame = function( game, shared ) {
                 }else if(p.dir === "left")
                 {
                     //upleft.bounced = true;
-                    p.x = 16 + (Math.floor(p.x/32) * 32) - 32;
+                    p.x = 16 + (Math.floor(p.x/32) * 32);
                     p.y = 16 + (Math.floor(p.y/32) * 32);
                     p.body.velocity.y = pspeed;
                     p.body.velocity.x = 0;
                     p.dir = "down"; 
+                }
+            }
+
+            this.cornerCollision = function(p,c)
+            {
+                var squareX = 16 + (Math.floor(p.x/32) * 32);
+                var squareY = 16 + (Math.floor(p.y/32) * 32); 
+                if((squareX === c.x + 16) &&(squareY === c.y + 16))
+                {
+                    return true;
+                }else
+                {
+                    return false;
                 }
             }
 
