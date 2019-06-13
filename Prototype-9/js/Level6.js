@@ -1,6 +1,6 @@
 "use strict";
 
-GameStates.makeGame = function( game, shared ) {
+var Level6 = function( game, shared ) {
     // Create your own variables.
     var marker;
     var deathStyle;
@@ -10,7 +10,6 @@ GameStates.makeGame = function( game, shared ) {
     var wallsLayer;
     
     var Rkey;
-    
 
     var spawnX;
     var spawnY;
@@ -132,7 +131,7 @@ GameStates.makeGame = function( game, shared ) {
             
             //music = game.add.audio('gameMusic');
             //music.play();
-            map = this.game.add.tilemap('testmap');
+            map = this.game.add.tilemap('level6');
             map.addTilesetImage('walls1', 'Walls');
             
             bgLayer = map.createLayer('background');
@@ -304,6 +303,7 @@ GameStates.makeGame = function( game, shared ) {
             Rkey = game.input.keyboard.addKey(Phaser.Keyboard.R);
             
 
+
             // particle trail
             trailEmitter = game.add.emitter(0,0, 500);
             trailEmitter.makeParticles('slime', 0, 500, true,true );
@@ -350,13 +350,11 @@ GameStates.makeGame = function( game, shared ) {
             deathText = game.add.text(game.world.centerX, game.world.height -50, "You died, press R to try again", deathStyle);
             deathText.anchor.set(0.5);
             deathText.alpha = 0;
-
-            marker = game.add.sprite(0,0,'marker');
            
+            marker = game.add.sprite(0,0,'marker');
         },
     
         update: function () {
-            
 
             if(charge > 0)
             {
@@ -365,8 +363,7 @@ GameStates.makeGame = function( game, shared ) {
             {
                 marker.alpha = 0;
             }
-
-
+           
             if ((this.game.physics.arcade.collide(player, wallsLayer) && stationary !== true) || (this.game.physics.arcade.overlap(outline, pipes) && stationary !== true))
             {
                 slimeEmitter.x = player.x;
@@ -1045,7 +1042,7 @@ GameStates.makeGame = function( game, shared ) {
                         player.alpha = 0;
                         charge = 1;
                         stationary = true;
-                        game.state.start('Level2');
+                        game.state.start('GameOver');
                     }
 
             

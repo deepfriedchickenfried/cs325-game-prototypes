@@ -40,6 +40,7 @@ GameStates.makePreloader = function( game ) {
             game.load.tilemap('level3', 'assets/level3.json', null, Phaser.Tilemap.TILED_JSON);
             game.load.tilemap('level4', 'assets/level4.json', null, Phaser.Tilemap.TILED_JSON);
             game.load.tilemap('level5', 'assets/level5.json', null, Phaser.Tilemap.TILED_JSON);
+            game.load.tilemap('level6', 'assets/level6.json', null, Phaser.Tilemap.TILED_JSON);
             game.load.spritesheet('people', 'assets/topdownpeople.png', 32, 32);
             //game.load.image('people', 'assets/topdownpeople.png');
             game.load.image('Walls', 'assets/walls1.png');
@@ -49,6 +50,7 @@ GameStates.makePreloader = function( game ) {
             game.load.image('blood', 'assets/bloodParticle.png');
             game.load.image('projectile', 'assets/projectile.png');
             game.load.image('outline', 'assets/outline.png');
+            game.load.image('marker', 'assets/projectileMarker.png');
         },
     
         create: function () {
