@@ -35,6 +35,7 @@ GameStates.makePreloader = function( game ) {
             game.load.image('enemy', 'assets/topdownenemy.png');
             game.load.image('enemyBullet', 'assets/enemyBullet.png');
             game.load.image('gameOverScreen', 'assets/gameOver.png');
+            game.load.image('gunbox', 'assets/gunbox.png');
         },
     
         create: function () {

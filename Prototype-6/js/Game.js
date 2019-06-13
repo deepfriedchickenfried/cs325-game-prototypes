@@ -31,7 +31,7 @@ GameStates.makeGame = function( game, shared ) {
     return {
     
         create: function () {
-            player = game.add.sprite(game.world.centerX, game.world.centerY, 'player');
+            player = game.add.sprite(game.world.centerX, game.world.centerY, 'gunbox');
             
             player.anchor.setTo(0.5, 0.5);
             player.stopped = true;
@@ -44,6 +44,15 @@ GameStates.makeGame = function( game, shared ) {
         },
     
         update: function () {
+            if(cursors.left.isDown)
+            {
+                
+                
+
+            }else if(cursors.right.isDown)
+            {
+                
+            }
             
             if(cursors.up.onDown)
             {

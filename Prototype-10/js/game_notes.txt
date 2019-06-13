@@ -1,0 +1,13 @@
+Things to add
+
+make a vomit trail when leaving a person
+when leaving a person delay the death a bit.
+
+add more levels
+
+make moving one space smoother
+
+adjust game feel
+add sound effects for collision
+
+Improve start screen
